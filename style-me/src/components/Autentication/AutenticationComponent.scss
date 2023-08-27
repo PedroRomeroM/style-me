@@ -10,6 +10,7 @@
   background-color: $background-color;
 
   .LoginContainer {
+    border-radius: 10px;
     justify-content: space-between;
     display: flex;
     width: 40%;
@@ -25,7 +26,7 @@
       width: 55%;
       height: 100%;
       background-color: $cor-primaria;
-      border-radius: 0% 10% 10% 0%;
+      border-radius: 10px;
       justify-content: center;
       align-items: center;
 
@@ -95,6 +96,9 @@
     }
 
     .rightContainer {
+      background-image: url("../../../public/images/background-image.svg");
+      background-position: right;
+      background-size: 150%;
       display: flex;
       width: 45%;
       height: 100%;
@@ -103,9 +107,18 @@
 
         .centerDiv{
             width: 90%;
-            p {
-        
-            }
+          span {
+            font-family: Montserrat;
+            color: #fff;
+            font-weight: 700;
+            font-size: 25px;
+          }
+          p {
+            width: 85%;
+            font-family: Montserrat;
+            color: #c7c7c7;
+            font-weight: 500;
+          }
         }
     }
   }

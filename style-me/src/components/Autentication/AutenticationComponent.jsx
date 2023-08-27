@@ -1,6 +1,24 @@
 import "./AutenticationComponent.scss";
+import Typed from "typed.js";
+import { useEffect, useRef } from "react";
 
 const AutenticationComponent = () => {
+  const el = useRef(null);
+
+  useEffect(() => {
+    const typed = new Typed(el.current, {
+      strings: ["MODELANDO A WEB COM </br> ESTILO E </br> CRIATIVIDADE"],
+      startDelay: 500,
+      typeSpeed: 70,
+      backSpeed: 200,
+      backDelay: 100,
+    });
+
+    // Destropying
+    return () => {
+      typed.destroy();
+    };
+  }, []);
   return (
     <>
       <div className="MainContainer">
@@ -19,7 +37,8 @@ const AutenticationComponent = () => {
           </div>
           <div className="rightContainer">
             <div className="centerDiv">
-                <p>MODELANDO A WEB COM ESTILO E CRIATIVIDADE</p>
+              <span ref={el}></span>
+              <p>CSS: A ferramenta que dá vida à Web - Aprenda e Crie</p>
             </div>
           </div>
         </div>
