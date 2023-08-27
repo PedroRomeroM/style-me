@@ -9,117 +9,172 @@
   align-items: center;
   background-color: $background-color;
 
-  .LoginContainer {
+  .formContainer {
+    position: relative;
+    width: 47rem;
+    height: 36rem;
     border-radius: 10px;
-    justify-content: space-between;
-    display: flex;
-    width: 40%;
-    height: 70%;
-    background: linear-gradient(
-      25deg,
-      rgba(85, 64, 218, 0.34) 7.17%,
-      rgba(150, 49, 168, 0.63) 100%
-    );
+    overflow: hidden;
+    z-index: 1;
+    box-sizing: border-box;
 
-    .LeftContainer {
+    .LoginContainer {
       display: flex;
-      width: 55%;
-      height: 100%;
-      background-color: $cor-primaria;
+      position: absolute;
+      inset: 2px;
+      right: auto;
+      background: $cor-primaria;
+      z-index: 2;
       border-radius: 10px;
-      justify-content: center;
-      align-items: center;
+      justify-content: space-between;
+      width: 46.78em;
+      height: 35.75rem;
+      right: 2px;
 
-      .LoginSection {
+      .LeftContainer {
         display: flex;
-        width: 88%;
-        height: 70%;
+        width: 55%;
+        height: 100%;
+        background-color: $cor-primaria;
+        border-radius: 10px;
+        justify-content: center;
         align-items: center;
-        flex-direction: column;
-        // background-color: #212124;
 
-        img {
-          width: 20rem;
-          height: 7rem;
-        }
-
-        .separador {
-          width: 85%;
-          height: 3px;
-          background-color: rgb(207, 207, 207);
-        }
-
-        .inputSection {
+        .LoginSection {
           display: flex;
-          flex-direction: column;
+          width: 88%;
+          height: 70%;
           align-items: center;
-          margin-top: 2rem;
-          width: 70%;
+          flex-direction: column;
+          // background-color: #212124;
 
-          input {
-            margin: 0.7rem;
-            height: 3rem;
-            width: 100%;
-            border-radius: 13px;
-            text-align: center;
-            font-family: Montserrat;
-            font-weight: 700;
-            font-size: 16px;
-            color: black;
-            border: none;
+          img {
+            width: 20rem;
+            height: 7rem;
           }
 
-          input[type="submit"] {
-            margin-bottom: 0;
-            background: radial-gradient(
-              circle,
-              rgba(206, 93, 217, 1) 0%,
-              rgba(123, 120, 247, 1) 100%
-            );
-            border: none;
-            color: white;
-            font-weight: 700;
-            font-size: 17px;
+          .separador {
+            width: 85%;
+            height: 3px;
+            background-color: rgb(207, 207, 207);
           }
 
-          a {
-            margin-top: 0.8rem;
-            color: #fff;
-            font-family: Montserrat;
-            font-size: 15px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 16px;
+          .inputSection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2rem;
+            width: 70%;
+
+            input {
+              margin: 0.7rem;
+              height: 3rem;
+              width: 100%;
+              border-radius: 13px;
+              text-align: center;
+              font-family: Montserrat;
+              font-weight: 700;
+              font-size: 16px;
+              color: black;
+              border: none;
+            }
+
+            input[type="submit"] {
+              margin-bottom: 0;
+              background: radial-gradient(
+                circle,
+                rgba(206, 93, 217, 1) 0%,
+                rgba(123, 120, 247, 1) 100%
+              );
+              border: none;
+              color: white;
+              font-weight: 700;
+              font-size: 17px;
+            }
+
+            a {
+              margin-top: 0.8rem;
+              color: #fff;
+              font-family: Montserrat;
+              font-size: 15px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 16px;
+            }
+          }
+        }
+      }
+      .backGroundRight {
+        width: 50%;
+        background: linear-gradient(
+        25deg,
+        rgba(85, 64, 218, 0.34) 7.17%,
+        rgba(150, 49, 168, 0.63) 100%
+      );
+        .rightContainer {
+          background-image: url("../../../public/images/background-image.svg");
+          background-position: right;
+          background-size: 150%;
+          display: flex;
+          width: 100%;
+          height: 100%;
+          justify-content: center;
+          align-items: center;
+
+          .centerDiv {
+            width: 90%;
+            span {
+              font-family: Montserrat;
+              color: #fff;
+              font-weight: 700;
+              font-size: 25px;
+            }
+            p {
+              width: 85%;
+              font-family: Montserrat;
+              color: #c7c7c7;
+              font-weight: 500;
+            }
           }
         }
       }
     }
+  }
+  .formContainer::before {
+    content: "";
+    position: absolute;
+    width: 30rem;
+    height: 30rem;
+    right: 50%;
+    bottom: 50%;
+    z-index: 1;
+    transform-origin: bottom right;
+    background: linear-gradient(0deg, transparent, rgba(123, 120, 247, 1));
+    animation: animate 20s linear infinite;
+    border-radius: 10px;
+  }
 
-    .rightContainer {
-      background-image: url("../../../public/images/background-image.svg");
-      background-position: right;
-      background-size: 150%;
-      display: flex;
-      width: 45%;
-      height: 100%;
-      justify-content: center;
-      align-items: center;
+  .formContainer::after {
+    content: "";
+    position: absolute;
+    width: 30rem;
+    height: 30rem;
+    right: 50%;
+    bottom: 50%;
+    z-index: 1;
+    transform-origin: bottom right;
+    background: linear-gradient(0deg, transparent, rgba(206, 93, 217, 1));
+    border-radius: 10px;
+    animation: animate 20s linear infinite;
+    animation-delay: -10s;
+  }
 
-        .centerDiv{
-            width: 90%;
-          span {
-            font-family: Montserrat;
-            color: #fff;
-            font-weight: 700;
-            font-size: 25px;
-          }
-          p {
-            width: 85%;
-            font-family: Montserrat;
-            color: #c7c7c7;
-            font-weight: 500;
-          }
-        }
+  @keyframes animate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
     }
   }
 }
