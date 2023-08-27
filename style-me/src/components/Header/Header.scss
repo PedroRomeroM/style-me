@@ -1,0 +1,17 @@
+@import '../../variables';
+
+.HeaderContainer {
+    margin: 0;
+    padding: 0;
+
+    header {
+        background-color: $cor-primaria;
+        border-radius: 0 0 20px 20px;
+
+        img {
+            height: 5rem;
+            padding: 1rem;
+        }
+      }
+  }
+

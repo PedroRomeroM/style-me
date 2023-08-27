@@ -1,10 +1,10 @@
-import './App.css';
-import Home from './components/Home/Home';
+import './App.scss';
+import AutenticationLayout from './layouts/AutenticationLayout';
 
 function App() {
   return (
     <div className="App">
-     <Home />
+      <AutenticationLayout/>
     </div>
   );
 }

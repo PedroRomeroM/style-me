@@ -1,0 +1,112 @@
+@import "../../variables";
+
+.MainContainer {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: $background-color;
+
+  .LoginContainer {
+    justify-content: space-between;
+    display: flex;
+    width: 40%;
+    height: 70%;
+    background: linear-gradient(
+      25deg,
+      rgba(85, 64, 218, 0.34) 7.17%,
+      rgba(150, 49, 168, 0.63) 100%
+    );
+
+    .LeftContainer {
+      display: flex;
+      width: 55%;
+      height: 100%;
+      background-color: $cor-primaria;
+      border-radius: 0% 10% 10% 0%;
+      justify-content: center;
+      align-items: center;
+
+      .LoginSection {
+        display: flex;
+        width: 88%;
+        height: 70%;
+        align-items: center;
+        flex-direction: column;
+        // background-color: #212124;
+
+        img {
+          width: 20rem;
+          height: 7rem;
+        }
+
+        .separador {
+          width: 85%;
+          height: 3px;
+          background-color: rgb(207, 207, 207);
+        }
+
+        .inputSection {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 2rem;
+          width: 70%;
+
+          input {
+            margin: 0.7rem;
+            height: 3rem;
+            width: 100%;
+            border-radius: 13px;
+            text-align: center;
+            font-family: Montserrat;
+            font-weight: 700;
+            font-size: 16px;
+            color: black;
+            border: none;
+          }
+
+          input[type="submit"] {
+            margin-bottom: 0;
+            background: radial-gradient(
+              circle,
+              rgba(206, 93, 217, 1) 0%,
+              rgba(123, 120, 247, 1) 100%
+            );
+            border: none;
+            color: white;
+            font-weight: 700;
+            font-size: 17px;
+          }
+
+          a {
+            margin-top: 0.8rem;
+            color: #fff;
+            font-family: Montserrat;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px;
+          }
+        }
+      }
+    }
+
+    .rightContainer {
+      display: flex;
+      width: 45%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+
+        .centerDiv{
+            width: 90%;
+            p {
+        
+            }
+        }
+    }
+  }
+}
