@@ -23,13 +23,18 @@
       position: absolute;
       inset: 2px;
       right: auto;
-      background: $cor-primaria;
+      background: linear-gradient(
+        25deg,
+        rgba(85, 64, 218, 1) 7.17%,
+        rgba(150, 49, 168, 1) 100%
+      );;
       z-index: 2;
       border-radius: 10px;
       justify-content: space-between;
       width: 46.78em;
       height: 35.75rem;
       right: 2px;
+      border-radius: 10px;
 
       .LeftContainer {
         display: flex;
@@ -106,6 +111,7 @@
       }
       .backGroundRight {
         width: 50%;
+        border-radius: 0 10px 10px 0;
         background: linear-gradient(
         25deg,
         rgba(85, 64, 218, 0.34) 7.17%,
@@ -144,12 +150,12 @@
     content: "";
     position: absolute;
     width: 30rem;
-    height: 30rem;
+    height: 50rem;
     right: 50%;
     bottom: 50%;
     z-index: 1;
     transform-origin: bottom right;
-    background: linear-gradient(0deg, transparent, rgba(123, 120, 247, 1));
+    background: linear-gradient(0deg, transparent, rgba(123, 120, 247, 1),rgba(123, 120, 247, 1));
     animation: animate 20s linear infinite;
     border-radius: 10px;
   }
@@ -158,12 +164,12 @@
     content: "";
     position: absolute;
     width: 30rem;
-    height: 30rem;
+    height: 50rem;
     right: 50%;
     bottom: 50%;
     z-index: 1;
     transform-origin: bottom right;
-    background: linear-gradient(0deg, transparent, rgba(206, 93, 217, 1));
+    background: linear-gradient(0deg, transparent, rgba(206, 93, 217, 1), rgba(206, 93, 217, 1));
     border-radius: 10px;
     animation: animate 20s linear infinite;
     animation-delay: -10s;
