@@ -11,9 +11,9 @@
 
   .formContainer {
     position: relative;
-    width: 47rem;
-    height: 36rem;
-    border-radius: 10px;
+    width: 70.5rem;
+    height: 44rem;
+    border-radius: 20px;
     overflow: hidden;
     z-index: 1;
     box-sizing: border-box;
@@ -27,35 +27,38 @@
         25deg,
         rgba(85, 64, 218, 1) 7.17%,
         rgba(150, 49, 168, 1) 100%
-      );;
+      );
+      background-color: black;
       z-index: 2;
-      border-radius: 10px;
+      border-radius: 20px;
       justify-content: space-between;
-      width: 46.78em;
-      height: 35.75rem;
+      width: 70.25rem;
+      height: 43.75rem;
       right: 2px;
-      border-radius: 10px;
+      border-radius: 20px;
 
       .LeftContainer {
         display: flex;
         width: 55%;
         height: 100%;
         background-color: $cor-primaria;
-        border-radius: 10px;
+        border-radius: 20px;
+        border-top-right-radius: 40px;
+        border-bottom-right-radius: 40px;
         justify-content: center;
         align-items: center;
 
         .LoginSection {
           display: flex;
           width: 88%;
-          height: 70%;
+          height: 80%;
           align-items: center;
           flex-direction: column;
-          // background-color: #212124;
 
           img {
-            width: 20rem;
-            height: 7rem;
+            width: 30rem;
+            height: 9rem;
+
           }
 
           .separador {
@@ -73,9 +76,10 @@
 
             input {
               margin: 0.7rem;
+              margin-top: 1rem;
               height: 3rem;
               width: 100%;
-              border-radius: 13px;
+              border-radius: 20px;
               text-align: center;
               font-family: Montserrat;
               font-weight: 700;
@@ -97,8 +101,28 @@
               font-size: 17px;
             }
 
+            .registerButton {
+              margin: 0.7rem;
+              margin-top: 4rem;
+              height: 3rem;
+              width: 100%;
+              border-radius: 20px;
+              text-align: center;
+              font-family: Montserrat;
+              font-weight: 700;
+              border: none;
+              background: radial-gradient(
+                circle,
+                rgba(123, 120, 247, 1) 30%,
+                rgba(206, 93, 217, 1) 100%               
+              );
+              color: white;
+              font-weight: 700;
+              font-size: 17px;
+            }
+
             a {
-              margin-top: 0.8rem;
+              margin-top: 1rem;
               color: #fff;
               font-family: Montserrat;
               font-size: 15px;
@@ -111,7 +135,7 @@
       }
       .backGroundRight {
         width: 50%;
-        border-radius: 0 10px 10px 0;
+        border-radius: 20px;
         background: linear-gradient(
         25deg,
         rgba(85, 64, 218, 0.34) 7.17%,
@@ -129,17 +153,20 @@
 
           .centerDiv {
             width: 90%;
+            margin-left: 5rem;
             span {
               font-family: Montserrat;
               color: #fff;
               font-weight: 700;
-              font-size: 25px;
+              font-size: 45px;
             }
             p {
+              margin-top: 1rem;
               width: 85%;
               font-family: Montserrat;
               color: #c7c7c7;
               font-weight: 500;
+              font-size: larger;
             }
           }
         }
@@ -149,28 +176,28 @@
   .formContainer::before {
     content: "";
     position: absolute;
-    width: 30rem;
-    height: 50rem;
+    width: 50rem;
+    height: 60rem;
     right: 50%;
     bottom: 50%;
     z-index: 1;
     transform-origin: bottom right;
-    background: linear-gradient(0deg, transparent, rgba(123, 120, 247, 1),rgba(123, 120, 247, 1));
+    background: linear-gradient(0deg, transparent, rgba(123, 120, 247, 1));
     animation: animate 20s linear infinite;
-    border-radius: 10px;
+    border-radius: 20px;
   }
 
   .formContainer::after {
     content: "";
     position: absolute;
-    width: 30rem;
-    height: 50rem;
+    width: 50rem;
+    height: 60rem;
     right: 50%;
     bottom: 50%;
     z-index: 1;
     transform-origin: bottom right;
-    background: linear-gradient(0deg, transparent, rgba(206, 93, 217, 1), rgba(206, 93, 217, 1));
-    border-radius: 10px;
+    background: linear-gradient(0deg, transparent, rgba(206, 93, 217, 1));
+    border-radius: 20px;
     animation: animate 20s linear infinite;
     animation-delay: -10s;
   }

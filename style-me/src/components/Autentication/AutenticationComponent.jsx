@@ -7,11 +7,12 @@ const AutenticationComponent = () => {
 
   useEffect(() => {
     const typed = new Typed(el.current, {
-      strings: ["MODELANDO A WEB COM </br> ESTILO E </br> CRIATIVIDADE"],
+      strings: ["MODELANDO A </br> WEB COM </br> ESTILO E </br> CRIATIVIDADE", "APRENDA </br> CRIE </br> PRATIQUE </br> EVOLUA"],
       startDelay: 500,
-      typeSpeed: 70,
-      backSpeed: 200,
-      backDelay: 100,
+      typeSpeed: 80,
+      backSpeed: 50,
+      backDelay: 2000,
+      loop: true
     });
 
     // Destropying
@@ -33,6 +34,7 @@ const AutenticationComponent = () => {
                   <input type="text" placeholder="Senha" />
                   <input type="submit" placeholder="Submit" />
                   <a href="#/">Esqueceu a senha?</a>
+                  <button className="registerButton">Criar Conta</button>
                 </div>
               </div>
             </div>
