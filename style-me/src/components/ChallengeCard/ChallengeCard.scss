@@ -1,0 +1,20 @@
+@import '../../variables';
+
+.ChallengeCardContainer {
+    margin-top: 5%;
+    margin-left: 10%;
+}
+
+.ChallengeCard {
+    height: 243px;
+    width: 387px;
+}
+
+.ChallengeCard .Card {
+    background-color: #131417;
+    border-radius: 20px;
+    box-shadow: 0px 7px 4px #00000040;
+    height: 243px;
+    position: fixed;
+    width: 387px;
+}

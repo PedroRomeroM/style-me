@@ -1,10 +1,11 @@
+// Código de app.js
 import './App.scss';
-import AutenticationLayout from './layouts/AutenticationLayout';
+import AppRouter from './Routes.js'; // Importe o componente AppRouter diretamente
 
 function App() {
   return (
     <div className="App">
-      <AutenticationLayout/>
+      <AppRouter />
     </div>
   );
 }

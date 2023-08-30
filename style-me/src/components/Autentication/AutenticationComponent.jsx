@@ -1,6 +1,7 @@
 import "./AutenticationComponent.scss";
 import Typed from "typed.js";
 import { useEffect, useRef } from "react";
+import { Link } from 'react-router-dom';
 
 const AutenticationComponent = () => {
   const el = useRef(null);
@@ -32,9 +33,11 @@ const AutenticationComponent = () => {
                 <div className="inputSection">
                   <input type="text" placeholder="Usuário" />
                   <input type="text" placeholder="Senha" />
-                  <input type="submit" placeholder="Submit" />
-                  <a href="#/">Esqueceu a senha?</a>
+                  <Link to="/challenges">
+                    <button className="loginButton">Enviar</button>
+                  </Link>
                   <button className="registerButton">Criar Conta</button>
+                  <a href="#/">Esqueceu a senha?</a>
                 </div>
               </div>
             </div>

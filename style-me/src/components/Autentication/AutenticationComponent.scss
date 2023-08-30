@@ -103,7 +103,7 @@
 
             .registerButton {
               margin: 0.7rem;
-              margin-top: 4rem;
+              margin-top: 1.5rem;
               height: 3rem;
               width: 100%;
               border-radius: 20px;
@@ -121,8 +121,28 @@
               font-size: 17px;
             }
 
+            .loginButton {
+              margin: 0.7rem;
+              margin-top: 1.5rem;
+              height: 3rem;
+              width: 100%;
+              border-radius: 20px;
+              text-align: center;
+              font-family: Montserrat;
+              font-weight: 700;
+              border: none;
+              background: radial-gradient(
+                circle,
+                rgba(123, 120, 247, 1) 30%,
+                rgba(206, 93, 217, 1) 100%               
+              );
+              color: white;
+              font-weight: 700;
+              font-size: 17px;
+              cursor: pointer;
+            }
+
             a {
-              margin-top: 1rem;
               color: #fff;
               font-family: Montserrat;
               font-size: 15px;
