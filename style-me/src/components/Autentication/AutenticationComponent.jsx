@@ -33,12 +33,13 @@ const AutenticationComponent = () => {
                 <div className="inputSection">
                   <input type="text" placeholder="Usuário" />
                   <input type="text" placeholder="Senha" />
-                  <Link to="/challenges">
+                  <Link to="/challenges" className="loginLink">
                     <button className="loginButton">Enviar</button>
                   </Link>
                   <button className="registerButton">Criar Conta</button>
-                  <a href="#/">Esqueceu a senha?</a>
+                  <a href="#/" className="forgotPassword">Esqueceu a senha?</a>
                 </div>
+
               </div>
             </div>
             <div className="backGroundRight">

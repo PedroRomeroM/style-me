@@ -23,11 +23,9 @@
       position: absolute;
       inset: 2px;
       right: auto;
-      background: linear-gradient(
-        25deg,
-        rgba(85, 64, 218, 1) 7.17%,
-        rgba(150, 49, 168, 1) 100%
-      );
+      background: linear-gradient(25deg,
+          rgba(85, 64, 218, 1) 7.17%,
+          rgba(150, 49, 168, 1) 100%);
       background-color: black;
       z-index: 2;
       border-radius: 10px;
@@ -86,41 +84,25 @@
               font-size: 16px;
               color: black;
               border: none;
+              transition: transform 0.5s;
+            }
+
+            input:hover {
+              transform: scale(1.02);
             }
 
             input[type="submit"] {
               margin-bottom: 0;
-              background: radial-gradient(
-                circle,
-                rgba(206, 93, 217, 1) 0%,
-                rgba(123, 120, 247, 1) 100%
-              );
+              background: radial-gradient(circle,
+                  rgba(206, 93, 217, 1) 0%,
+                  rgba(123, 120, 247, 1) 100%);
               border: none;
               color: white;
               font-weight: 700;
               font-size: 17px;
             }
 
-            .registerButton {
-              margin: 0.7rem;
-              margin-top: 1.5rem;
-              height: 3rem;
-              width: 100%;
-              border-radius: 10px;
-              text-align: center;
-              font-family: $font-family;
-              font-weight: 700;
-              border: none;
-              background: radial-gradient(
-                circle,
-                rgba(123, 120, 247, 1) 30%,
-                rgba(206, 93, 217, 1) 100%               
-              );
-              color: white;
-              font-weight: 700;
-              font-size: 17px;
-            }
-
+            .registerButton,
             .loginButton {
               margin: 0.7rem;
               margin-top: 1.5rem;
@@ -131,18 +113,30 @@
               font-family: $font-family;
               font-weight: 700;
               border: none;
-              background: radial-gradient(
-                circle,
-                rgba(123, 120, 247, 1) 30%,
-                rgba(206, 93, 217, 1) 100%               
-              );
+              background: radial-gradient(circle,
+                  rgba(123, 120, 247, 1) 30%,
+                  rgba(206, 93, 217, 1) 100%);
               color: white;
               font-weight: 700;
               font-size: 17px;
               cursor: pointer;
+              transition: transform 0.5s;
             }
 
-            a {
+            .loginLink {
+              display: contents;
+              justify-content: center; /* Alinha o conteúdo horizontalmente */
+              align-items: center; /* Alinha o conteúdo verticalmente */
+              width: inherit;
+            }
+
+            .registerButton:hover,
+            .loginButton:hover {
+              transform: scale(1.02);
+            }
+
+
+            .forgotPassword {
               color: #fff;
               font-family: $font-family;
               font-size: 15px;
@@ -153,9 +147,11 @@
           }
         }
       }
+
       .backGroundRight {
         width: 50%;
         border-radius: 10px;
+
         .rightContainer {
           background-image: url("../../../public/images/BG_IMPOSSIVEL_NAO_SER_ESSE.png");
           background-position: right;
@@ -169,12 +165,14 @@
           .centerDiv {
             width: 90%;
             margin-left: 5rem;
+
             span {
               font-family: $font-family;
               color: #fff;
               font-weight: 700;
               font-size: 45px;
             }
+
             p {
               margin-top: 1rem;
               width: 85%;
@@ -188,6 +186,7 @@
       }
     }
   }
+
   .formContainer::before {
     content: "";
     position: absolute;
@@ -221,6 +220,7 @@
     0% {
       transform: rotate(0deg);
     }
+
     100% {
       transform: rotate(360deg);
     }
