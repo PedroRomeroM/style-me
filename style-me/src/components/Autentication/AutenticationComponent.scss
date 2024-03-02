@@ -81,7 +81,7 @@
               width: 100%;
               border-radius: 20px;
               text-align: center;
-              font-family: Montserrat;
+              font-family: $font-family;
               font-weight: 700;
               font-size: 16px;
               color: black;
@@ -108,7 +108,7 @@
               width: 100%;
               border-radius: 20px;
               text-align: center;
-              font-family: Montserrat;
+              font-family: $font-family;
               font-weight: 700;
               border: none;
               background: radial-gradient(
@@ -128,7 +128,7 @@
               width: 100%;
               border-radius: 20px;
               text-align: center;
-              font-family: Montserrat;
+              font-family: $font-family;
               font-weight: 700;
               border: none;
               background: radial-gradient(
@@ -144,7 +144,7 @@
 
             a {
               color: #fff;
-              font-family: Montserrat;
+              font-family: $font-family;
               font-size: 15px;
               font-style: normal;
               font-weight: 400;
@@ -170,7 +170,7 @@
             width: 90%;
             margin-left: 5rem;
             span {
-              font-family: Montserrat;
+              font-family: $font-family;
               color: #fff;
               font-weight: 700;
               font-size: 45px;
@@ -178,7 +178,7 @@
             p {
               margin-top: 1rem;
               width: 85%;
-              font-family: Montserrat;
+              font-family: $font-family;
               color: #c7c7c7;
               font-weight: 500;
               font-size: larger;
