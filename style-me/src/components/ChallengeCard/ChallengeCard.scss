@@ -1,14 +1,15 @@
 @import '../../variables';
 
 .ChallengeCardContainer {
-    margin-top: 5%;
-    margin-left: 10%;
+    margin-top: 1rem;
+    margin-left: 5%;
     font-family: $font-family;
 }
 
 .ChallengeCard {
     height: 243px;
     width: 387px;
+    transition: transform 0.5s;
 }
 
 .Card {
@@ -18,6 +19,14 @@
     height: 243px;
     width: 387px;
     position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.ChallengeCardContainer.hovered .ChallengeCard,
+.ChallengeCardContainer.hovered .Card {
+    transform:scale(1.02)
 }
 
 .Card .ChallengeNumber {
@@ -70,4 +79,16 @@
     font-weight: 700;
     font-size: 17px;
     cursor: pointer;
+}
+
+.green {
+    background-color: $green;
+}
+
+.yellow {
+    background-color: $yellow;
+}
+
+.red {
+    background-color: $red;
 }

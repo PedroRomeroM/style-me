@@ -1,0 +1,37 @@
+@import '../../variables';
+
+.ChallengeHeaderContainer {
+    margin-top: 3%;
+    margin-left: 5%;
+    width: 100%;
+    height: auto;
+    font-family: $font-family;
+    display: inline-flex;
+}
+
+.ChallengeHeaderTitle {
+    color: white;
+    width: auto;
+    display: block;
+    margin: 0;
+    margin-left: 1rem;
+}
+
+.ChallengeHeaderSideColor {
+    height: 2.5rem;
+    width: 0.2rem;
+    margin-left: 2rem;
+    background-color: unset;
+}
+
+.green {
+    background-color: $green;
+}
+
+.yellow {
+    background-color: $yellow;
+}
+
+.red {
+    background-color: $red;
+}
