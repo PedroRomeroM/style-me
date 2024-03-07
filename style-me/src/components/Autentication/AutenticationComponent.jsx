@@ -32,7 +32,7 @@ const AutenticationComponent = () => {
                 <div className="separador"></div>
                 <div className="inputSection">
                   <input type="text" placeholder="Usuário" />
-                  <input type="text" placeholder="Senha" />
+                  <input type="password" placeholder="Senha" />
                   <Link to="/challenges" className="loginLink">
                     <button className="loginButton">Enviar</button>
                   </Link>

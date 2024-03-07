@@ -5,17 +5,65 @@
     height: 100%;
 }
 
-.Easy {
-    display: flex;
-    flex-wrap: wrap;
+.ChallengesContainer {
+    margin: 5%;
+    overflow: hidden;
 }
 
-.Medium {
-    display: flex;
-    flex-wrap: wrap;
-}
-
+.Easy,
+.Medium,
 .Hard {
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 3%;
 }
+
+.Column {
+    width: 3%;
+    margin: auto;
+}
+
+.ColumnCenter {
+    width: 94%;
+    display: flex;
+    justify-content: flex-start;
+    transition: transform 0.5s ease
+}
+
+.ArrowCarousel {
+    cursor: pointer;
+    font-size: 3rem;
+    color: $gray-text;
+    margin: auto;
+    opacity: 40%;
+}
+
+a:hover {
+    transform: scale(1.07);
+}
+
+.challenge-item-enter {
+    opacity: 0; /* Comece com opacidade 0 */
+    transform: translateX(100%);
+    transition: opacity 500ms ease, transform 500ms ease; /* Transições mais lentas */
+}
+
+.challenge-item-enter-active {
+    opacity: 1;
+    transform: translateX(0%);
+    transition: opacity 500ms ease, transform 500ms ease; /* Transições mais lentas */
+}
+
+.challenge-item-exit {
+    overflow: hidden;
+    opacity: 0; /* Mantenha a opacidade em 1 ao sair */
+    transform: translateX(0%);
+}
+
+.challenge-item-exit-active {
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 10ms ease, transform 10ms ease; /* Transições mais lentas */
+}
+

@@ -1,18 +1,16 @@
 @import '../../variables';
 
 .ChallengeHeaderContainer {
-    margin-top: 3%;
-    margin-left: 5%;
     width: 100%;
-    height: auto;
     font-family: $font-family;
-    display: inline-flex;
+    display: flex;
+    margin-right: 6.5%;
+    margin-left: 6.5%;
 }
 
 .ChallengeHeaderTitle {
     color: white;
     width: auto;
-    display: block;
     margin: 0;
     margin-left: 1rem;
 }
@@ -20,8 +18,62 @@
 .ChallengeHeaderSideColor {
     height: 2.5rem;
     width: 0.2rem;
-    margin-left: 2rem;
     background-color: unset;
+}
+
+.Filter {
+    position: relative;
+    margin-left: auto;
+    transition: transform 0.5s;
+}
+
+.Filter input {
+    height: 2.5rem;
+    width: 20rem;
+    border-radius: 10px;
+    padding-left: 1rem;
+    text-align: left;
+    font-family: $font-family;
+    font-weight: 700;
+    font-size: 16px;
+    color: $gray-text;
+    background-color: $cor-primaria;
+    border: none;
+}
+
+.Filter:hover {
+    transform: scale(1.02);
+}
+
+.Filter:focus {
+    outline: none;
+}
+
+.InputWithIcon {
+    padding-left: 30px;
+}
+
+.Icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $gray-text;
+    opacity: 40%;
+    display: flex;
+    font-size: 1.25rem;
+}
+
+.FilterBar {
+    height: 1.5rem;
+    width: 0.1rem;
+    background-color: $gray-text;
+    margin-right: 1rem;
+    opacity: 90%;
+}
+
+.FilterIcon {
+    padding-top: 2px;
 }
 
 .green {
