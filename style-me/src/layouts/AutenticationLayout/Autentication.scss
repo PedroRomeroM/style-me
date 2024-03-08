@@ -2,8 +2,14 @@
 
 .AutenticationLayout {
     display: flex;
+    height: 100vh;
     width: 100%;
-    height: 100%;
     flex-direction: column;
     background-color: $background-color;
+    justify-content: center;
+    align-items: center;
+}
+
+.AutenticationContainer {
+    flex: 1;
 }

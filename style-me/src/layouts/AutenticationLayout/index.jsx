@@ -4,7 +4,9 @@ import Login from '../../components/Autentication/AutenticationComponent';
 const AutenticationLayout = () => {
     return (
         <div className='AutenticationLayout'>
-            <Login />
+            <div className='AutenticationContainer'>
+                <Login />
+            </div>
         </div>
     )
 }

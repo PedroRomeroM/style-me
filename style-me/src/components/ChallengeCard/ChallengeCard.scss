@@ -1,20 +1,91 @@
 @import '../../variables';
 
 .ChallengeCardContainer {
-    margin-top: 5%;
-    margin-left: 10%;
+    margin: 1%;
+    font-family: $font-family;
 }
 
 .ChallengeCard {
-    height: 243px;
-    width: 387px;
+    transition: transform 0.5s;
+    width: 25rem;
 }
 
-.ChallengeCard .Card {
+.Card {
     background-color: #131417;
     border-radius: 20px;
     box-shadow: 0px 7px 4px #00000040;
-    height: 243px;
-    position: fixed;
-    width: 387px;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.ChallengeCardContainer.hovered .ChallengeCard,
+.ChallengeCardContainer.hovered .Card {
+    transform:scale(1.02)
+}
+
+.Card .ChallengeNumber {
+    color: $gray-text;
+    margin-right: 1rem;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.CardInfoContainer {
+    padding: 9%;
+    padding-bottom: 0;
+    display: flex;
+    text-align: left;
+}
+
+.CardSideColor {
+    background-color: $green;
+    height: 8rem;
+    width: 0.5rem;
+}
+
+.CardTitle h1 {
+    color: white;
+    margin: 0;
+    margin-left: 1rem;
+    font-size: $title-font-size;
+}
+
+.CardTitle span {
+    font-size: small;
+    color: $gray-text;
+    text-align: justify;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    margin-right: 2rem;
+    display: inline-block;
+}
+
+.ChallengeButton {
+    margin-top: 8%;
+    margin-bottom: 5%;
+    height: 3rem;
+    width: 100%;
+    border-radius: 10px;
+    text-align: center;
+    font-family: $font-family;
+    background-color: $green; 
+    color: white;
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.green {
+    background-color: $green;
+}
+
+.yellow {
+    background-color: $yellow;
+}
+
+.red {
+    background-color: $red;
 }
