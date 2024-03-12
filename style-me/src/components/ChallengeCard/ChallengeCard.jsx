@@ -14,7 +14,7 @@ const ChallengeCard = ({ color }) => {
           <div className='CardInfoContainer'>
             <div className={`CardSideColor ${color}`} />
             <div className='CardTitle'>
-              <h1>Alterar a cor de um texto</h1>
+              <h2>Alterar a cor de um texto</h2>
               <span>Um texto está difícil de ser visualizado em uma página, faça com que o usuário consiga ler o texto facilmente. </span>
               <button className={`ChallengeButton ${color}`}>VISUALIZAR</button>
             </div>

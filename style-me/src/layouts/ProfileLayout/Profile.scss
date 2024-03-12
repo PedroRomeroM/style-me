@@ -1,0 +1,220 @@
+@import '../../variables';
+
+.Profile {
+    background-color: #2D2C33;
+    font-family: $font-family
+}
+
+.ProfileHeader {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.BackButton {
+    cursor: pointer;
+    font-size: 3rem;
+    color: $gray-text;
+    margin: auto;
+    position: absolute;
+    opacity: 40%;
+    left: 7%;
+    top: 20%;
+    align-self: flex-start;
+    align-items: center;
+    display: flex;
+}
+
+.BackButton span {
+    font-size: $span-font-size;
+}
+
+.BackButton:hover {
+    transform: scale(1.1);
+    transition: transform 0.5s ease
+}
+
+.ProfileHeaderContainer {
+    margin: 3% 11%;
+    display: flex;
+    
+}
+
+.ProfileHeaderColumnRight {
+    margin-top: 7%;
+    color: white;
+}
+
+.profilePic {
+    height: 10rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+.ProfileHeaderUsername {
+    margin: 0;
+    margin-top: -2%;
+    margin-left: 2%;
+}
+
+//userData
+
+.UserDataContainer {
+    margin: 0 11%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.MyData {
+    height: auto;
+    width: 48%;
+    background-color: $cor-primaria;
+    border-radius: 20px;
+}
+
+.Ranking {
+    height: auto;
+    width: 48%;
+    background-color: $cor-primaria;
+    border-radius: 20px;
+}
+
+.ColumnContainer {
+    margin: 5% 10%;
+}
+
+.ColumnHeader {
+    display: flex;
+    color: white;
+}
+
+.ColumnHeader h1 {
+    margin: 0;
+    margin-left: 1rem;
+    font-size: $second-title-font-size + 0.2rem;
+}
+
+.UserDataSideColor {
+    background-color: $pink;
+    height: 2.2rem;
+    width: 0.2rem;
+}
+
+.MyDataForm {
+    display: grid;
+}
+
+.MyDataFormColumns {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.MyDataFormColumns input {
+    width: 92%;
+}
+
+.MyDataFormColumnRight {
+    margin-left: 2.5%;
+}
+
+.MyDataFormColumnLeft {
+    margin-right: 2.5%;
+}
+
+.Input {
+    height: 2.5rem;
+    width: 96%;
+    margin-top: 0.3rem;
+    border-radius: 10px;
+    padding-left: 1rem;
+    text-align: left;
+    font-family: $font-family;
+    font-weight: 500;
+    font-size: 16px;
+    color: $gray-text;
+    background-color: #2D2C33;
+    border: none;
+}
+
+.Input:hover {
+    transform: scale(1.02);
+    transition: transform 0.5s ease
+}
+
+.InputLabel {
+    font-family: $font-family;
+    color: #fff;
+    font-weight: 500;
+    font-size: $span-font-size;
+    margin-top: 1rem;
+}
+
+//challenges
+
+.ChallengesContainer {
+    margin: 3% 5%;
+    overflow: hidden;
+}
+
+.Concluded {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 3%;
+}
+
+.Column {
+    width: 3%;
+    margin: auto;
+}
+
+.ColumnCenter {
+    width: 94%;
+    display: flex;
+    justify-content: flex-start;
+    transition: transform 0.5s ease
+}
+
+.ArrowCarousel {
+    cursor: pointer;
+    font-size: 3rem;
+    color: $gray-text;
+    margin: auto;
+    opacity: 40%;
+}
+
+.ArrowCarousel:hover {
+    transform: scale(1.1);
+    transition: transform 0.5s ease
+}
+
+.challenge-item-enter {
+    opacity: 0;
+    /* Comece com opacidade 0 */
+    transform: translateX(100%);
+    transition: opacity 500ms ease, transform 500ms ease;
+    /* Transições mais lentas */
+}
+
+.challenge-item-enter-active {
+    opacity: 1;
+    transform: translateX(0%);
+    transition: opacity 500ms ease, transform 500ms ease;
+    /* Transições mais lentas */
+}
+
+.challenge-item-exit {
+    overflow: hidden;
+    opacity: 0;
+    /* Mantenha a opacidade em 1 ao sair */
+    transform: translateX(0%);
+}
+
+.challenge-item-exit-active {
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 10ms ease, transform 10ms ease;
+    /* Transições mais lentas */
+}

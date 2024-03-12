@@ -7,7 +7,7 @@ export const ChallengeHeader = ({ color, difficulty }) => {
   return (
     <div className='ChallengeHeaderContainer'>
       <div className={`ChallengeHeaderSideColor ${color}`} />
-      <h1 className='ChallengeHeaderTitle'>Nível {difficulty}</h1>
+      <h1 className='ChallengeHeaderTitle'>{difficulty}</h1>
       <div className='Filter'>
         <input type="text" placeholder='Filtro' className="InputWithIcon" maxLength="25" />
         <span className="Icon">
