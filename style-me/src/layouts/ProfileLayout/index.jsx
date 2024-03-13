@@ -8,7 +8,7 @@ import './Profile.scss';
 
 const ChallengesLayout = () => {
     // eslint-disable-next-line
-    {/* eslint-disable jsx-a11y/anchor-is-valid */}
+    {/* eslint-disable jsx-a11y/anchor-is-valid */ }
     const initialChallenges = new Array(8).fill().map((_, index) => ({ id: index }));
     const [concludedPage, setConcludedPage] = useState(0);
 
@@ -64,6 +64,7 @@ const ChallengesLayout = () => {
                     <img className="profilePic" src='./images/profile-picture.png' alt="Foto de perfil" />
                     <div className='ProfileHeaderColumnRight'>
                         <img src='./images/my-style.svg' alt='Logo' />
+                        <div className="separador"></div>
                         <h2 className='ProfileHeaderUsername'>Romerão</h2>
                     </div>
                 </div>
