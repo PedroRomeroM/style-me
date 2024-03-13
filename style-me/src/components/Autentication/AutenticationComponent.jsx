@@ -16,7 +16,6 @@ const AutenticationComponent = () => {
       loop: true
     });
 
-    // Destropying
     return () => {
       typed.destroy();
     };

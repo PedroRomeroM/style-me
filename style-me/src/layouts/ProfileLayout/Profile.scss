@@ -46,10 +46,31 @@
     color: white;
 }
 
+.profilePicContainer {
+    position: relative;
+}
+
 .profilePic {
     height: 10rem;
     border-radius: 50%;
     margin-right: 1rem;
+    transition: filter 0.5s ease;
+}
+
+.profilePic.hovered {
+    filter: brightness(0.5);
+    cursor: pointer;
+}
+
+.editIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
+    opacity: 0.7;
+    pointer-events: none;
 }
 
 .ProfileHeaderUsername {
@@ -224,4 +245,139 @@
     transform: translateX(100%);
     transition: opacity 10ms ease, transform 10ms ease;
     /* Transições mais lentas */
+}
+
+//modal
+
+.modal-open {
+    overflow: hidden;
+}
+
+.modal {
+    background-color: #2D2C33;
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 11%;
+    top: -25%;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.modal-content {
+    background-color: $cor-primaria;
+    margin: 15% auto;
+    padding: 1%;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+}
+
+.modal-content-container {
+    margin: 2%;
+    display: block;
+}
+
+.modal-title {
+    margin: 0;
+}
+
+.file-input {
+    display: block;
+    margin-top: 3%;
+    font-size: 16px;
+    color: white;
+    transition: border-color 0.3s ease;
+    border: none;
+    width: 100%;
+
+    &:focus {
+        outline: none;
+    }
+
+    &::file-selector-button {
+        border: none;
+        background: none;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 2%;
+
+        border: 2px solid transparent;
+        border-radius: 10px;
+        border-image: radial-gradient(circle, rgba(123, 120, 247, 1) 30%, rgba(206, 93, 217, 1) 100%);
+        border-image-slice: 1;
+    }
+}
+
+.SendButton {
+    margin-top: 3%;
+    height: 2rem;
+    width: 25%;
+    border-radius: 10px;
+    text-align: center;
+    font-family: $font-family;
+    font-weight: 700;
+    border: none;
+    background: radial-gradient(circle,
+            rgba(123, 120, 247, 1) 30%,
+            rgba(206, 93, 217, 1) 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.close {
+    font-size: 28px;
+    font-weight: bold;
+    float: right;
+}
+
+.close:hover,
+.close:focus {
+    opacity: 50%;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }

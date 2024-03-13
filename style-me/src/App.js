@@ -1,7 +1,5 @@
-// Código de app.js
 import './App.scss';
-import AppRouter from './Routes.js'; // Importe o componente AppRouter diretamente
-
+import AppRouter from './Routes.js';
 function App() {
   return (
     <div className="App">

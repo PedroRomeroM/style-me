@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import ChallengeCard from '../../components/ChallengeCard/ChallengeCard';
 import ChallengeHeader from '../../components/ChallengeHeader/ChallengeHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faAngleRight, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './Profile.scss';
 
 const ChallengesLayout = () => {
-    // eslint-disable-next-line
+     // eslint-disable-next-line
     {/* eslint-disable jsx-a11y/anchor-is-valid */ }
     const initialChallenges = new Array(8).fill().map((_, index) => ({ id: index }));
     const [concludedPage, setConcludedPage] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const modalRef = useRef(null);
 
     const challengesPerPage = 3;
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                closeModal();
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const handleNext = (difficulty, direction) => {
         switch (difficulty) {
@@ -53,6 +69,14 @@ const ChallengesLayout = () => {
         window.history.back();
     };
 
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <div className='Profile'>
             <div className='ProfileHeader'>
@@ -61,11 +85,28 @@ const ChallengesLayout = () => {
                     <span>Voltar</span>
                 </a>
                 <div className='ProfileHeaderContainer'>
-                    <img className="profilePic" src='./images/profile-picture.png' alt="Foto de perfil" />
+                    <div className='profilePicContainer' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={openModal}>
+                        <img className={`profilePic ${isHovered ? 'hovered' : ''}`} src='./images/profile-picture.png' alt="Foto de perfil" />
+                        {isHovered && (
+                            <div className='editIcon'>
+                                <FontAwesomeIcon icon={faEdit} />
+                            </div>
+                        )}
+                    </div>
                     <div className='ProfileHeaderColumnRight'>
                         <img src='./images/my-style.svg' alt='Logo' />
                         <div className="separador"></div>
                         <h2 className='ProfileHeaderUsername'>Romerão</h2>
+                    </div>
+                </div>
+            </div>
+            <div className={`modal ${isModalOpen ? 'modal-open' : ''}`} style={{ display: isModalOpen ? 'block' : 'none' }}>
+                <div ref={modalRef} className="modal-content">
+                    <span className="close" onClick={closeModal}>&times;</span>
+                    <div className='modal-content-container'>
+                        <h2 className='modal-title'>Nova foto de perfil</h2>
+                        <input className="file-input" type="file" accept="image/*" />
+                        <button className="SendButton">Enviar</button>
                     </div>
                 </div>
             </div>
