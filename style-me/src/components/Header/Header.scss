@@ -7,11 +7,24 @@
     header {
         background-color: $cor-primaria;
         border-radius: 0 0 20px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
 
         img {
             height: 5rem;
-            padding: 1rem;
         }
-      }
-  }
 
+        .profilePic {
+            height: 3.5rem;
+            border-radius: 50%;
+            margin-right: 2rem;
+        }
+
+        .profilePic:hover {
+            transform: scale(1.05);
+            transition: transform 0.5s ease
+        }
+    }
+}

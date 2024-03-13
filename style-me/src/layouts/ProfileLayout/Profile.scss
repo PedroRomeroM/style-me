@@ -1,0 +1,383 @@
+@import '../../variables';
+
+.Profile {
+    background-color: #2D2C33;
+    font-family: $font-family
+}
+
+.ProfileHeader {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.BackButton {
+    cursor: pointer;
+    font-size: 3rem;
+    color: $gray-text;
+    margin: auto;
+    position: absolute;
+    opacity: 40%;
+    left: 7%;
+    top: 20%;
+    align-self: flex-start;
+    align-items: center;
+    display: flex;
+}
+
+.BackButton span {
+    font-size: $span-font-size;
+}
+
+.BackButton:hover {
+    transform: scale(1.1);
+    transition: transform 0.5s ease
+}
+
+.ProfileHeaderContainer {
+    margin: 3% 11%;
+    display: flex;
+
+}
+
+.ProfileHeaderColumnRight {
+    color: white;
+}
+
+.profilePicContainer {
+    position: relative;
+}
+
+.profilePic {
+    height: 10rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+    transition: filter 0.5s ease;
+}
+
+.profilePic.hovered {
+    filter: brightness(0.5);
+    cursor: pointer;
+}
+
+.editIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.ProfileHeaderUsername {
+    margin: 0;
+    margin-top: 4%;
+    margin-left: 25%;
+}
+
+.separador {
+    width: 100%;
+    height: 3px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    opacity: 90%;
+}
+
+//userData
+
+.UserDataContainer {
+    margin: 0 11%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.MyData {
+    height: auto;
+    width: 48%;
+    background-color: $cor-primaria;
+    border-radius: 20px;
+}
+
+.Ranking {
+    height: auto;
+    width: 48%;
+    background-color: $cor-primaria;
+    border-radius: 20px;
+}
+
+.ColumnContainer {
+    margin: 5% 10%;
+}
+
+.ColumnHeader {
+    display: flex;
+    color: white;
+}
+
+.ColumnHeader h1 {
+    margin: 0;
+    margin-left: 1rem;
+    font-size: $second-title-font-size + 0.2rem;
+}
+
+.UserDataSideColor {
+    background-color: $pink;
+    height: 2.2rem;
+    width: 0.2rem;
+}
+
+.MyDataForm {
+    display: grid;
+}
+
+.MyDataFormColumns {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.MyDataFormColumns input {
+    width: 92%;
+}
+
+.MyDataFormColumnRight {
+    margin-left: 2.5%;
+}
+
+.MyDataFormColumnLeft {
+    margin-right: 2.5%;
+}
+
+.Input {
+    height: 2.5rem;
+    width: 96%;
+    margin-top: 0.3rem;
+    border-radius: 10px;
+    padding-left: 1rem;
+    text-align: left;
+    font-family: $font-family;
+    font-weight: 500;
+    font-size: 16px;
+    color: $gray-text;
+    background-color: #2D2C33;
+    border: none;
+}
+
+.Input:hover {
+    transform: scale(1.02);
+    transition: transform 0.5s ease
+}
+
+.InputLabel {
+    font-family: $font-family;
+    color: #fff;
+    font-weight: 500;
+    font-size: $span-font-size;
+    margin-top: 1rem;
+}
+
+//challenges
+
+.ChallengesContainer {
+    margin: 3% 5%;
+    overflow: hidden;
+}
+
+.Concluded {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 3%;
+}
+
+.Column {
+    width: 3%;
+    margin: auto;
+}
+
+.ColumnCenter {
+    width: 94%;
+    display: flex;
+    justify-content: flex-start;
+    transition: transform 0.5s ease
+}
+
+.ArrowCarousel {
+    cursor: pointer;
+    font-size: 3rem;
+    color: $gray-text;
+    margin: auto;
+    opacity: 40%;
+}
+
+.ArrowCarousel:hover {
+    transform: scale(1.1);
+    transition: transform 0.5s ease
+}
+
+.challenge-item-enter {
+    opacity: 0;
+    /* Comece com opacidade 0 */
+    transform: translateX(100%);
+    transition: opacity 500ms ease, transform 500ms ease;
+    /* Transições mais lentas */
+}
+
+.challenge-item-enter-active {
+    opacity: 1;
+    transform: translateX(0%);
+    transition: opacity 500ms ease, transform 500ms ease;
+    /* Transições mais lentas */
+}
+
+.challenge-item-exit {
+    overflow: hidden;
+    opacity: 0;
+    /* Mantenha a opacidade em 1 ao sair */
+    transform: translateX(0%);
+}
+
+.challenge-item-exit-active {
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 10ms ease, transform 10ms ease;
+    /* Transições mais lentas */
+}
+
+//modal
+
+.modal-open {
+    overflow: hidden;
+}
+
+.modal {
+    background-color: #2D2C33;
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 11%;
+    top: -25%;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.modal-content {
+    background-color: $cor-primaria;
+    margin: 15% auto;
+    padding: 1%;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+}
+
+.modal-content-container {
+    margin: 2%;
+    display: block;
+}
+
+.modal-title {
+    margin: 0;
+}
+
+.file-input {
+    display: block;
+    margin-top: 3%;
+    font-size: 16px;
+    color: white;
+    transition: border-color 0.3s ease;
+    border: none;
+    width: 100%;
+
+    &:focus {
+        outline: none;
+    }
+
+    &::file-selector-button {
+        border: none;
+        background: none;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 2%;
+
+        border: 2px solid transparent;
+        border-radius: 10px;
+        border-image: radial-gradient(circle, rgba(123, 120, 247, 1) 30%, rgba(206, 93, 217, 1) 100%);
+        border-image-slice: 1;
+    }
+}
+
+.SendButton {
+    margin-top: 3%;
+    height: 2rem;
+    width: 25%;
+    border-radius: 10px;
+    text-align: center;
+    font-family: $font-family;
+    font-weight: 700;
+    border: none;
+    background: radial-gradient(circle,
+            rgba(123, 120, 247, 1) 30%,
+            rgba(206, 93, 217, 1) 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.close {
+    font-size: 28px;
+    font-weight: bold;
+    float: right;
+}
+
+.close:hover,
+.close:focus {
+    opacity: 50%;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

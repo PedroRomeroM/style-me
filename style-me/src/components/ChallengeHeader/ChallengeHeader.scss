@@ -45,7 +45,7 @@
     transform: scale(1.02);
 }
 
-.Filter:focus {
+input:focus {
     outline: none;
 }
 
@@ -86,4 +86,8 @@
 
 .red {
     background-color: $red;
+}
+
+.purple {
+    background-color: rgba(85, 64, 218, 1);
 }

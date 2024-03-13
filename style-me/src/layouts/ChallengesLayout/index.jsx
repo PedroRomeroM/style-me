@@ -8,6 +8,8 @@ import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import './Challenges.scss';
 
 const ChallengesLayout = () => {
+    // eslint-disable-next-line
+    {/* eslint-disable jsx-a11y/anchor-is-valid */}
     const initialChallenges = new Array(8).fill().map((_, index) => ({ id: index }));
     const [easyPage, setEasyPage] = useState(0);
     const [mediumPage, setMediumPage] = useState(0);
@@ -69,11 +71,11 @@ const ChallengesLayout = () => {
             <Header />
             <div className='ChallengesContainer'>
                 <div className='Easy'>
-                    <ChallengeHeader color="green" difficulty="Fácil" />
+                    <ChallengeHeader color="green" difficulty="Nível Fácil" />
                     <div className='Column'>
                         {easyPage !== 0 && (
-                            <a className='ArrowCarousel' onClick={() => handleNext('easy', 'prev')}>
-                                <FontAwesomeIcon icon={faAngleLeft} />
+                            <a onClick={() => handleNext('easy', 'prev')}>
+                                <FontAwesomeIcon className='ArrowCarousel' icon={faAngleLeft} />
                             </a>
                         )}
                     </div>
@@ -82,18 +84,18 @@ const ChallengesLayout = () => {
                     </div>
                     <div className='Column'>
                         {!isLastPage('easy', easyPage) && (
-                            <a className='ArrowCarousel' onClick={() => handleNext('easy', 'next')}>
-                                <FontAwesomeIcon icon={faAngleRight} />
+                            <a onClick={() => handleNext('easy', 'next')}>
+                                <FontAwesomeIcon className='ArrowCarousel' icon={faAngleRight} />
                             </a>
                         )}
                     </div>
                 </div>
                 <div className='Medium'>
-                    <ChallengeHeader color="yellow" difficulty="Médio" />
+                    <ChallengeHeader color="yellow" difficulty="Nível Médio" />
                     <div className='Column'>
                         {mediumPage !== 0 && (
-                            <a className='ArrowCarousel' onClick={() => handleNext('medium', 'prev')}>
-                                <FontAwesomeIcon icon={faAngleLeft} />
+                            <a onClick={() => handleNext('medium', 'prev')}>
+                                <FontAwesomeIcon className='ArrowCarousel' icon={faAngleLeft} />
                             </a>
                         )}
                     </div>
@@ -102,18 +104,18 @@ const ChallengesLayout = () => {
                     </div>
                     <div className='Column'>
                         {!isLastPage('medium', mediumPage) && (
-                            <a className='ArrowCarousel' onClick={() => handleNext('medium', 'next')}>
-                                <FontAwesomeIcon icon={faAngleRight} />
+                            <a onClick={() => handleNext('medium', 'next')}>
+                                <FontAwesomeIcon className='ArrowCarousel'icon={faAngleRight} />
                             </a>
                         )}
                     </div>
                 </div>
                 <div className='Hard'>
-                    <ChallengeHeader color="red" difficulty="Difícil" />
+                    <ChallengeHeader color="red" difficulty="Nível Difícil" />
                     <div className='Column'>
                         {hardPage !== 0 && (
-                            <a className='ArrowCarousel' onClick={() => handleNext('hard', 'prev')}>
-                                <FontAwesomeIcon icon={faAngleLeft} />
+                            <a onClick={() => handleNext('hard', 'prev')}>
+                                <FontAwesomeIcon className='ArrowCarousel'icon={faAngleLeft} />
                             </a>
                         )}
                     </div>
@@ -122,8 +124,8 @@ const ChallengesLayout = () => {
                     </div>
                     <div className='Column'>
                         {!isLastPage('hard', hardPage) && (
-                            <a className='ArrowCarousel' onClick={() => handleNext('hard', 'next')}>
-                                <FontAwesomeIcon icon={faAngleRight} />
+                            <a onClick={() => handleNext('hard', 'next')}>
+                                <FontAwesomeIcon className='ArrowCarousel'icon={faAngleRight} />
                             </a>
                         )}
                     </div>
