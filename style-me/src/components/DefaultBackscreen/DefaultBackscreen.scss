@@ -1,0 +1,46 @@
+@import '../../variables';
+
+.DefaultBackscreen {
+    background-color: #2D2C33;
+    font-family: $font-family;
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.DefaultBackscreenContainer {
+    display: flex;
+    width: 45%;
+    height: 80%;
+    border-radius: 20px;
+    background-color: $cor-primaria;
+    position: relative;
+    flex-direction: column;
+}
+
+
+.BackButtonDefaultBackscreen {
+    cursor: pointer;
+    font-size: 3rem;
+    color: $gray-text;
+    position: absolute;
+    opacity: 40%;
+    top: 10%;
+    left: 11%;
+    align-items: center;
+    display: flex;
+}
+
+.BackButtonDefaultBackscreen span {
+    font-size: $span-font-size;
+}
+
+.BackButtonDefaultBackscreen:hover {
+    transform: scale(1.1);
+    transition: transform 0.5s ease;
+}
