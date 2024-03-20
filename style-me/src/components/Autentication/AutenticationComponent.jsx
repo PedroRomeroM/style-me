@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 import { Link } from 'react-router-dom';
 
 const AutenticationComponent = () => {
+  // eslint-disable-next-line
+  {/* eslint-disable jsx-a11y/anchor-is-valid */ }
   const el = useRef(null);
 
   useEffect(() => {
@@ -36,7 +38,9 @@ const AutenticationComponent = () => {
                     <button className="loginButton">Enviar</button>
                   </Link>
                   <button className="registerButton">Criar Conta</button>
-                  <a href="#/" className="forgotPassword">Esqueceu a senha?</a>
+                  <Link to="/recover-password">
+                    <a className="forgotPassword">Esqueceu a senha?</a>
+                  </Link>
                 </div>
 
               </div>
