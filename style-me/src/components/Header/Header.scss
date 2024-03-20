@@ -24,7 +24,48 @@
 
         .profilePic:hover {
             transform: scale(1.05);
-            transition: transform 0.5s ease
+            transition: transform 0.5s ease;
+            cursor: pointer;
         }
+    }
+}
+
+.profileDropdown {
+    position: relative;
+    display: inline-block;
+    font-family: $font-family;
+
+    .dropdownContent {
+        display: none;
+        position: absolute;
+        background-color: $cor-primaria;
+        min-width: 160px;
+        box-shadow: 16px 16px 16px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        border-radius: 10px;
+        font-size: 1rem;
+
+        a {
+            color: white;
+            padding: 1rem 1rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            border-radius: 10px;
+
+            .icon {
+                margin-right: 1rem;
+            }
+
+            &:hover {
+                background-color: darken($cor-primaria, 10%);
+            }
+        }
+    }
+
+    &:hover .dropdownContent {
+        display: block;
+        right: 0;
+        top: 100%;
     }
 }
