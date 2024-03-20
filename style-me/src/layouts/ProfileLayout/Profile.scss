@@ -13,25 +13,24 @@
     position: relative;
 }
 
-.BackButton {
+.BackButtonProfile {
     cursor: pointer;
     font-size: 3rem;
     color: $gray-text;
-    margin: auto;
     position: absolute;
     opacity: 40%;
-    left: 7%;
-    top: 20%;
-    align-self: flex-start;
+    top: 10%;
+    left: 11%;
     align-items: center;
     display: flex;
+    z-index: 1;
 }
 
-.BackButton span {
+.BackButtonProfile span {
     font-size: $span-font-size;
 }
 
-.BackButton:hover {
+.BackButtonProfile:hover {
     transform: scale(1.1);
     transition: transform 0.5s ease
 }
@@ -48,6 +47,11 @@
 
 .profilePicContainer {
     position: relative;
+}
+
+.profilePicContainer:hover {
+    transform: scale(1.05);
+    transition: transform 0.5s;
 }
 
 .profilePic {
@@ -377,7 +381,34 @@
     from {
         opacity: 1;
     }
+
     to {
         opacity: 0;
+    }
+}
+
+// ranking
+
+.RankingProfile {
+
+    .RankingTable {
+        padding-top: 2%;
+        width: 100%;
+    }
+
+    .icon {
+        margin-left: 2%;
+    }
+
+    .RankingCellPosition {
+        margin-left: 10%;
+    }
+
+    .RankingCellUser {
+        margin-left: 20%;
+    }
+
+    .RankingCellScore {
+        margin-left: 60%;
     }
 }

@@ -1,0 +1,64 @@
+@import '../../variables';
+
+.RankingLayout {
+    background-color: #2D2C33;
+    font-family: $font-family;
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.RankingHeader {
+    display: flex;
+    position: relative;
+    color: white;
+    margin: 8%;
+    margin-bottom: 4%;
+}
+
+.RankingHeader h1 {
+    margin: 0;
+    margin-left: 1rem;
+    font-size: $second-title-font-size + 0.2rem;
+}
+
+.RankingSideColor {
+    background-color: $pink;
+    height: 2.2rem;
+    width: 0.2rem;
+}
+
+.BackButtonRanking {
+    cursor: pointer;
+    font-size: 3rem;
+    color: $gray-text;
+    position: absolute;
+    opacity: 40%;
+    top: 10%;
+    left: 11%;
+    align-items: center;
+    display: flex;
+}
+
+.BackButtonRanking span {
+    font-size: $span-font-size;
+}
+
+.BackButtonRanking:hover {
+    transform: scale(1.1);
+    transition: transform 0.5s ease;
+}
+
+.RankingLogo {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 5rem;
+}

@@ -5,9 +5,10 @@ import ChallengeHeader from '../../components/ChallengeHeader/ChallengeHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './Profile.scss';
+import Ranking from '../../components/Ranking/Ranking';
 
-const ChallengesLayout = () => {
-     // eslint-disable-next-line
+const ProfileLayout = () => {
+    // eslint-disable-next-line
     {/* eslint-disable jsx-a11y/anchor-is-valid */ }
     const initialChallenges = new Array(8).fill().map((_, index) => ({ id: index }));
     const [concludedPage, setConcludedPage] = useState(0);
@@ -18,6 +19,12 @@ const ChallengesLayout = () => {
     const challengesPerPage = 3;
 
     useEffect(() => {
+        if (isModalOpen) {
+            document.body.classList.add('modal-open');
+        } else {
+            document.body.classList.remove('modal-open');
+        }
+
         const handleClickOutside = (event) => {
             if (modalRef.current && !modalRef.current.contains(event.target)) {
                 closeModal();
@@ -28,7 +35,7 @@ const ChallengesLayout = () => {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []);
+    }, [isModalOpen]);
 
     const handleNext = (difficulty, direction) => {
         switch (difficulty) {
@@ -79,11 +86,11 @@ const ChallengesLayout = () => {
 
     return (
         <div className='Profile'>
+            <a className='BackButtonProfile' onClick={goBack}>
+                <FontAwesomeIcon icon={faAngleLeft} />
+                <span>Voltar</span>
+            </a>
             <div className='ProfileHeader'>
-                <a className='BackButton' onClick={goBack}>
-                    <FontAwesomeIcon icon={faAngleLeft} />
-                    <span>Voltar</span>
-                </a>
                 <div className='ProfileHeaderContainer'>
                     <div className='profilePicContainer' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={openModal}>
                         <img className={`profilePic ${isHovered ? 'hovered' : ''}`} src='./images/profile-picture.png' alt="Foto de perfil" />
@@ -142,6 +149,9 @@ const ChallengesLayout = () => {
                                 <div className='UserDataSideColor' />
                                 <h1>Ranking</h1>
                             </div>
+                            <div className='RankingProfile'>
+                                <Ranking />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -175,4 +185,4 @@ const ChallengesLayout = () => {
     );
 };
 
-export default ChallengesLayout;
+export default ProfileLayout;
