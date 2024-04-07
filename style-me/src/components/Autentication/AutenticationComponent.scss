@@ -61,7 +61,7 @@
 
           .separador {
             width: 85%;
-            height: 3px;
+            height: 2px;
             background-color: rgb(207, 207, 207);
           }
 
@@ -88,7 +88,7 @@
             }
 
             input:hover {
-              transform: scale(1.02);
+              transform: scale(1.05);
             }
 
             input[type="submit"] {
@@ -114,8 +114,7 @@
               font-weight: 700;
               border: none;
               background: radial-gradient(circle,
-                  rgba(123, 120, 247, 1) 30%,
-                  rgba(206, 93, 217, 1) 100%);
+                  rgba(206, 93, 217, 1) 30%, rgba(123, 120, 247, 1) 100%);
               color: white;
               font-weight: 700;
               font-size: 17px;
@@ -125,14 +124,16 @@
 
             .loginLink {
               display: contents;
-              justify-content: center; /* Alinha o conteúdo horizontalmente */
-              align-items: center; /* Alinha o conteúdo verticalmente */
+              justify-content: center;
+              /* Alinha o conteúdo horizontalmente */
+              align-items: center;
+              /* Alinha o conteúdo verticalmente */
               width: inherit;
             }
 
             .registerButton:hover,
             .loginButton:hover {
-              transform: scale(1.02);
+              transform: scale(1.05);
             }
 
 

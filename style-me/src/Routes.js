@@ -5,6 +5,7 @@ import ProfileLayout from './layouts/ProfileLayout';
 import RankingLayout from './layouts/RankingLayout';
 import PasswordRecoverLayout from './layouts/PasswordRecoverLayout';
 import PasswordRecoverConfirmationLayout from './layouts/PasswordRecoverConfirmationLayout';
+import NewProfileLayout from './layouts/NewProfileLayout';
 
 const AppRouter = () => {
     return (
@@ -16,6 +17,7 @@ const AppRouter = () => {
                 <Route path="/ranking" element={<RankingLayout />} />
                 <Route path="/recover-password" element={<PasswordRecoverLayout />} />
                 <Route path="/recover-password-confirmation" element={<PasswordRecoverConfirmationLayout />} />
+                <Route path="/new-profile" element={<NewProfileLayout />} />
             </Routes>
         </Router>
     );
