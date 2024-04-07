@@ -4,7 +4,7 @@
     width: 100%;
     font-family: $font-family;
     display: flex;
-    margin-right: 6.5%;
+    margin-right: 4.5%;
     margin-left: 6.5%;
 }
 
@@ -29,7 +29,7 @@
 
 .Filter input {
     height: 2.5rem;
-    width: 20rem;
+    width: 15rem;
     border-radius: 10px;
     padding-left: 1rem;
     text-align: left;
@@ -42,7 +42,7 @@
 }
 
 .Filter:hover {
-    transform: scale(1.02);
+    transform: scale(1.05);
 }
 
 input:focus {

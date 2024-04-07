@@ -37,7 +37,9 @@ const AutenticationComponent = () => {
                   <Link to="/challenges" className="loginLink">
                     <button className="loginButton">Enviar</button>
                   </Link>
-                  <button className="registerButton">Criar Conta</button>
+                  <Link to="/new-profile" className="loginLink">
+                    <button className="registerButton">Criar Conta</button>
+                  </Link>
                   <Link to="/recover-password">
                     <a className="forgotPassword">Esqueceu a senha?</a>
                   </Link>
