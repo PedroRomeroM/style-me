@@ -89,3 +89,21 @@
 .red {
     background-color: $red;
 }
+
+@media screen and (min-width: 1560px) {
+    .ChallengeCard {
+        width: 28rem;
+    }
+
+    .Card {
+        height: 15rem;
+    }
+
+    .ChallengeButton {
+        margin-top: 10%;
+    }
+
+    .CardTitle span {
+        font-size: medium;
+    }
+}

@@ -224,23 +224,19 @@
 
 .challenge-item-enter {
     opacity: 0;
-    /* Comece com opacidade 0 */
     transform: translateX(100%);
     transition: opacity 500ms ease, transform 500ms ease;
-    /* Transições mais lentas */
 }
 
 .challenge-item-enter-active {
     opacity: 1;
     transform: translateX(0%);
     transition: opacity 500ms ease, transform 500ms ease;
-    /* Transições mais lentas */
 }
 
 .challenge-item-exit {
     overflow: hidden;
     opacity: 0;
-    /* Mantenha a opacidade em 1 ao sair */
     transform: translateX(0%);
 }
 
@@ -249,7 +245,6 @@
     opacity: 0;
     transform: translateX(100%);
     transition: opacity 10ms ease, transform 10ms ease;
-    /* Transições mais lentas */
 }
 
 //modal
