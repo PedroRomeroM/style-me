@@ -4,11 +4,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
+import { createUser } from '../../services/ApiServices'
+
 const NewProfileLayout = () => {
     // eslint-disable-next-line
     {/* eslint-disable jsx-a11y/anchor-is-valid */ }
     const [isModalOpen, setIsModalOpen] = useState(false);
     const modalRef = useRef(null);
+
+    const [userName, setUserName] = useState('');
+    const [img, setImg] = useState(null);
+    
+    const handleUsernameChange = (event) => {
+        setUserName(event.target.value);
+        // console.log(userName)
+    };
+
+    const handleImg = (event) => {
+        setImg(event.target.files[0])
+    };
 
     const goBack = () => {
         window.history.back();
@@ -41,6 +55,16 @@ const NewProfileLayout = () => {
         };
     }, [isModalOpen]);
 
+    function createUserProfile(id, user_name, file) {
+        
+        const formData = new FormData();
+        formData.append('idUser', id);
+        formData.append('username', user_name);
+        formData.append('img', file);
+        
+        createUser(formData);
+    };
+
     return (
         <div className='NewProfileLayout'>
             <div className='NewProfileContainer'>
@@ -60,7 +84,7 @@ const NewProfileLayout = () => {
                             </div>
                         </div>
                         <span className='InputLabelNewProfile'>Nome de usuário:</span>
-                        <input type="text" className="NewProfileInput" />
+                        <input type="text" className="NewProfileInput" onChange={handleUsernameChange}/>
                     </div>
                     <div className='NewProfileModal'>
                         <div className={`modal ${isModalOpen ? 'modal-open' : ''}`} style={{ display: isModalOpen ? 'block' : 'none' }}>
@@ -68,8 +92,7 @@ const NewProfileLayout = () => {
                                 <span className="close" onClick={closeModal}>&times;</span>
                                 <div className='modal-content-container'>
                                     <h2 className='modal-title'>Foto de perfil</h2>
-                                    <input className="file-input" type="file" accept="image/*" />
-                                    <button className="SendButton">Enviar</button>
+                                    <input className="file-input" type="file" accept="image/*" onChange={handleImg}/>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +110,7 @@ const NewProfileLayout = () => {
                     </div>
                 </div>
                 <Link to="/" className="loginLink">
-                    <button className="newProfileButton">Enviar</button>
+                    <button className="newProfileButton" onClick={() => createUserProfile(1, userName, img)}>Enviar</button>
                 </Link>
             </div>
         </div>
