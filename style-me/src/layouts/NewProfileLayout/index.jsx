@@ -157,9 +157,9 @@ const NewProfileLayout = () => {
         >
           <button
             className="newProfileButton"
-            // onClick={() => {
-            //   createUserProfile(1, userName, img);
-            // }}
+            onClick={() => {
+              createUserProfile(1, userName, img);
+            }}
           >
             Enviar
           </button>
