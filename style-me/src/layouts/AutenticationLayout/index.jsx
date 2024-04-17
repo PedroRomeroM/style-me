@@ -1,14 +1,25 @@
-import './Autentication.scss';
-import Login from '../../components/Autentication/AutenticationComponent';
+import "./Autentication.scss";
+import Login from "../../components/Autentication/AutenticationComponent";
+import { useLocation } from "react-router-dom";
+import UsuarioCriado from "../../components/UsuarioCriado";
 
-const AutenticationLayout = () => {
-    return (
-        <div className='AutenticationLayout'>
-            <div className='AutenticationContainer'>
-                <Login />
-            </div>
-        </div>
-    )
-}
+const AutenticationLayout = (created) => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userCreated = queryParams.get("userCreated") === "true";
+
+  return (
+    <div className="AutenticationLayout">
+      <div className="AutenticationContainer">
+        {userCreated && (
+          <>
+            <UsuarioCriado className= "userCreated"/>
+          </>
+        )}
+        <Login />
+      </div>
+    </div>
+  );
+};
 
 export default AutenticationLayout;

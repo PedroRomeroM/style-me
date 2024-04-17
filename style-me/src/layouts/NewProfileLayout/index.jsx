@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-
 import { createUser } from "../../services/ApiServices";
 
 const NewProfileLayout = () => {
@@ -16,7 +15,7 @@ const NewProfileLayout = () => {
 
   const [userName, setUserName] = useState("");
   const [img, setImg] = useState(null);
-  const [file, setFile] = useState (null);
+  const [file, setFile] = useState(null);
 
   const handleUsernameChange = (event) => {
     setUserName(event.target.value);
@@ -43,6 +42,14 @@ const NewProfileLayout = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    return () => {
+      if (img) {
+        URL.revokeObjectURL(img);
+      }
+    };
+  }, [img]);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -141,13 +148,18 @@ const NewProfileLayout = () => {
             <input type="text" className="NewProfileInput" />
           </div>
         </div>
-        <Link to="/" className="loginLink">
+        <Link
+          to={{
+            pathname: "/",
+            search: "?userCreated=true",
+          }}
+          className="loginLink"
+        >
           <button
             className="newProfileButton"
-            onClick={() => {
-              createUserProfile(1, userName, img);
-              URL.revokeObjectURL(img);
-            }}
+            // onClick={() => {
+            //   createUserProfile(1, userName, img);
+            // }}
           >
             Enviar
           </button>

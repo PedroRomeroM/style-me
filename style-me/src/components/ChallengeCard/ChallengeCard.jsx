@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import './ChallengeCard.scss';
 
-const ChallengeCard = ({ color }) => {
+const UsuarioCriado = ({ color }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -25,4 +25,4 @@ const ChallengeCard = ({ color }) => {
   );
 };
 
-export default ChallengeCard;
+export default UsuarioCriado;

@@ -1,0 +1,79 @@
+@import '../../variables';
+
+@mixin sizer($width, $height: $width) {
+	height: $height;
+	width: $width;
+}
+
+$colors: #a020f0, #d90429, #ff5800, #007fff;
+
+.UserCreatedH1 {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-family;
+    color: white;
+    position: fixed;
+    z-index: 9999;
+    right: 1rem;
+    top: 5rem;
+    background: linear-gradient(25deg,
+    rgba(85, 64, 218, 1) 7.17%,
+    rgba(150, 49, 168, 1) 100%);
+    border-radius: 20px; 
+    width: 35rem;  
+    height: 8rem;
+    animation: fadeOut ease-in-out 5s;
+    opacity: 0;
+}
+
+body{
+    overflow: hidden;
+}
+
+
+.animationSpan {
+	animation: pop 5s ease-out;
+	border-radius: 50%;
+	@include sizer(10px);
+	right: 17rem;
+	position: absolute;
+    z-index: 99999;
+
+	@media (min-width: 700px) {
+		top: 14rem;
+		@include sizer(15px);
+	}
+
+	@for $i from 1 through 161 {
+		&:nth-child(#{$i}) {
+			animation-delay: random();
+			animation-duration: random() * 4s + 5s;
+			background-color: nth($colors, random(length($colors)));
+			opacity: 0;
+			$originX: (random() * 50vw );
+
+			@if (random() > 0.5) {
+				transform: translate3d(random() * 50vw, 0px, 0px) rotate(200deg);
+			} @else {
+				transform: translate3d(random() * -50vw, 0px, 0px) rotate(-200deg);
+				$originX: $originX * -1;
+			}
+
+			transform-origin: $originX 0vh;
+		}
+	}
+}
+
+@keyframes pop {
+	from {
+		opacity: 1;
+		transform: translate3d(0, 0px, 0px) rotate(0deg);
+	}
+}
+
+@keyframes fadeOut {
+    0% {opacity: 1;}
+    100% {opacity: 0;} 
+ }
