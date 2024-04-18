@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const BASE_URL = 'http://localhost:3000/api';
 
 
 export async function createUser(formData){
-    const response = await axios.post(`${API_URL}/user`, formData);
+    const response = await axios.post(`${BASE_URL}/user`, formData);
     return response.data;
 }
