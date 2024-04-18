@@ -16,6 +16,7 @@ const NewProfileLayout = () => {
   const [userName, setUserName] = useState("");
   const [img, setImg] = useState(null);
   const [file, setFile] = useState(null);
+  const [imgRequest, setImgRequest] = useState(null);
 
   const handleUsernameChange = (event) => {
     setUserName(event.target.value);
@@ -28,6 +29,7 @@ const NewProfileLayout = () => {
       const imageUrl = URL.createObjectURL(file);
       setImg(imageUrl);
       setFile(file);
+      setImgRequest(file);
     }
   };
 
@@ -158,7 +160,7 @@ const NewProfileLayout = () => {
           <button
             className="newProfileButton"
             onClick={() => {
-              createUserProfile(1, userName, img);
+              createUserProfile(1, userName, imgRequest);
             }}
           >
             Enviar
