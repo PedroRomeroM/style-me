@@ -8,20 +8,23 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 require('dotenv').config();
 
-const port = 3000;  
+const port = 3001;  
 const userServiceProxy = httpProxy(process.env.REACT_APP_API_GATEWAY);
 
-app.use(logger('combined'));
+
 app.use(cors({
-  origin: 'http://localhost:3001',  
+  origin: 'http://localhost:3000',
   optionsSuccessStatus: 200 
 }));
+app.use(logger('combined'));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.post(`/user`, (req, res, next) => userServiceProxy(req, res, next));
+
+app.post('/user', (req, res, next) => userServiceProxy(req, res, next));
+
 
 var server = http.createServer(app);
 server.listen(port, () => {
