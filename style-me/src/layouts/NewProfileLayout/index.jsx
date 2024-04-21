@@ -24,6 +24,7 @@ const NewProfileLayout = () => {
 
   const handleImg = (event) => {
     const file = event.target.files[0];
+
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImg(imageUrl);
@@ -71,11 +72,13 @@ const NewProfileLayout = () => {
   }, [isModalOpen]);
 
   function createUserProfile(id, user_name, file) {
+
+    console.log(file)
+
     const formData = new FormData();
     formData.append("idUser", id);
     formData.append("username", user_name);
     formData.append("img", file);
-
     createUser(formData);
   }
 
@@ -125,6 +128,7 @@ const NewProfileLayout = () => {
                   <h2 className="modal-title">Foto de perfil</h2>
                   <input
                     className="file-input"
+                    name="image"
                     type="file"
                     accept="image/*"
                     onChange={(e) => {
@@ -158,7 +162,7 @@ const NewProfileLayout = () => {
           <button
             className="newProfileButton"
             onClick={() => {
-              createUserProfile(1, userName, img);
+              createUserProfile(1, userName, file);
             }}
           >
             Enviar

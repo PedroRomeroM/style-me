@@ -1,9 +1,18 @@
 import axios from "axios";
 
-const BASE_URL = 'http://localhost:3000/api';
 
+const BASE_URL = 'http://localhost:3001/api';
 
 export async function createUser(formData){
-    const response = await axios.post(`${BASE_URL}/user`, formData);
-    return response.data;
+
+    for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]); 
+    }
+
+    const response = await axios.post(`${BASE_URL}/user`, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    });
+    return response;
 }
