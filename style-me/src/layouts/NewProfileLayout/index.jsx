@@ -17,10 +17,19 @@ const NewProfileLayout = () => {
   const [img, setImg] = useState(null);
   const [file, setFile] = useState(null);
   const [imgRequest, setImgRequest] = useState(null);
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
   const handleUsernameChange = (event) => {
     setUserName(event.target.value);
-    // console.log(userName)
+  };
+
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleSenha = (event) => {
+    setSenha(event.target.value);
   };
 
   const handleImg = (event) => {
@@ -73,14 +82,13 @@ const NewProfileLayout = () => {
     };
   }, [isModalOpen]);
 
-  function createUserProfile(id, user_name, file) {
-
-    console.log(file)
+  function createUserProfile(user_name, file, email, senha) {
 
     const formData = new FormData();
-    formData.append("idUser", id);
     formData.append("username", user_name);
     formData.append("img", file);
+    formData.append("email", email);
+    formData.append("senha", senha);
     createUser(formData);
   }
 
@@ -147,9 +155,9 @@ const NewProfileLayout = () => {
           </div>
           <div className="ColumnRight">
             <span className="InputLabelNewProfile">Email:</span>
-            <input type="text" className="NewProfileInput" />
+            <input type="text" className="NewProfileInput" onChange={handleEmail}/>
             <span className="InputLabelNewProfile">Senha:</span>
-            <input type="text" className="NewProfileInput" />
+            <input type="text" className="NewProfileInput" onChange={handleSenha}/>
             <span className="InputLabelNewProfile">Confirme sua senha:</span>
             <input type="text" className="NewProfileInput" />
           </div>
@@ -164,7 +172,7 @@ const NewProfileLayout = () => {
           <button
             className="newProfileButton"
             onClick={() => {
-              createUserProfile(1, userName, file);
+              createUserProfile(userName, file, email, senha);
             }}
           >
             Enviar
