@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Desafio.scss"; // Importando os estilos globais
+import Header from "../../components/Header/Header";
 
 const GameComponent = () => {
   const [gameHtml, setGameHtml] = useState("");
@@ -13,27 +14,26 @@ const GameComponent = () => {
   }, []);
 
   function applyStyles() {
-    var cssInput = document.getElementById('cssInput').value;
-    var iframeDocument = document.getElementById('gameIframe').contentDocument;
-    var gameArea = iframeDocument.getElementById('ondeOCSSVaiSerAplicado');
+    var cssInput = document.getElementById("cssInput").value;
+    var iframeDocument = document.getElementById("gameIframe").contentDocument;
+    var gameArea = iframeDocument.getElementById("ondeOCSSVaiSerAplicado");
     var head = iframeDocument.head;
-    var styleElement = head.querySelector('style#dynamicStyles');
+    var styleElement = head.querySelector("style#dynamicStyles");
 
     if (!styleElement) {
-        styleElement = iframeDocument.createElement('style');
-        styleElement.id = 'dynamicStyles';
-        head.appendChild(styleElement);
+      styleElement = iframeDocument.createElement("style");
+      styleElement.id = "dynamicStyles";
+      head.appendChild(styleElement);
     }
 
     styleElement.textContent = `#${gameArea.id} { ${cssInput} }`;
 
     try {
-        checkForCompletion(iframeDocument); // Verificar se os objetivos foram alcançados
+      checkForCompletion(iframeDocument); // Verificar se os objetivos foram alcançados
     } catch (error) {
-        console.error('Erro ao aplicar CSS: ', error);
+      console.error("Erro ao aplicar CSS: ", error);
     }
-}
-
+  }
 
   const checkForCompletion = (doc) => {
     const quadrados = doc.querySelectorAll(".quadrado");
@@ -65,17 +65,18 @@ const GameComponent = () => {
   };
 
   return (
-    <div className="DesafioBody">
-      <iframe id="gameIframe" ref={iframeRef} srcDoc={gameHtml} />
-      <div class="divEnviar">
-        <textarea
-          onInput={(e) => applyStyles(e.target.value)}
-          placeholder="Digite seu CSS aqui..."
-          id="cssInput"
-        />
-        <button id="concluirDesafio">
-          Concluir desafio
-        </button>
+    <div className="dasafioBackground">
+      <Header />
+      <div className="DesafioBody">
+        <iframe id="gameIframe" ref={iframeRef} srcDoc={gameHtml} />
+        <div class="divEnviar">
+          <textarea
+            onInput={(e) => applyStyles(e.target.value)}
+            placeholder="Digite seu CSS aqui..."
+            id="cssInput"
+          />
+          <button id="concluirDesafio">Concluir desafio</button>
+        </div>
       </div>
     </div>
   );
