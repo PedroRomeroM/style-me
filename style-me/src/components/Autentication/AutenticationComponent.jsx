@@ -1,12 +1,33 @@
 import "./AutenticationComponent.scss";
 import Typed from "typed.js";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from 'react-router-dom';
+import { login1 } from "../../services/ApiServices";
 
 const AutenticationComponent = () => {
   // eslint-disable-next-line
   {/* eslint-disable jsx-a11y/anchor-is-valid */ }
   const el = useRef(null);
+
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleSenha = (event) => {
+    setSenha(event.target.value);
+  };
+
+  function login(email, senha) {
+    console.log(email, senha)
+
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("senha", senha);
+    login1(formData);
+  }
 
   useEffect(() => {
     const typed = new Typed(el.current, {
@@ -32,10 +53,10 @@ const AutenticationComponent = () => {
                 <img src="./images/logo.svg" alt="Logo do site" />
                 <div className="separador"></div>
                 <div className="inputSection">
-                  <input type="text" placeholder="Usuário" />
-                  <input type="password" placeholder="Senha" />
+                  <input type="text" placeholder="Email" onChange={handleEmail}/>
+                  <input type="password" placeholder="Senha" onChange={handleSenha}/>
                   <Link to="/challenges" className="loginLink">
-                    <button className="loginButton">Enviar</button>
+                    <button className="loginButton" onClick={() => {login(email, senha);}}>Enviar</button>
                   </Link>
                   <Link to="/new-profile" className="loginLink">
                     <button className="registerButton">Criar Conta</button>

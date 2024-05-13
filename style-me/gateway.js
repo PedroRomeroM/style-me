@@ -11,11 +11,15 @@ const cors = require('cors');
 require('dotenv').config();
 
 const orquestradorServiceProxy = httpProxy(process.env.ORQUESTRADOR_API);
+const authServiceProxy = httpProxy(process.env.AUTH_API);
 
-// CLIENTES
+// ORQUESTRADOR
 
 app.post(`/api/orq/cadastro`, (req, res, next) => orquestradorServiceProxy(req, res, next));
 
+// AUTH
+
+app.post(`/api/auth/login`, (req, res, next) => authServiceProxy(req, res, next));
 
 // PUBLICACAO
 app.use(logger('dev'));

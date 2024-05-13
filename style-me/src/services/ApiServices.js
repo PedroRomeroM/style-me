@@ -38,3 +38,13 @@ export async function createUser(formData){
     
     return response;
 }
+
+export async function login1(formData){
+
+  const response = await axios.post(`${BASE_URL}/api/auth/login`, formData, {
+      headers: {
+          "Content-Type": "application/json",
+      }
+  });
+  return response;
+}
