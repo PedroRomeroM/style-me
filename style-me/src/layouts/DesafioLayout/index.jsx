@@ -1,39 +1,51 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./Desafio.scss"; // Importando os estilos globais
+import Editor from "@monaco-editor/react";
+import "./Desafio.scss";
 import Header from "../../components/Header/Header";
+
+const initialCss = `#Desafio {\n\n}`;
+const maxLines = 10;  // Defina o número máximo de linhas permitidas
 
 const GameComponent = () => {
   const [gameHtml, setGameHtml] = useState("");
+  const [cssText, setCssText] = useState(initialCss);
   const iframeRef = useRef(null);
+  const editorRef = useRef(null);
 
   useEffect(() => {
-    // Carrega o HTML do jogo
     fetch("game1.html")
       .then((response) => response.text())
       .then((html) => setGameHtml(html));
   }, []);
 
-  function applyStyles() {
-    var cssInput = document.getElementById("cssInput").value;
-    var iframeDocument = document.getElementById("gameIframe").contentDocument;
-    var gameArea = iframeDocument.getElementById("ondeOCSSVaiSerAplicado");
-    var head = iframeDocument.head;
-    var styleElement = head.querySelector("style#dynamicStyles");
+  const applyStyles = () => {
+    const iframeDocument = iframeRef.current.contentDocument;
+    if (!iframeDocument) {
+      console.error("iframeDocument is null");
+      return;
+    }
 
+    const gameArea = iframeDocument.getElementById("Desafio");
+    if (!gameArea) {
+      console.error("gameArea is null");
+      return;
+    }
+
+    let styleElement = iframeDocument.getElementById("dynamicStyles");
     if (!styleElement) {
       styleElement = iframeDocument.createElement("style");
       styleElement.id = "dynamicStyles";
-      head.appendChild(styleElement);
+      iframeDocument.head.appendChild(styleElement);
     }
 
-    styleElement.textContent = `#${gameArea.id} { ${cssInput} }`;
+    styleElement.textContent = cssText;
 
     try {
-      checkForCompletion(iframeDocument); // Verificar se os objetivos foram alcançados
+      checkForCompletion(iframeDocument);
     } catch (error) {
       console.error("Erro ao aplicar CSS: ", error);
     }
-  }
+  };
 
   const checkForCompletion = (doc) => {
     const quadrados = doc.querySelectorAll(".quadrado");
@@ -41,15 +53,15 @@ const GameComponent = () => {
     let objetivosAlcancados = 0;
 
     quadrados.forEach((quadrado, index) => {
-      if (isOverlapping(quadrado, objetivos[index])) {
+      if (objetivos[index] && isOverlapping(quadrado, objetivos[index])) {
         objetivosAlcancados++;
       }
     });
 
     if (objetivosAlcancados === objetivos.length) {
-      console.log("Desafio Concluído!");
+      document.getElementById("concluirDesafio").style.display = "block";
     } else {
-      console.log("Continue tentando!");
+      document.getElementById("concluirDesafio").style.display = "none";
     }
   };
 
@@ -64,17 +76,90 @@ const GameComponent = () => {
     );
   };
 
+  const handleEditorDidMount = (editor, monaco) => {
+    editorRef.current = editor;
+
+    editor.onDidChangeModelContent(() => {
+      let value = editor.getValue();
+      const start = "#Desafio {";
+      const end = "}";
+
+      // Preserve the structure
+      if (!value.startsWith(start)) {
+        value = `${start}\n${value}`;
+      }
+
+      // Ensure the last line contains only the closing bracket
+      const lines = value.split('\n');
+      if (lines[lines.length - 1].trim() !== end) {
+        lines[lines.length - 1] = end;
+        value = lines.join('\n');
+      }
+
+      // Update the editor value if changed
+      if (value !== editor.getValue()) {
+        editor.executeEdits("", [
+          {
+            range: new monaco.Range(
+              1,
+              1,
+              editor.getModel().getLineCount(),
+              editor.getModel().getLineMaxColumn(editor.getModel().getLineCount())
+            ),
+            text: value,
+            forceMoveMarkers: true,
+          },
+        ]);
+      }
+
+      // Limit the number of lines
+      if (lines.length > maxLines) {
+        const truncatedValue = lines.slice(0, maxLines).join('\n');
+        editor.setValue(truncatedValue);
+      }
+
+      // Update state
+      setCssText(value);
+      applyStyles();
+    });
+  };
+
+  const handleFormat = () => {
+    if (editorRef.current) {
+      editorRef.current.getAction('editor.action.formatDocument').run();
+    }
+  };
+
+  const handleIframeLoad = () => {
+    applyStyles();
+  };
+
   return (
-    <div className="dasafioBackground">
+    <div className="desafioBackground">
       <Header />
       <div className="DesafioBody">
-        <iframe id="gameIframe" ref={iframeRef} srcDoc={gameHtml} />
-        <div class="divEnviar">
-          <textarea
-            onInput={(e) => applyStyles(e.target.value)}
-            placeholder="Digite seu CSS aqui..."
-            id="cssInput"
+        <iframe
+          id="gameIframe"
+          ref={iframeRef}
+          srcDoc={gameHtml}
+          style={{ width: "79%", height: "98vh", border: "none" }}
+          onLoad={handleIframeLoad}
+        />
+        <div className="divEnviar">
+          <Editor
+            height="60%"
+            defaultLanguage="css"
+            value={cssText}
+            theme="vs-dark"
+            options={{
+              readOnly: false,
+              automaticLayout: true,
+              minimap: { enabled: false },
+              contextmenu: false  // Disable the default context menu
+            }}
+            onMount={handleEditorDidMount}
           />
+          <button onClick={handleFormat}>Formatar</button>
           <button id="concluirDesafio">Concluir desafio</button>
         </div>
       </div>

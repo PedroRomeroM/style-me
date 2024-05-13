@@ -25,7 +25,7 @@ const Header = () => {
                     <div className='userDetails'>
                         <div className='userDetailsContainer'>
                             <Link to="/profile" className='username'>
-                                <span lassName="text">Romerão</span>
+                                <span className="text">Romerão</span>
                             </Link>
                             <Link to="/ranking" className='rankingInfo'>
                                 <span className="text">100</span><FontAwesomeIcon icon={faTrophy} className="icon" />
