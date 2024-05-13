@@ -4,7 +4,7 @@ import "./Desafio.scss";
 import Header from "../../components/Header/Header";
 
 const initialCss = `#Desafio {\n\n}`;
-const maxLines = 10;  // Defina o número máximo de linhas permitidas
+const maxLines = 10;  
 
 const GameComponent = () => {
   const [gameHtml, setGameHtml] = useState("");
@@ -89,14 +89,12 @@ const GameComponent = () => {
         value = `${start}\n${value}`;
       }
 
-      // Ensure the last line contains only the closing bracket
       const lines = value.split('\n');
       if (lines[lines.length - 1].trim() !== end) {
         lines[lines.length - 1] = end;
         value = lines.join('\n');
       }
 
-      // Update the editor value if changed
       if (value !== editor.getValue()) {
         editor.executeEdits("", [
           {
@@ -112,13 +110,11 @@ const GameComponent = () => {
         ]);
       }
 
-      // Limit the number of lines
       if (lines.length > maxLines) {
         const truncatedValue = lines.slice(0, maxLines).join('\n');
         editor.setValue(truncatedValue);
       }
 
-      // Update state
       setCssText(value);
       applyStyles();
     });
@@ -155,7 +151,7 @@ const GameComponent = () => {
               readOnly: false,
               automaticLayout: true,
               minimap: { enabled: false },
-              contextmenu: false  // Disable the default context menu
+              contextmenu: false 
             }}
             onMount={handleEditorDidMount}
           />
