@@ -6,6 +6,7 @@ import RankingLayout from './layouts/RankingLayout';
 import PasswordRecoverLayout from './layouts/PasswordRecoverLayout';
 import PasswordRecoverConfirmationLayout from './layouts/PasswordRecoverConfirmationLayout';
 import NewProfileLayout from './layouts/NewProfileLayout';
+import DesafioLayout from './layouts/DesafioLayout';
 
 const AppRouter = () => {
     return (
@@ -18,6 +19,7 @@ const AppRouter = () => {
                 <Route path="/recover-password" element={<PasswordRecoverLayout />} />
                 <Route path="/recover-password-confirmation" element={<PasswordRecoverConfirmationLayout />} />
                 <Route path="/new-profile" element={<NewProfileLayout />} />
+                <Route path="/desafio" element={<DesafioLayout />} />
             </Routes>
         </Router>
     );

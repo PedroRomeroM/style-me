@@ -1,0 +1,53 @@
+@import '../../variables';
+
+.DesafioBody {
+    background-color: #2D2C33;
+    display: flex;
+    flex-direction: row-reverse;
+    height: 98vh;
+    justify-content: space-between;
+}
+
+#gameIframe {
+    height: 98vh;
+    width: 79%;
+}
+
+#cssInput {
+    width: 100%;
+    height: 60%;
+    font-size: large;
+    font-weight: bold;
+}
+
+#botaoaplicarcss{
+    justify-content:space-between
+}
+
+.divEnviar {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    justify-content: space-around;
+    height: 70%;
+}
+
+#concluirDesafio {
+    display: none; 
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #4CAF50; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#concluirDesafio:hover {
+    background-color: #45a049;
+}
+
+#concluirDesafio:active {
+    background-color: #397d34; 
+}
