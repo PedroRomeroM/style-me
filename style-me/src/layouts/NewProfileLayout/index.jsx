@@ -2,7 +2,7 @@ import "./NewProfile.scss";
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faUser } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 import { createUser } from "../../services/ApiServices";
 
 const NewProfileLayout = () => {
@@ -13,14 +13,26 @@ const NewProfileLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef(null);
 
+  const navigate = useNavigate();
+
   const [userName, setUserName] = useState("");
   const [img, setImg] = useState(null);
   const [file, setFile] = useState(null);
   const [imgRequest, setImgRequest] = useState(null);
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [isCreated, setIsCreated] = useState(false);
 
   const handleUsernameChange = (event) => {
     setUserName(event.target.value);
-    // console.log(userName)
+  };
+
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleSenha = (event) => {
+    setSenha(event.target.value);
   };
 
   const handleImg = (event) => {
@@ -73,15 +85,30 @@ const NewProfileLayout = () => {
     };
   }, [isModalOpen]);
 
-  function createUserProfile(id, user_name, file) {
+  useEffect(() => {
+    if (isCreated === true){
+      navigate(`/?userCreated=${isCreated}`);
+    }
+  }, [isCreated]);
 
-    console.log(file)
+  function createUserProfile(user_name, file, email, senha) {
 
     const formData = new FormData();
-    formData.append("idUser", id);
     formData.append("username", user_name);
     formData.append("img", file);
-    createUser(formData);
+    formData.append("email", email);
+    formData.append("senha", senha);
+    var response = createUser(formData);
+
+    response.then(data => {
+      if (data.status == 200) {
+        setIsCreated(true)
+      }  
+    }).catch(e => {
+      console.log(e)
+    });
+
+    return 
   }
 
   return (
@@ -147,29 +174,25 @@ const NewProfileLayout = () => {
           </div>
           <div className="ColumnRight">
             <span className="InputLabelNewProfile">Email:</span>
-            <input type="text" className="NewProfileInput" />
+            <input type="text" className="NewProfileInput" onChange={handleEmail}/>
             <span className="InputLabelNewProfile">Senha:</span>
-            <input type="text" className="NewProfileInput" />
+            <input type="text" className="NewProfileInput" onChange={handleSenha}/>
             <span className="InputLabelNewProfile">Confirme sua senha:</span>
             <input type="text" className="NewProfileInput" />
           </div>
         </div>
-        <Link
-          to={{
-            pathname: "/",
-            search: "?userCreated=true",
-          }}
+        <div
           className="loginLink"
         >
           <button
             className="newProfileButton"
             onClick={() => {
-              createUserProfile(1, userName, file);
+              createUserProfile(userName, file, email, senha);
             }}
           >
             Enviar
           </button>
-        </Link>
+        </div>
       </div>
     </div>
   );

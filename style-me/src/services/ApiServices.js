@@ -1,18 +1,40 @@
 import axios from "axios";
 
 
-const BASE_URL = 'http://localhost:3001/api';
+const BASE_URL = 'http://localhost:3001';
 
 export async function createUser(formData){
 
-    for (var pair of formData.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]); 
-    }
+    let objForm = Object.fromEntries(formData.entries());
 
-    const response = await axios.post(`${BASE_URL}/user`, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data"
-        }
-    });
+    async function getBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.readAsDataURL(file)
+          reader.onload = () => {
+            resolve(reader.result)
+          }
+          reader.onerror = reject
+        })
+      }
+      
+      let base64String = "";
+      await getBase64(objForm.img)
+        .then(res => base64String=res) 
+        .catch(err => console.log(err))
+
+    base64String = base64String.replace("data:", "").replace(/^.+,/, "");
+
+
+    let objSend = {
+        "email":objForm.email,
+        "senha":objForm.senha,
+        "username":objForm.username,
+        "imgtype":objForm.img.type,
+        "imgcontent":base64String
+    };
+
+    const response = await axios.post(`${BASE_URL}/api/orq/cadastro`, objSend);
+    
     return response;
 }
