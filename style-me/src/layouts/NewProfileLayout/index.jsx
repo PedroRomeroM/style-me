@@ -101,8 +101,10 @@ const NewProfileLayout = () => {
     var response = createUser(formData);
 
     response.then(data => {
-      if (data.status == 200) {
+      if (data.status === 200) {
         setIsCreated(true)
+      } else {
+        alert('BOSTA')
       }  
     }).catch(e => {
       console.log(e)

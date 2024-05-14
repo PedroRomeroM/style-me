@@ -1,33 +1,99 @@
-const app = require('express')();
+const express = require('express');
+const http = require('http');
 const httpProxy = require('express-http-proxy');
-var http = require('http');
-var logger = require('morgan');
-const port = 3001;
-const express = require('express')
+const logger = require('morgan');
 const helmet = require('helmet');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
+
+const app = express();
+const port = 3001;
+
+const tokenExpirationMin = 30; // Quantos minutos para o token expirar
 
 const orquestradorServiceProxy = httpProxy(process.env.ORQUESTRADOR_API);
 const authServiceProxy = httpProxy(process.env.AUTH_API);
+const userServiceProxy = httpProxy(process.env.USER_API);
+
+// JWT
+const jwtServiceProxy = httpProxy(process.env.AUTH_API + '/auth/login', {
+  function (res) { return res},
+  proxyReqOptDecorator: function (proxyReqOpts) {
+    // Alteração do header
+    proxyReqOpts.headers['Content-Type'] = 'application/json';
+    proxyReqOpts.method = 'POST';
+    return proxyReqOpts;
+  },
+  userResDecorator: function (proxyRes, proxyResData, _userReq, userRes) {
+    // Processamento do token
+    console.log(proxyRes.statusCode)
+    if (proxyRes.statusCode === 200) {
+      try {
+        const str = Buffer.from(proxyResData).toString('utf-8');
+        const objBody = JSON.parse(str);
+
+        console.log(objBody.id)
+
+        if (!objBody.email) {
+          throw new Error('Email is missing in response body');
+        }
+
+        const token = jwt.sign({ id: objBody.id, tipoUser: objBody.tipoUser, email: objBody.senha }, '8morss2f135mor*5', {
+          expiresIn: tokenExpirationMin * 60, // Define o tempo de expiração do token
+        });
+        userRes.status(200);
+        return { auth: true, token: token };
+        
+      } catch (e) {
+        console.error(' - ERRO: ', e);
+        return userRes.status(500).json({ message: 'Internal server error' });
+      }
+    } else {
+      return userRes.status(401).json({ message: 'Login inválido!' });
+      
+    }
+  },
+});
+
+function verifyJWT(req, res, next) {
+  const token = req.headers['x-access-token'];
+  if (!token) {
+    return res.status(401).json({ auth: false, message: 'Token não fornecido.' });
+  }
+
+  jwt.verify(token, '8morss2f135mor*5', (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ auth: false, message: 'Falha ao autenticar o token.' });
+    }
+
+    // se tudo estiver ok, salva no request para uso posterior
+    req.userId = decoded.id;
+    req.tipoUser = decoded.tipoUser;
+    next();
+  });
+}
 
 // ORQUESTRADOR
-
-app.post(`/api/orq/cadastro`, (req, res, next) => orquestradorServiceProxy(req, res, next));
+app.post('/api/orq/cadastro', (req, res, next) => orquestradorServiceProxy(req, res, next));
 
 // AUTH
+app.post('/api/auth/login', (req, res, next) => jwtServiceProxy(req, res, next));
 
-app.post(`/api/auth/login`, (req, res, next) => authServiceProxy(req, res, next));
+// USER
+app.get('/api/user/:id', (req, res, next) => userServiceProxy(req, res, next));
 
-// PUBLICACAO
+// Configuração da aplicação
 app.use(logger('dev'));
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-var server = http.createServer(app);
-server.listen(port);
+const server = http.createServer(app);
+server.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
+});

@@ -48,3 +48,9 @@ export async function login1(formData){
   });
   return response;
 }
+
+export async function getUserInfo(id){
+
+  const response = await axios.get(`${BASE_URL}/api/user/${id}`)
+  return response;
+}
