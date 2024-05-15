@@ -48,12 +48,15 @@ const ChallengesLayout = () => {
     };
 
     useEffect(() => {
-        getUserInfo()
+        const res = localStorage.getItem("auth");
+        const parsed = JSON.parse(res);
+        const token = parsed.token
+        getUserInfo(token)
     }, [profile]);
 
     function getUsersInfo() {
         const profile = getUserInfo();
-        console.log(profile);
+        // console.log(profile);
     };
 
     const renderChallenges = (difficulty, page) => {

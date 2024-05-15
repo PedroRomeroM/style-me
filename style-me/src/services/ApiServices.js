@@ -49,8 +49,13 @@ export async function login1(formData){
   return response;
 }
 
-export async function getUserInfo(){
+export async function getUserInfo(tk){
 
-  const response = await axios.get(`${BASE_URL}/teste`)
+  const response = await axios.get(`${BASE_URL}/api/user`, {
+    headers: {
+      'x-access-token': tk,
+    }
+  })
+
   return response;
 }
