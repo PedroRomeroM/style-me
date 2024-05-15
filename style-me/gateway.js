@@ -70,8 +70,8 @@ function verifyJWT(req, res, next) {
     }
 
     // se tudo estiver ok, salva no request para uso posterior
-    req.userId = decoded.id;
-    req.tipoUser = decoded.tipoUser;
+    let infoUser = {"id":decoded.id, "tipoUser":decoded.tipoUser}
+    req.infoUser = infoUser
     next();
   });
 }
@@ -101,6 +101,19 @@ app.get(`/api/user`, verifyJWT, (req, res, next) => {
     })(req, res, next);
   });
 
+  app.post(`/test`, (req, res) => {
+    const token = jwt.sign({ id: 1, tipoUser: 'ADM', email: 'teste@teste' }, '8morss2f135mor*5', {
+      expiresIn: tokenExpirationMin * 600, // Define o tempo de expiração do token
+    });
+    res.status(200);
+    res.send({ auth: true, token: token});
+  });
+
+  app.get(`/test`, verifyJWT, (req, res) => {
+    let jwtInfo = req.infoUser
+    console.log("Obj dentro do JWT: " + jwtInfo.id + " " + jwtInfo.tipoUser)
+    res.send('resposta: ' + JSON.stringify(jwtInfo))
+  });
 
 // Configuração da aplicação
 app.use(logger('dev'));
