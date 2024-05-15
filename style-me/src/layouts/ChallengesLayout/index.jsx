@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Header from '../../components/Header/Header';
 import ChallengeCard from '../../components/ChallengeCard/ChallengeCard';
@@ -6,6 +6,7 @@ import ChallengeHeader from '../../components/ChallengeHeader/ChallengeHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import './Challenges.scss';
+import { getUserInfo } from "../../services/ApiServices";
 
 const ChallengesLayout = () => {
     // eslint-disable-next-line
@@ -14,6 +15,7 @@ const ChallengesLayout = () => {
     const [easyPage, setEasyPage] = useState(0);
     const [mediumPage, setMediumPage] = useState(0);
     const [hardPage, setHardPage] = useState(0);
+    const [profile, setProfile] = useState(null);
 
     const challengesPerPage = 3;
 
@@ -43,6 +45,15 @@ const ChallengesLayout = () => {
             default:
                 break;
         }
+    };
+
+    useEffect(() => {
+        getUserInfo()
+    }, [profile]);
+
+    function getUsersInfo() {
+        const profile = getUserInfo();
+        console.log(profile);
     };
 
     const renderChallenges = (difficulty, page) => {

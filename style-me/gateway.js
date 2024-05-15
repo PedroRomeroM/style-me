@@ -42,7 +42,7 @@ const jwtServiceProxy = httpProxy(process.env.AUTH_API + '/auth/login', {
         }
 
         const token = jwt.sign({ id: objBody.id, tipoUser: objBody.tipoUser, email: objBody.senha }, '8morss2f135mor*5', {
-          expiresIn: tokenExpirationMin * 60, // Define o tempo de expiração do token
+          expiresIn: tokenExpirationMin * 600, // Define o tempo de expiração do token
         });
         userRes.status(200);
         return { auth: true, token: token };
@@ -83,7 +83,24 @@ app.post('/api/orq/cadastro', (req, res, next) => orquestradorServiceProxy(req, 
 app.post('/api/auth/login', (req, res, next) => jwtServiceProxy(req, res, next));
 
 // USER
-app.get('/api/user/:id', (req, res, next) => userServiceProxy(req, res, next));
+// app.get('/api/user/:id', (req, res, next) => userServiceProxy(req, res, next));
+
+app.get(`/api/user`, verifyJWT, (req, res, next) => {
+    httpProxy('http://localhost:8081/api/user/' + `/${req.query.id}`, {
+      userResDecorator: function (proxyRes, proxyResData, _userReq, userRes) {
+        if (proxyRes.statusCode == 200) {
+          var str = Buffer.from(proxyResData).toString('utf-8');
+          userRes.status(200);
+          console.log(str)
+          return str;
+        } else {
+          userRes.status(proxyRes.statusCode);
+          return { message: 'Um erro ocorreu ao buscar o user.' };
+        }
+      },
+    })(req, res, next);
+  });
+
 
 // Configuração da aplicação
 app.use(logger('dev'));

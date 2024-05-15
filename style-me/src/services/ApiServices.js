@@ -49,8 +49,8 @@ export async function login1(formData){
   return response;
 }
 
-export async function getUserInfo(id){
+export async function getUserInfo(){
 
-  const response = await axios.get(`${BASE_URL}/api/user/${id}`)
+  const response = await axios.get(`${BASE_URL}/teste`)
   return response;
 }

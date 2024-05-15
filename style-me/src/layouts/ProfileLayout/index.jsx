@@ -56,11 +56,10 @@ const ProfileLayout = () => {
     };
 
     useEffect(() => {
-        
     }, [profile]);
 
-    function getUsersInfo(id) {
-        const profile = getUserInfo(id);
+    function getUsersInfo() {
+        const profile = getUserInfo();
         console.log(profile);
     };
 

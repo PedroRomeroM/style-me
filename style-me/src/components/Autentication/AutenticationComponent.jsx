@@ -15,8 +15,9 @@ const AutenticationComponent = () => {
   const [senha, setSenha] = useState("");
 
   function auth(response){
-    // localStorage.setItem('auth', JSON.stringify(response));
-    // navigate(`/challenges`)
+    console.log(response)
+    localStorage.setItem('auth', JSON.stringify(response));
+    navigate(`/challenges`)
   }
 
   const handleEmail = (event) => {
