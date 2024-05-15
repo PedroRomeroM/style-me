@@ -4,13 +4,14 @@ import "./Desafio.scss";
 import Header from "../../components/Header/Header";
 
 const initialCss = `#Desafio {\n\n}`;
-const maxLines = 10;  
+const maxLines = 10;
 
 const GameComponent = () => {
   const [gameHtml, setGameHtml] = useState("");
   const [cssText, setCssText] = useState(initialCss);
   const iframeRef = useRef(null);
   const editorRef = useRef(null);
+  const previousValueRef = useRef(initialCss);
 
   useEffect(() => {
     fetch("game1.html")
@@ -84,15 +85,27 @@ const GameComponent = () => {
       const start = "#Desafio {";
       const end = "}";
 
-      // Preserve the structure
-      if (!value.startsWith(start)) {
-        value = `${start}\n${value}`;
-      }
+      console.log("Previous Value:", previousValueRef.current);
+      console.log("Current Value:", value);
 
       const lines = value.split('\n');
-      if (lines[lines.length - 1].trim() !== end) {
-        lines[lines.length - 1] = end;
-        value = lines.join('\n');
+
+      // Preserve the structure
+      if (lines[0] !== start || !value.endsWith(end)) {
+        value = previousValueRef.current;
+      } else {
+        if (lines[lines.length - 1].trim() !== end) {
+          lines[lines.length - 1] = end;
+          value = lines.join('\n');
+        }
+
+        if (lines.length > maxLines) {
+          const truncatedValue = lines.slice(0, maxLines).join('\n');
+          value = truncatedValue;
+        }
+
+        // Update previousValueRef only if structure is intact
+        previousValueRef.current = value;
       }
 
       if (value !== editor.getValue()) {
@@ -108,11 +121,6 @@ const GameComponent = () => {
             forceMoveMarkers: true,
           },
         ]);
-      }
-
-      if (lines.length > maxLines) {
-        const truncatedValue = lines.slice(0, maxLines).join('\n');
-        editor.setValue(truncatedValue);
       }
 
       setCssText(value);
@@ -151,7 +159,7 @@ const GameComponent = () => {
               readOnly: false,
               automaticLayout: true,
               minimap: { enabled: false },
-              contextmenu: false 
+              contextmenu: false
             }}
             onMount={handleEditorDidMount}
           />
