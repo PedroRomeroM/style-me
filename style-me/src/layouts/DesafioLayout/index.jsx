@@ -94,9 +94,6 @@ const GameComponent = () => {
       const start = "#Desafio {";
       const end = "}";
 
-      console.log("Previous Value:", previousValueRef.current);
-      console.log("Current Value:", value);
-
       const lines = value.split('\n');
 
       // Preserve the structure
@@ -106,22 +103,22 @@ const GameComponent = () => {
         // Remove any text after the last semicolon in each line
         for (let i = 0; i < lines.length - 1; i++) {
           const semicolonIndex = lines[i].lastIndexOf(';');
-          if (semicolonIndex !== -1) {
+          if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
             lines[i] = lines[i].substring(0, semicolonIndex + 1);
           }
         }
-        value = lines.join('\n');
 
+        // Ensure the last line is always "}"
         if (lines[lines.length - 1].trim() !== end) {
           lines[lines.length - 1] = end;
-          value = lines.join('\n');
         }
 
-        if (lines.length > maxLines) {
-          const truncatedValue = lines.slice(0, maxLines).join('\n');
-          value = truncatedValue;
+        // Remove any extra blank lines
+        while (lines.length > maxLines) {
+          lines.splice(maxLines - 1, 1); // Remove the second last line before the closing brace
         }
 
+        value = lines.join('\n');
         previousValueRef.current = value;
       }
 
