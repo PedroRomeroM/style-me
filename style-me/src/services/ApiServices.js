@@ -1,17 +1,6 @@
 import axios from "axios";
 
 
-<<<<<<< HEAD
-const BASE_URL = 'http://localhost:8085';
-
-export async function createUser(formData){
-
-    const response = await axios.post(`${BASE_URL}/MICROORQUESTRADOR/api/orq/cadastro`, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data"
-        }
-    });
-=======
 const BASE_URL = 'http://localhost:3001';
 
 export async function createUser(formData){
@@ -47,20 +36,11 @@ export async function createUser(formData){
 
     const response = await axios.post(`${BASE_URL}/api/orq/cadastro`, objSend);
     
->>>>>>> gateway-node
     return response;
 }
 
 export async function login1(formData){
 
-<<<<<<< HEAD
-    const response = await axios.post(`${BASE_URL}/MICROAUTH/api/auth/login`, formData, {
-        headers: {
-            "Content-Type": "application/json",
-        }
-    });
-    return response;
-=======
   const response = await axios.post(`${BASE_URL}/api/auth/login`, formData, {
       headers: {
           "Content-Type": "application/json",
@@ -73,5 +53,4 @@ export async function getUserInfo(id){
 
   const response = await axios.get(`${BASE_URL}/api/user/${id}`)
   return response;
->>>>>>> gateway-node
 }

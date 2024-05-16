@@ -8,7 +8,7 @@
     justify-content: space-between;
 }
 
-.desafioBackground {
+.TelaDeDesafio {
     background-color: #2D2C33;
 }
 
@@ -25,6 +25,18 @@
     height: 60%;
     font-size: large;
     font-weight: bold;
+}
+
+.BotaoFormatar {
+    display: block; 
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #6d6c66; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 #botaoaplicarcss{

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import "./Desafio.scss";
+import Header from "../../components/Header/Header";
 
 const initialCss = `#Desafio {\n\n}`;
 const maxLines = 5;
@@ -68,10 +69,14 @@ const GameComponent = () => {
     });
 
     if (objetivosAlcancados === objetivos.length) {
-      document.getElementById("concluirDesafio").setAttribute("style", "display:flex");
+      document
+        .getElementById("concluirDesafio")
+        .setAttribute("style", "display:block");
     } else {
       console.log("Continue tentando!");
-      document.getElementById("concluirDesafio").setAttribute("style", "display:none");
+      document
+        .getElementById("concluirDesafio")
+        .setAttribute("style", "display:none");
     }
   };
 
@@ -94,7 +99,7 @@ const GameComponent = () => {
       const start = "#Desafio {";
       const end = "}";
 
-      const lines = value.split('\n');
+      const lines = value.split("\n");
 
       // Preserve the structure
       if (lines[0] !== start || !value.endsWith(end)) {
@@ -102,7 +107,7 @@ const GameComponent = () => {
       } else {
         // Remove any text after the last semicolon in each line
         for (let i = 0; i < lines.length - 1; i++) {
-          const semicolonIndex = lines[i].lastIndexOf(';');
+          const semicolonIndex = lines[i].lastIndexOf(";");
           if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
             lines[i] = lines[i].substring(0, semicolonIndex + 1);
           }
@@ -118,7 +123,7 @@ const GameComponent = () => {
           lines.splice(maxLines - 1, 1); // Remove the second last line before the closing brace
         }
 
-        value = lines.join('\n');
+        value = lines.join("\n");
         previousValueRef.current = value;
       }
 
@@ -129,7 +134,9 @@ const GameComponent = () => {
               1,
               1,
               editor.getModel().getLineCount(),
-              editor.getModel().getLineMaxColumn(editor.getModel().getLineCount())
+              editor
+                .getModel()
+                .getLineMaxColumn(editor.getModel().getLineCount())
             ),
             text: value,
             forceMoveMarkers: true,
@@ -143,29 +150,32 @@ const GameComponent = () => {
 
   const handleFormat = () => {
     if (editorRef.current) {
-      editorRef.current.getAction('editor.action.formatDocument').run();
+      editorRef.current.getAction("editor.action.formatDocument").run();
     }
   };
 
   return (
-    <div className="DesafioBody">
-      <iframe id="gameIframe" ref={iframeRef} srcDoc={gameHtml} />
-      <div className="divEnviar">
-        <Editor
-          height="60%"
-          defaultLanguage="css"
-          value={cssText}
-          theme="vs-dark"
-          options={{
-            readOnly: false,
-            automaticLayout: true,
-            minimap: { enabled: false },
-            contextmenu: false
-          }}
-          onMount={handleEditorDidMount}
-        />
-        <button onClick={handleFormat}>Formatar</button>
-        <button id="concluirDesafio">Concluir desafio</button>
+    <div className="TelaDeDesafio">
+      <Header />
+      <div className="DesafioBody">
+        <iframe id="gameIframe" ref={iframeRef} srcDoc={gameHtml} />
+        <div className="divEnviar">
+          <Editor
+            height="60%"
+            defaultLanguage="css"
+            value={cssText}
+            theme="vs-dark"
+            options={{
+              readOnly: false,
+              automaticLayout: true,
+              minimap: { enabled: false },
+              contextmenu: false,
+            }}
+            onMount={handleEditorDidMount}
+          />
+          <button className="BotaoFormatar" onClick={handleFormat}>Formatar</button>
+          <button id="concluirDesafio">Concluir desafio</button>
+        </div>
       </div>
     </div>
   );
