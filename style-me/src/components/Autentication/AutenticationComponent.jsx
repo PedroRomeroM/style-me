@@ -1,7 +1,7 @@
 import "./AutenticationComponent.scss";
 import Typed from "typed.js";
 import { useEffect, useRef, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { login1 } from "../../services/ApiServices";
 
 const AutenticationComponent = () => {
@@ -9,8 +9,15 @@ const AutenticationComponent = () => {
   {/* eslint-disable jsx-a11y/anchor-is-valid */ }
   const el = useRef(null);
 
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+
+  function auth(response){
+    // localStorage.setItem('auth', JSON.stringify(response));
+    // navigate(`/challenges`)
+  }
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
@@ -21,12 +28,22 @@ const AutenticationComponent = () => {
   };
 
   function login(email, senha) {
-    console.log(email, senha)
-
     const formData = new FormData();
     formData.append("email", email);
     formData.append("senha", senha);
-    login1(formData);
+    var res = login1(formData);
+
+    res.then(data => {
+      var json = data.data
+      if (data.status === 200) {
+        auth(json)
+      } else {
+        alert('BOSTA')
+      }
+    }).catch(e => {
+      console.log(e)
+    });
+
   }
 
   useEffect(() => {
@@ -53,12 +70,11 @@ const AutenticationComponent = () => {
                 <img src="./images/logo.svg" alt="Logo do site" />
                 <div className="separador"></div>
                 <div className="inputSection">
-                  <input type="text" placeholder="Usuário" onChange={handleEmail}/>
+                  <input type="text" placeholder="Email" onChange={handleEmail}/>
                   <input type="password" placeholder="Senha" onChange={handleSenha}/>
-                  <button className="loginButton" onClick={() => {login(email, senha);}}>Enviar</button>
-                  <Link to="/challenges" className="loginLink">
-                    
-                  </Link>
+                  <div className="loginLink">
+                    <button className="loginButton" onClick={() => {login(email, senha);}}>Enviar</button>
+                  </div>
                   <Link to="/new-profile" className="loginLink">
                     <button className="registerButton">Criar Conta</button>
                   </Link>

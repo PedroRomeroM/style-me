@@ -2,7 +2,7 @@ import "./NewProfile.scss";
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faUser } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 import { createUser } from "../../services/ApiServices";
 
 const NewProfileLayout = () => {
@@ -13,12 +13,15 @@ const NewProfileLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef(null);
 
+  const navigate = useNavigate();
+
   const [userName, setUserName] = useState("");
   const [img, setImg] = useState(null);
   const [file, setFile] = useState(null);
   const [imgRequest, setImgRequest] = useState(null);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [isCreated, setIsCreated] = useState(false);
 
   const handleUsernameChange = (event) => {
     setUserName(event.target.value);
@@ -82,6 +85,12 @@ const NewProfileLayout = () => {
     };
   }, [isModalOpen]);
 
+  useEffect(() => {
+    if (isCreated === true){
+      navigate(`/?userCreated=${isCreated}`);
+    }
+  }, [isCreated]);
+
   function createUserProfile(user_name, file, email, senha) {
 
     const formData = new FormData();
@@ -89,7 +98,19 @@ const NewProfileLayout = () => {
     formData.append("img", file);
     formData.append("email", email);
     formData.append("senha", senha);
-    createUser(formData);
+    var response = createUser(formData);
+
+    response.then(data => {
+      if (data.status === 200) {
+        setIsCreated(true)
+      } else {
+        alert('BOSTA')
+      }  
+    }).catch(e => {
+      console.log(e)
+    });
+
+    return 
   }
 
   return (
@@ -162,11 +183,7 @@ const NewProfileLayout = () => {
             <input type="text" className="NewProfileInput" />
           </div>
         </div>
-        <Link
-          to={{
-            pathname: "/",
-            search: "?userCreated=true",
-          }}
+        <div
           className="loginLink"
         >
           <button
@@ -177,7 +194,7 @@ const NewProfileLayout = () => {
           >
             Enviar
           </button>
-        </Link>
+        </div>
       </div>
     </div>
   );

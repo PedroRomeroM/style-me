@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './Profile.scss';
 import Ranking from '../../components/Ranking/Ranking';
+import { getUserInfo } from "../../services/ApiServices";
 
 const ProfileLayout = () => {
     // eslint-disable-next-line
@@ -16,7 +17,10 @@ const ProfileLayout = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const modalRef = useRef(null);
 
+    const [profile, setProfile] = useState(null);
+
     const challengesPerPage = 3;
+    
 
     useEffect(() => {
         if (isModalOpen) {
@@ -49,6 +53,15 @@ const ProfileLayout = () => {
             default:
                 break;
         }
+    };
+
+    useEffect(() => {
+        
+    }, [profile]);
+
+    function getUsersInfo(id) {
+        const profile = getUserInfo(id);
+        console.log(profile);
     };
 
     const renderChallenges = (difficulty, page) => {
