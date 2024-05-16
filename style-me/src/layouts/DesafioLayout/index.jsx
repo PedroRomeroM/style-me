@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import "./Desafio.scss";
-import Header from "../../components/Header/Header";
 
 const initialCss = `#Desafio {\n\n}`;
 const maxLines = 10;
@@ -19,14 +18,25 @@ const GameComponent = () => {
       .then((html) => setGameHtml(html));
   }, []);
 
+  useEffect(() => {
+    applyStyles();
+  }, [cssText]);
+
+  const extractContent = (value) => {
+    const match = value.match(/#Desafio\s*{([^}]*)}/);
+    return match ? match[1].trim() : "";
+  };
+
   const applyStyles = () => {
+    console.log("teste")
+    debugger
     const iframeDocument = iframeRef.current.contentDocument;
     if (!iframeDocument) {
       console.error("iframeDocument is null");
       return;
     }
 
-    const gameArea = iframeDocument.getElementById("Desafio");
+    const gameArea = iframeDocument.getElementById("ondeOCSSVaiSerAplicado");
     if (!gameArea) {
       console.error("gameArea is null");
       return;
@@ -39,7 +49,7 @@ const GameComponent = () => {
       iframeDocument.head.appendChild(styleElement);
     }
 
-    styleElement.textContent = cssText;
+    styleElement.textContent = `#${gameArea.id} { ${extractContent(cssText)} }`;
 
     try {
       checkForCompletion(iframeDocument);
@@ -60,9 +70,9 @@ const GameComponent = () => {
     });
 
     if (objetivosAlcancados === objetivos.length) {
-      document.getElementById("concluirDesafio").style.display = "block";
+      console.log("Desafio Concluído!");
     } else {
-      document.getElementById("concluirDesafio").style.display = "none";
+      console.log("Continue tentando!");
     }
   };
 
@@ -104,7 +114,6 @@ const GameComponent = () => {
           value = truncatedValue;
         }
 
-        // Update previousValueRef only if structure is intact
         previousValueRef.current = value;
       }
 
@@ -124,7 +133,6 @@ const GameComponent = () => {
       }
 
       setCssText(value);
-      applyStyles();
     });
   };
 
@@ -134,38 +142,25 @@ const GameComponent = () => {
     }
   };
 
-  const handleIframeLoad = () => {
-    applyStyles();
-  };
-
   return (
-    <div className="desafioBackground">
-      <Header />
-      <div className="DesafioBody">
-        <iframe
-          id="gameIframe"
-          ref={iframeRef}
-          srcDoc={gameHtml}
-          style={{ width: "79%", height: "98vh", border: "none" }}
-          onLoad={handleIframeLoad}
+    <div className="DesafioBody">
+      <iframe id="gameIframe" ref={iframeRef} srcDoc={gameHtml} />
+      <div className="divEnviar">
+        <Editor
+          height="60%"
+          defaultLanguage="css"
+          value={cssText}
+          theme="vs-dark"
+          options={{
+            readOnly: false,
+            automaticLayout: true,
+            minimap: { enabled: false },
+            contextmenu: false
+          }}
+          onMount={handleEditorDidMount}
         />
-        <div className="divEnviar">
-          <Editor
-            height="60%"
-            defaultLanguage="css"
-            value={cssText}
-            theme="vs-dark"
-            options={{
-              readOnly: false,
-              automaticLayout: true,
-              minimap: { enabled: false },
-              contextmenu: false
-            }}
-            onMount={handleEditorDidMount}
-          />
-          <button onClick={handleFormat}>Formatar</button>
-          <button id="concluirDesafio">Concluir desafio</button>
-        </div>
+        <button onClick={handleFormat}>Formatar</button>
+        <button id="concluirDesafio">Concluir desafio</button>
       </div>
     </div>
   );
