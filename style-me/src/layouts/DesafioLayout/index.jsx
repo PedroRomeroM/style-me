@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react";
 import "./Desafio.scss";
 
 const initialCss = `#Desafio {\n\n}`;
-const maxLines = 10;
+const maxLines = 5;
 
 const GameComponent = () => {
   const [gameHtml, setGameHtml] = useState("");
@@ -28,8 +28,6 @@ const GameComponent = () => {
   };
 
   const applyStyles = () => {
-    console.log("teste")
-    debugger
     const iframeDocument = iframeRef.current.contentDocument;
     if (!iframeDocument) {
       console.error("iframeDocument is null");
@@ -70,9 +68,10 @@ const GameComponent = () => {
     });
 
     if (objetivosAlcancados === objetivos.length) {
-      console.log("Desafio Concluído!");
+      document.getElementById("concluirDesafio").setAttribute("style", "display:flex");
     } else {
       console.log("Continue tentando!");
+      document.getElementById("concluirDesafio").setAttribute("style", "display:none");
     }
   };
 
@@ -104,6 +103,15 @@ const GameComponent = () => {
       if (lines[0] !== start || !value.endsWith(end)) {
         value = previousValueRef.current;
       } else {
+        // Remove any text after the last semicolon in each line
+        for (let i = 0; i < lines.length - 1; i++) {
+          const semicolonIndex = lines[i].lastIndexOf(';');
+          if (semicolonIndex !== -1) {
+            lines[i] = lines[i].substring(0, semicolonIndex + 1);
+          }
+        }
+        value = lines.join('\n');
+
         if (lines[lines.length - 1].trim() !== end) {
           lines[lines.length - 1] = end;
           value = lines.join('\n');
