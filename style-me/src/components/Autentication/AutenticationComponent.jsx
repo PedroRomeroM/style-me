@@ -15,7 +15,6 @@ const AutenticationComponent = () => {
   const [senha, setSenha] = useState("");
 
   function auth(response){
-    console.log(response)
     localStorage.setItem('auth', JSON.stringify(response));
     navigate(`/challenges`)
   }

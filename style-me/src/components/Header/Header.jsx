@@ -15,6 +15,10 @@ const Header = () => {
         setDropdownVisible(false);
     };
 
+    function logOut () {
+        localStorage.removeItem("auth");
+    };
+
     return (
         <div className='HeaderContainer'>
             <header>
@@ -49,7 +53,7 @@ const Header = () => {
                             <Link to="/ranking">
                                 <FontAwesomeIcon icon={faTrophy} className="icon" /> <span className="text">Ranking</span>
                             </Link>
-                            <Link to="/">
+                            <Link to="/" onClick={() => {logOut();}}>
                                 <FontAwesomeIcon icon={faSignOutAlt} className="icon" /> <span className="text">Sair</span>
                             </Link>
                         </div>
