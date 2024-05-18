@@ -16,6 +16,11 @@ const ChallengesLayout = () => {
     const [mediumPage, setMediumPage] = useState(0);
     const [hardPage, setHardPage] = useState(0);
     const [profile, setProfile] = useState(null);
+    const [username, setUsername] = useState();
+    
+    const [img, setImg] = useState(); 
+    const [imgType, setimgType] = useState();   
+    const [totalScore, setTotalScore] = useState();
 
     const challengesPerPage = 3;
 
@@ -51,12 +56,26 @@ const ChallengesLayout = () => {
         const res = localStorage.getItem("auth");
         const parsed = JSON.parse(res);
         const token = parsed.token
-        getUserInfo(token)
+        getUsersInfo(token)
     }, [profile]);
 
-    function getUsersInfo() {
-        const profile = getUserInfo();
-        // console.log(profile);
+    function getUsersInfo(token) {
+        const profile = getUserInfo(token);
+        profile.then(res => {
+
+            setUsername(res.data.username)
+            setimgType(res.data.imgType)
+            setImg(res.data.img)
+
+            if (res.data.totalScore === null) {
+                setTotalScore(0);
+            } else {
+                setTotalScore(res.data.totalScore)
+            }
+
+          }).catch(e => {
+            console.log(e)
+        });
     };
 
     const renderChallenges = (difficulty, page) => {
@@ -82,7 +101,7 @@ const ChallengesLayout = () => {
 
     return (
         <div className='Challenges'>
-            <Header />
+            <Header username={username} img={img} imgType={imgType} totalScore={totalScore}/>
             <div className='ChallengesContainer'>
                 <div className='Easy'>
                     <ChallengeHeader color="green" difficulty="Nível Fácil" />

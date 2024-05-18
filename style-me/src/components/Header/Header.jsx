@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faTrophy, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; // Importe os ícones que você precisa
 
-const Header = () => {
+const Header = ({ username, img, imgType, totalScore }) => {
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
     const handleMouseEnter = () => {
@@ -19,6 +19,7 @@ const Header = () => {
         localStorage.removeItem("auth");
     };
 
+
     return (
         <div className='HeaderContainer'>
             <header>
@@ -29,10 +30,10 @@ const Header = () => {
                     <div className='userDetails'>
                         <div className='userDetailsContainer'>
                             <Link to="/profile" className='username'>
-                                <span lassName="text">Romerão</span>
+                                <span lassName="text"> { username } </span>
                             </Link>
                             <Link to="/ranking" className='rankingInfo'>
-                                <span className="text">100</span><FontAwesomeIcon icon={faTrophy} className="icon" />
+                                <span className="text"> { totalScore } </span><FontAwesomeIcon icon={faTrophy} className="icon" />
                             </Link>
                         </div>
                     </div>
@@ -43,7 +44,7 @@ const Header = () => {
                     >
                         <img
                             className="profilePic"
-                            src='./images/profile-picture.png'
+                            src={`data:${imgType};base64,${img}`}
                             alt="Foto de perfil"
                         />
                         <div className={`dropdownContent ${dropdownVisible ? 'show' : ''}`}>

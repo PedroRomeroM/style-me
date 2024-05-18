@@ -38,7 +38,7 @@ const jwtServiceProxy = httpProxy(process.env.AUTH_API + '/auth/login', {
           throw new Error('Email is missing in response body');
         }
 
-        const token = jwt.sign({ id: objBody.id, tipoUser: objBody.tipoUser, email: objBody.senha }, '8morss2f135mor*5', {
+        const token = jwt.sign({ id: objBody.id, tipoUser: objBody.tipoUser, email: objBody.email }, '8morss2f135mor*5', {
           expiresIn: 1440, // Define o tempo de expiração do token
         });
 
@@ -68,7 +68,7 @@ function verifyJWT(req, res, next) {
     }
 
     // se tudo estiver ok, salva no request para uso posterior
-    let infoUser = { "id": decoded.id, "tipoUser": decoded.tipoUser }
+    let infoUser = { "id": decoded.id, "tipoUser": decoded.tipoUser, "email": decoded.email }
     req.infoUser = infoUser
     next();
   });
@@ -84,6 +84,10 @@ app.get(`/api/user`, verifyJWT, async (req, res) => {
   let jwtInfo = req.infoUser
 
   const response = await axios.get(`http://localhost:8081/api/user/${jwtInfo.id}`)
+
+  let email = jwtInfo.email;
+
+  response.data.email = email;
 
   res.send(response.data);
 

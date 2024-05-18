@@ -17,6 +17,11 @@ const ProfileLayout = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const modalRef = useRef(null);
 
+    const [username, setUsername] = useState();
+    
+    const [img, setImg] = useState(); 
+    const [imgType, setimgType] = useState();
+    const [email, setEmail] = useState();
     const [profile, setProfile] = useState(null);
 
     const challengesPerPage = 3;
@@ -56,11 +61,24 @@ const ProfileLayout = () => {
     };
 
     useEffect(() => {
+        const res = localStorage.getItem("auth");
+        const parsed = JSON.parse(res);
+        const token = parsed.token
+        getUsersInfo(token)
     }, [profile]);
 
-    function getUsersInfo() {
-        const profile = getUserInfo();
-        console.log(profile);
+    function getUsersInfo(token) {
+        const profile = getUserInfo(token);
+        profile.then(res => {
+
+            setUsername(res.data.username)
+            setimgType(res.data.imgType)
+            setImg(res.data.img)
+            setEmail(res.data.email)
+
+          }).catch(e => {
+            console.log(e)
+        });
     };
 
     const renderChallenges = (difficulty, page) => {
@@ -105,7 +123,7 @@ const ProfileLayout = () => {
             <div className='ProfileHeader'>
                 <div className='ProfileHeaderContainer'>
                     <div className='profilePicContainer' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={openModal}>
-                        <img className={`profilePic ${isHovered ? 'hovered' : ''}`} src='./images/profile-picture.png' alt="Foto de perfil" />
+                        <img className={`profilePic ${isHovered ? 'hovered' : ''}`} src={`data:${imgType};base64,${img}`} alt="Foto de perfil" />
                         {isHovered && (
                             <div className='editIcon'>
                                 <FontAwesomeIcon icon={faEdit} />
@@ -115,7 +133,7 @@ const ProfileLayout = () => {
                     <div className='ProfileHeaderColumnRight'>
                         <img src='./images/my-style.svg' alt='Logo' />
                         <div className="separador"></div>
-                        <h2 className='ProfileHeaderUsername'>Romerão</h2>
+                        <h2 className='ProfileHeaderUsername'> {username} </h2>
                     </div>
                 </div>
             </div>
@@ -139,9 +157,9 @@ const ProfileLayout = () => {
                             </div>
                             <div className='MyDataForm'>
                                 <span className='InputLabel'>Nome de usuário</span>
-                                <input type="text" className="Input" />
+                                <input type="text" className="Input" value={username}/>
                                 <span className='InputLabel'>Email</span>
-                                <input type="text" className="Input" />
+                                <input type="text" className="Input" value={email} readOnly/>
                                 <div className='MyDataFormColumns'>
                                     <div className='MyDataFormColumnLeft'>
                                         <span className='InputLabel'>Senha atual</span>
@@ -152,6 +170,7 @@ const ProfileLayout = () => {
                                         <input type="password" className="Input" />
                                     </div>
                                 </div>
+                                <button>Atualizar</button>
                             </div>
                         </div>
                     </div>
