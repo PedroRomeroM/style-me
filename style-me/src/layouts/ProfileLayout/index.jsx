@@ -1,26 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import ChallengeCard from '../../components/ChallengeCard/ChallengeCard';
 import ChallengeHeader from '../../components/ChallengeHeader/ChallengeHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './Profile.scss';
 import Ranking from '../../components/Ranking/Ranking';
 import { getUserInfo } from "../../services/ApiServices";
 
 const ProfileLayout = () => {
-    // eslint-disable-next-line
-    {/* eslint-disable jsx-a11y/anchor-is-valid */ }
     const initialChallenges = new Array(8).fill().map((_, index) => ({ id: index }));
-    const [concludedPage, setConcludedPage] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedDifficulty, setSelectedDifficulty] = useState('Fácil');
     const modalRef = useRef(null);
-
-    const [profile, setProfile] = useState(null);
-
-    const challengesPerPage = 3;
-    
 
     useEffect(() => {
         if (isModalOpen) {
@@ -41,50 +33,6 @@ const ProfileLayout = () => {
         };
     }, [isModalOpen]);
 
-    const handleNext = (difficulty, direction) => {
-        switch (difficulty) {
-            case 'concluded':
-                if (direction === 'next') {
-                    setConcludedPage(prevPage => prevPage + 1);
-                } else {
-                    setConcludedPage(prevPage => prevPage - 1);
-                }
-                break;
-            default:
-                break;
-        }
-    };
-
-    useEffect(() => {
-        
-    }, [profile]);
-
-    function getUsersInfo(id) {
-        const profile = getUserInfo(id);
-        console.log(profile);
-    };
-
-    const renderChallenges = (difficulty, page) => {
-        const startIndex = page * challengesPerPage;
-        const endIndex = startIndex + challengesPerPage;
-        const slicedChallenges = initialChallenges.slice(startIndex, endIndex);
-        return (
-            <TransitionGroup component={null}>
-                {slicedChallenges.map(challenge => (
-                    <CSSTransition key={challenge.id} classNames="challenge-item" timeout={500}>
-                        <ChallengeCard color={difficulty} />
-                    </CSSTransition>
-                ))}
-            </TransitionGroup>
-        );
-    };
-
-    const isLastPage = (difficulty, page) => {
-        const totalChallenges = initialChallenges.length;
-        const totalPages = Math.ceil(totalChallenges / challengesPerPage);
-        return page === totalPages - 1;
-    };
-
     const goBack = () => {
         window.history.back();
     };
@@ -95,6 +43,12 @@ const ProfileLayout = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
+    };
+
+    const renderChallenges = () => {
+        return initialChallenges.map(challenge => (
+            <ChallengeCard key={challenge.id} color={selectedDifficulty === 'Fácil' ? 'green' : selectedDifficulty === 'Médio' ? 'yellow' : 'red'} />
+        ));
     };
 
     return (
@@ -172,23 +126,14 @@ const ProfileLayout = () => {
             <div className='ConcludedChallenges'>
                 <div className='ChallengesContainer'>
                     <div className='Concluded'>
-                        <ChallengeHeader color="purple" difficulty="Desafios Concluídos" />
-                        <div className='Column'>
-                            {concludedPage !== 0 && (
-                                <a onClick={() => handleNext('concluded', 'prev')}>
-                                    <FontAwesomeIcon className='ArrowCarousel' icon={faAngleLeft} />
-                                </a>
-                            )}
-                        </div>
-                        <div className='ColumnCenter'>
-                            {renderChallenges('purple', concludedPage)}
-                        </div>
-                        <div className='Column'>
-                            {!isLastPage('Concluded', concludedPage) && (
-                                <a onClick={() => handleNext('concluded', 'next')}>
-                                    <FontAwesomeIcon className='ArrowCarousel' icon={faAngleRight} />
-                                </a>
-                            )}
+                        <ChallengeHeader 
+                            color="purple" 
+                            difficulty="Desafios Concluídos" 
+                            selectedDifficulty={selectedDifficulty}
+                            onSelectDifficulty={setSelectedDifficulty} 
+                        />
+                        <div className='ChallengesGrid'>
+                            {renderChallenges()}
                         </div>
                     </div>
                 </div>
