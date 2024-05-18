@@ -4,19 +4,28 @@
     background-color: #2D2C33;
     display: flex;
     flex-direction: row-reverse;
-    height: 98vh;
+    height: calc((100vh - 7.28rem));
     justify-content: space-between;
+    padding-left: 2rem;
+    padding-right: 1rem;
 }
 
 .TelaDeDesafio {
+    display: flex;
+    flex-direction: column;
     background-color: #2D2C33;
+    height: 100vh;
 }
 
 #gameIframe {
     margin-top: 1rem;
     margin-right: 1rem;
-    height: 87vh;
-    width: 50%;
+    width: 60%;
+    border: none;
+    height: 95%;
+    background-color: #3D3B4A;
+    border-radius: 13px;
+    padding: 0.5rem;
 }
 
 #cssInput {
@@ -45,10 +54,12 @@
 
 .divEnviar {
     display: flex;
+    padding-right: 3rem;
     flex-direction: column;
     width: 20%;
     justify-content: space-around;
     height: 70%;
+    flex-grow: 1;
 }
 
 #concluirDesafio {
@@ -69,4 +80,9 @@
 
 #concluirDesafio:active {
     background-color: #397d34; 
+}
+
+.editorWrapper {
+    overflow: hidden;
+    height: 100%;
 }

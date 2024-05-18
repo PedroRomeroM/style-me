@@ -101,11 +101,9 @@ const GameComponent = () => {
 
       const lines = value.split("\n");
 
-      // Preserve the structure
       if (lines[0] !== start || !value.endsWith(end)) {
         value = previousValueRef.current;
       } else {
-        // Remove any text after the last semicolon in each line
         for (let i = 0; i < lines.length - 1; i++) {
           const semicolonIndex = lines[i].lastIndexOf(";");
           if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
@@ -113,14 +111,12 @@ const GameComponent = () => {
           }
         }
 
-        // Ensure the last line is always "}"
         if (lines[lines.length - 1].trim() !== end) {
           lines[lines.length - 1] = end;
         }
 
-        // Remove any extra blank lines
         while (lines.length > maxLines) {
-          lines.splice(maxLines - 1, 1); // Remove the second last line before the closing brace
+          lines.splice(maxLines - 1, 1); 
         }
 
         value = lines.join("\n");
@@ -161,10 +157,10 @@ const GameComponent = () => {
         <iframe id="gameIframe" ref={iframeRef} srcDoc={gameHtml} />
         <div className="divEnviar">
           <Editor
-            height="60%"
             defaultLanguage="css"
             value={cssText}
             theme="vs-dark"
+            wrapperClassName="editorWrapper"
             options={{
               readOnly: false,
               automaticLayout: true,
