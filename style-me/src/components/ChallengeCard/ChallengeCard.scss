@@ -2,12 +2,15 @@
 
 .ChallengeCardContainer {
     margin: 1%;
+    margin-top: 0;
+    margin-bottom: 0;
     font-family: $font-family;
+    flex: 1 1 calc(25% - 2%);
 }
 
 .ChallengeCard {
     transition: transform 0.5s;
-    width: 25rem;
+    width: 100%;
 }
 
 .Card {
@@ -18,11 +21,12 @@
     overflow: hidden;
     transform-style: preserve-3d;
     transition: transform 0.5s;
+    height: 100%;
 }
 
 .ChallengeCardContainer.hovered .ChallengeCard,
 .ChallengeCardContainer.hovered .Card {
-    transform:scale(1.02)
+    transform: scale(1.02);
 }
 
 .Card .ChallengeNumber {
@@ -76,6 +80,7 @@
     font-weight: 700;
     font-size: 17px;
     cursor: pointer;
+    border-color: none;
 }
 
 .green {
@@ -91,18 +96,6 @@
 }
 
 @media screen and (min-width: 1560px) {
-    .ChallengeCard {
-        width: 28rem;
-    }
-
-    .Card {
-        height: 15rem;
-    }
-
-    .ChallengeButton {
-        margin-top: 10%;
-    }
-
     .CardTitle span {
         font-size: medium;
     }

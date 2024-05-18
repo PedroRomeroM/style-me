@@ -197,54 +197,10 @@
     margin-bottom: 3%;
 }
 
-.Column {
-    width: 3%;
-    margin: auto;
-}
-
-.ColumnCenter {
-    width: 94%;
+.ChallengesGrid {
     display: flex;
-    justify-content: flex-start;
-    transition: transform 0.5s ease
-}
-
-.ArrowCarousel {
-    cursor: pointer;
-    font-size: 3rem;
-    color: $gray-text;
-    margin: auto;
-    opacity: 40%;
-}
-
-.ArrowCarousel:hover {
-    transform: scale(1.1);
-    transition: transform 0.5s ease
-}
-
-.challenge-item-enter {
-    opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 500ms ease, transform 500ms ease;
-}
-
-.challenge-item-enter-active {
-    opacity: 1;
-    transform: translateX(0%);
-    transition: opacity 500ms ease, transform 500ms ease;
-}
-
-.challenge-item-exit {
-    overflow: hidden;
-    opacity: 0;
-    transform: translateX(0%);
-}
-
-.challenge-item-exit-active {
-    overflow: hidden;
-    opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 10ms ease, transform 10ms ease;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 //modal

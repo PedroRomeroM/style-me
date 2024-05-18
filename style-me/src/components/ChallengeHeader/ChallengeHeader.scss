@@ -4,8 +4,8 @@
     width: 100%;
     font-family: $font-family;
     display: flex;
-    margin-right: 4.5%;
-    margin-left: 6.5%;
+    margin-left: 3.5%;
+    justify-content: space-between;
 }
 
 .ChallengeHeaderTitle {
@@ -19,61 +19,6 @@
     height: 2.5rem;
     width: 0.2rem;
     background-color: unset;
-}
-
-.Filter {
-    position: relative;
-    margin-left: auto;
-    transition: transform 0.5s;
-}
-
-.Filter input {
-    height: 2.5rem;
-    width: 15rem;
-    border-radius: 10px;
-    padding-left: 1rem;
-    text-align: left;
-    font-family: $font-family;
-    font-weight: 700;
-    font-size: 16px;
-    color: $gray-text;
-    background-color: $cor-primaria;
-    border: none;
-}
-
-.Filter:hover {
-    transform: scale(1.05);
-}
-
-input:focus {
-    outline: none;
-}
-
-.InputWithIcon {
-    padding-left: 30px;
-}
-
-.Icon {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: $gray-text;
-    opacity: 40%;
-    display: flex;
-    font-size: 1.25rem;
-}
-
-.FilterBar {
-    height: 1.5rem;
-    width: 0.1rem;
-    background-color: $gray-text;
-    margin-right: 1rem;
-    opacity: 90%;
-}
-
-.FilterIcon {
-    padding-top: 2px;
 }
 
 .green {
@@ -90,4 +35,52 @@ input:focus {
 
 .purple {
     background-color: $purple;
+}
+
+.ColumnLeftHeader {
+    display: flex;
+    width: auto;
+}
+
+.ColumnRightHeader {
+    margin-right: 5%;
+}
+
+.DifficultySelector {
+    display: flex;
+    width: 100%;
+}
+
+.DifficultyButton {
+    background-color: $cor-primaria;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    transition: transform 0.1s;
+}
+
+.DifficultyButton:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.DifficultyButton:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.DifficultyButton:hover {
+    background-color: darken($cor-primaria, 10%);
+}
+
+.DifficultyButton.active {
+    background: radial-gradient(circle,
+        rgba(206, 93, 217, 1) 0%,
+        rgba(123, 120, 247, 1) 100%);
+    transition: transform 0.1s;
+    transform: scale(1.1);
+    overflow: hidden;
 }
