@@ -6,8 +6,8 @@
 }
 
 .ChallengesContainer {
-    margin: 5%;
-    overflow: hidden;
+    margin: 5% 0;
+    background-color: none;
 }
 
 .Easy,
@@ -15,56 +15,18 @@
 .Hard {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     margin-bottom: 3%;
 }
 
-.Column {
-    width: 3%;
-    margin: auto;
-}
-
-.ColumnCenter {
-    width: 94%;
+.ChallengeList {
     display: flex;
-    justify-content: flex-start;
-    transition: transform 0.5s ease
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
-.ArrowCarousel {
-    cursor: pointer;
-    font-size: 3rem;
-    color: $gray-text;
-    margin: auto;
-    opacity: 40%;
+.ChallengeCard {
+    flex: 1 1 calc(25% - 2%);
+    border-radius: 8px;
+    padding: 5% 1%;
 }
-
-.ArrowCarousel:hover {
-    transform: scale(1.1);
-    transition: transform 0.5s ease
-}
-
-.challenge-item-enter {
-    opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 500ms ease, transform 500ms ease;
-}
-
-.challenge-item-enter-active {
-    opacity: 1;
-    transform: translateX(0%);
-    transition: opacity 500ms ease, transform 500ms ease;
-}
-
-.challenge-item-exit {
-    overflow: hidden;
-    opacity: 0;
-    transform: translateX(0%);
-}
-
-.challenge-item-exit-active {
-    overflow: hidden;
-    opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 10ms ease, transform 10ms ease;
-}
-
