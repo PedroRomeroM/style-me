@@ -1,88 +1,122 @@
-@import '../../variables';
+@import "../../variables";
 
 .DesafioBody {
-    background-color: #2D2C33;
-    display: flex;
-    flex-direction: row-reverse;
-    height: calc((100vh - 7.28rem));
-    justify-content: space-between;
-    padding-left: 2rem;
-    padding-right: 1rem;
+  background-color: #2d2c33;
+  display: flex;
+  flex-direction: row-reverse;
+  height: calc((100vh - 7.28rem));
+  justify-content: space-between;
+  padding-left: 2rem;
+  padding-right: 1rem;
 }
 
 .TelaDeDesafio {
-    display: flex;
-    flex-direction: column;
-    background-color: #2D2C33;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #2d2c33;
+  height: 100vh;
 }
 
 #gameIframe {
-    margin-top: 1rem;
-    margin-right: 1rem;
-    width: 60%;
-    border: none;
-    height: 95%;
-    background-color: #3D3B4A;
-    border-radius: 13px;
-    padding: 0.5rem;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  width: 60%;
+  border: none;
+  height: 95%;
+  background-color: #3d3b4a;
+  border-radius: 13px;
+  padding: 0.5rem;
 }
 
 #cssInput {
-    margin-left: 2rem;
-    width: 100%;
-    height: 60%;
-    font-size: large;
-    font-weight: bold;
+  margin-left: 2rem;
+  width: 100%;
+  height: 60%;
+  font-size: large;
+  font-weight: bold;
 }
 
 .BotaoFormatar {
-    display: block; 
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-    background-color: #6d6c66; 
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  display: block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #6d6c66;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-#botaoaplicarcss{
-    justify-content:space-between
+#botaoaplicarcss {
+  justify-content: space-between;
 }
 
 .divEnviar {
-    display: flex;
-    padding-right: 3rem;
-    flex-direction: column;
-    width: 20%;
-    justify-content: space-around;
-    height: 70%;
-    flex-grow: 1;
+  margin-top: 1rem;
+  display: flex;
+  padding: 3rem;
+  flex-direction: column;
+  width: 33%;
+  justify-content: space-between;
+  height: calc((100vh - 14rem));
+  padding-top: 1.5rem;
+  background-color: #3d3b4a;
+  border-radius: 12px;
 }
 
 #concluirDesafio {
-    display: none; 
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-    background-color: #4CAF50; 
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  display: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 #concluirDesafio:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
 #concluirDesafio:active {
-    background-color: #397d34; 
+  background-color: #397d34;
 }
 
-.editorWrapper {
-    overflow: hidden;
-    height: 100%;
+.DescricaoDesafio {
+  background-color: #2d2c33;
+  height: 10rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+  font-family: Roboto;
+  font-size: larger;
+  color: white;
+  padding: 3rem;
+  padding-top: 1rem;
+}
+
+.editorContainer {
+    .decorationsOverviewRuler {
+        display: none !important;
+    }
+    .monaco-scrollable-element{
+        left: 70px !important;
+    }
+    .monaco-editor{
+        border-radius: 8px;
+    }
+    .overflow-guard {
+        border-radius: 8px;
+    }
+  .margin {
+    width: 40px !important;
+  }
+  .margin-view-overlays {
+    width: 50px !important;
+    div {
+      width: 40px !important;
+    }
+  }
 }

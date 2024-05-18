@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react";
 import "./Desafio.scss";
 import Header from "../../components/Header/Header";
 
-const initialCss = `#Desafio {\n\n}`;
+const initialCss = `#DESAFIO {\n\n}`;
 const maxLines = 5;
 
 const GameComponent = () => {
@@ -24,7 +24,7 @@ const GameComponent = () => {
   }, [cssText]);
 
   const extractContent = (value) => {
-    const match = value.match(/#Desafio\s*{([^}]*)}/);
+    const match = value.match(/#DESAFIO\s*{([^}]*)}/);
     return match ? match[1].trim() : "";
   };
 
@@ -96,7 +96,7 @@ const GameComponent = () => {
 
     editor.onDidChangeModelContent(() => {
       let value = editor.getValue();
-      const start = "#Desafio {";
+      const start = "#DESAFIO {";
       const end = "}";
 
       const lines = value.split("\n");
@@ -116,7 +116,7 @@ const GameComponent = () => {
         }
 
         while (lines.length > maxLines) {
-          lines.splice(maxLines - 1, 1); 
+          lines.splice(maxLines - 1, 1);
         }
 
         value = lines.join("\n");
@@ -156,21 +156,35 @@ const GameComponent = () => {
       <div className="DesafioBody">
         <iframe id="gameIframe" ref={iframeRef} srcDoc={gameHtml} />
         <div className="divEnviar">
+          <div className="DescricaoDesafio">
+            <h2>DESCRIÇÃO:</h2>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </div>
           <Editor
             defaultLanguage="css"
+            height='50%'
             value={cssText}
             theme="vs-dark"
-            wrapperClassName="editorWrapper"
+            className="editorContainer"
             options={{
               readOnly: false,
+              fontFamily: "Roboto",
+              fontSize: 30,
               automaticLayout: true,
               minimap: { enabled: false },
               contextmenu: false,
+              scrollBeyondLastLine: false,
+              scrollbar: {
+                vertical: "hidden",
+                horizontal: "hidden",
+              },
             }}
             onMount={handleEditorDidMount}
           />
-          <button className="BotaoFormatar" onClick={handleFormat}>Formatar</button>
           <button id="concluirDesafio">Concluir desafio</button>
+          <button className="BotaoFormatar" onClick={handleFormat}>
+            Formatar
+          </button>
         </div>
       </div>
     </div>
