@@ -1,8 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import './ChallengeCard.scss';
 
-const UsuarioCriado = ({ color }) => {
+const ChallengeCard = ({ id, color, title, description }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const spanRef = useRef(null);
+
+  useEffect(() => {
+    const spanElement = spanRef.current;
+
+    function checkScroll() {
+      if (spanElement.scrollHeight > spanElement.clientHeight) {
+        spanElement.classList.remove("hide-scroll-buttons");
+      } else {
+        spanElement.classList.add("hide-scroll-buttons");
+      }
+    }
+
+    // Verifica o scroll ao carregar
+    checkScroll();
+
+    // Verifica o scroll ao redimensionar a janela
+    window.addEventListener("resize", checkScroll);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", checkScroll);
+    };
+  }, []);
 
   return (
     <div className={`ChallengeCardContainer ${isHovered ? 'hovered' : ''}`}
@@ -10,12 +34,12 @@ const UsuarioCriado = ({ color }) => {
          onMouseLeave={() => setIsHovered(false)}>
       <div className='ChallengeCard'>
         <div className='Card'>
-          <span className='ChallengeNumber'>#1</span>
+          <span className='ChallengeNumber'># {id}</span>
           <div className='CardInfoContainer'>
             <div className={`CardSideColor ${color}`} />
             <div className='CardTitle'>
-              <h2>Alterar a cor de um texto</h2>
-              <span>Um texto está difícil de ser visualizado em uma página, faça com que o usuário consiga ler o texto facilmente. </span>
+              <h2> {title} </h2>
+              <span ref={spanRef} className="CardDescription"> {description} </span>
               <button className={`ChallengeButton ${color}`}>VISUALIZAR</button>
             </div>
           </div>
@@ -25,4 +49,4 @@ const UsuarioCriado = ({ color }) => {
   );
 };
 
-export default UsuarioCriado;
+export default ChallengeCard;

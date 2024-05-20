@@ -1,62 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import React, { useState } from 'react';
 import Header from '../../components/Header/Header';
 import ChallengeCard from '../../components/ChallengeCard/ChallengeCard';
 import ChallengeHeader from '../../components/ChallengeHeader/ChallengeHeader';
 import './Challenges.scss';
-import { getUserInfo } from "../../services/ApiServices";
+import { getUserInfo, getChallenges } from "../../services/ApiServices";
 
 const ChallengesLayout = () => {
     // eslint-disable-next-line
     {/* eslint-disable jsx-a11y/anchor-is-valid */}
-    const initialChallenges = new Array(16).fill().map((_, index) => ({ id: index }));
     const [selectedDifficulty, setSelectedDifficulty] = useState('Fácil');
-    const [easyPage, setEasyPage] = useState(0);
-    const [mediumPage, setMediumPage] = useState(0);
-    const [hardPage, setHardPage] = useState(0);
-    const [profile, setProfile] = useState(null);
     const [username, setUsername] = useState();
-    
+    const [initialChallenges, setInitialChallenges] = useState();
+    const [profile, setProfile] = useState(null);
+
     const [img, setImg] = useState(); 
     const [imgType, setimgType] = useState();   
     const [totalScore, setTotalScore] = useState();
 
-    const challengesPerPage = 3;
-
-    const handleNext = (difficulty, direction) => {
-        switch (difficulty) {
-            case 'easy':
-                if (direction === 'next') {
-                    setEasyPage(prevPage => prevPage + 1);
-                } else {
-                    setEasyPage(prevPage => prevPage - 1);
-                }
-                break;
-            case 'medium':
-                if (direction === 'next') {
-                    setMediumPage(prevPage => prevPage + 1);
-                } else {
-                    setMediumPage(prevPage => prevPage - 1);
-                }
-                break;
-            case 'hard':
-                if (direction === 'next') {
-                    setHardPage(prevPage => prevPage + 1);
-                } else {
-                    setHardPage(prevPage => prevPage - 1);
-                }
-                break;
-            default:
-                break;
-        }
-    };
+    useEffect(() => {
+        renderChallenges('green')
+    }, [initialChallenges])
 
     useEffect(() => {
         const res = localStorage.getItem("auth");
         const parsed = JSON.parse(res);
         const token = parsed.token
         getUsersInfo(token)
+
+        const challenges = getChallenges(token)
+        challenges.then(res => {
+             setInitialChallenges(res);
+        }).catch (e => {
+            console.log(e)
+        })
+        
     }, [profile]);
+ 
 
     function getUsersInfo(token) {
         const profile = getUserInfo(token);
@@ -78,13 +57,30 @@ const ChallengesLayout = () => {
     };
 
     const renderChallenges = (difficulty) => {
-        return (
-            <div className="ChallengeList">
-                {initialChallenges.map(challenge => (
-                    <ChallengeCard key={challenge.id} color={difficulty} />
-                ))}
-            </div>
-        );
+        if (initialChallenges != null) {
+            return (
+                <div className="ChallengeList">
+                    {
+                        
+                        initialChallenges
+                        .filter(level => {
+                            if (difficulty === 'green') {
+                                return level.level === 1
+                            }else if (difficulty === 'yellow'){
+                                return level.level === 2
+                            }else{
+                                return level.level === 3
+                            }
+                        })
+                        .map(challenge => (
+                            <ChallengeCard key={challenge.id} id={challenge.id} color={difficulty} title={challenge.title} description={challenge.description} />
+                        ))
+    
+                    }
+                </div>
+            );
+        }
+        
     };
 
     const handleDifficultyChange = (difficulty) => {

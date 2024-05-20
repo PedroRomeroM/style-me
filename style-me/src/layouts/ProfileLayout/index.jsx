@@ -12,6 +12,8 @@ const ProfileLayout = () => {
     const [isHovered, setIsHovered] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDifficulty, setSelectedDifficulty] = useState('Fácil');
+    const [concludedPage, setConcludedPage] = useState();
+
     const modalRef = useRef(null);
 
     const [username, setUsername] = useState();

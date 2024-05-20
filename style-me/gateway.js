@@ -93,6 +93,18 @@ app.get(`/api/user`, verifyJWT, async (req, res) => {
 
 });
 
+
+// DESAFIOS
+app.get(`/api/ch`, verifyJWT, async (req, res) => {
+  let jwtInfo = req.infoUser
+
+  const response = await axios.get(`http://localhost:8083/api/ch/${jwtInfo.id}`)
+
+  res.send(response.data);
+
+});
+
+
 // Configuração da aplicação
 app.use(logger('dev'));
 app.use(helmet());

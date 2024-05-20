@@ -59,3 +59,21 @@ export async function getUserInfo(tk){
 
   return response;
 }
+
+export async function getChallenges(tk){
+
+  const response = await axios.get(`${BASE_URL}/api/ch`, {
+    headers: {
+      'x-access-token': tk,
+    }
+  })
+
+  // var level_1 = response.data.filter((e) => e.level === 1);
+  // var level_2 = response.data.filter((e) => e.level === 2);
+  // var level_3 = response.data.filter((e) => e.level === 3);
+
+  var levels = response.data;
+
+
+  return levels;
+}
