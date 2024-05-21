@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './Profile.scss';
 import Ranking from '../../components/Ranking/Ranking';
-import { getUserInfo } from "../../services/ApiServices";
+import { getUserInfo, getRanking } from "../../services/ApiServices";
 
 const ProfileLayout = () => {
     const initialChallenges = new Array(8).fill().map((_, index) => ({ id: index }));
@@ -24,6 +24,23 @@ const ProfileLayout = () => {
     const [profile, setProfile] = useState(null);
 
     const challengesPerPage = 3;
+
+    const [profile2, setProfile2] = useState(null);
+    const [ranking, setRanking] = useState(null);
+
+    useEffect(() => {
+        const res = localStorage.getItem("auth");
+        const parsed = JSON.parse(res);
+        const token = parsed.token
+
+        const ranking = getRanking(token)
+        ranking.then(res => {
+             setRanking(res.data)
+        }).catch (e => {
+            console.log(e)
+        })
+        
+    }, [profile2]);
     
 
     useEffect(() => {
@@ -160,7 +177,7 @@ const ProfileLayout = () => {
                                         <input type="password" className="Input" />
                                     </div>
                                 </div>
-                                <button>Atualizar</button>
+                                <button className="loginButtonProfile">Atualizar</button>
                             </div>
                         </div>
                     </div>
@@ -171,13 +188,13 @@ const ProfileLayout = () => {
                                 <h1>Ranking</h1>
                             </div>
                             <div className='RankingProfile'>
-                                <Ranking />
+                                <Ranking ranking={ranking}/>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className='ConcludedChallenges'>
+            {/* <div className='ConcludedChallenges'>
                 <div className='ChallengesContainer'>
                     <div className='Concluded'>
                         <ChallengeHeader 
@@ -192,7 +209,7 @@ const ProfileLayout = () => {
                     </div>
                 </div>
                 <footer></footer>
-            </div>
+            </div> */}
         </div>
     );
 };

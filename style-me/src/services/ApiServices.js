@@ -68,12 +68,19 @@ export async function getChallenges(tk){
     }
   })
 
-  // var level_1 = response.data.filter((e) => e.level === 1);
-  // var level_2 = response.data.filter((e) => e.level === 2);
-  // var level_3 = response.data.filter((e) => e.level === 3);
-
   var levels = response.data;
 
 
   return levels;
+}
+
+export async function getRanking(tk){
+
+  const response = await axios.get(`${BASE_URL}/api/user/ranking`, {
+    headers: {
+      'x-access-token': tk,
+    }
+  })
+
+  return response;
 }
