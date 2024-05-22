@@ -21,7 +21,7 @@ const orquestradorServiceProxy = httpProxy(process.env.ORQUESTRADOR_API);
 
 // JWT
 const jwtServiceProxy = httpProxy(process.env.AUTH_API + '/auth/login', {
-  function(res) { return res },
+  function(res) {  console.log(res); return res },
   proxyReqOptDecorator: function (proxyReqOpts) {
     // Alteração do header
     proxyReqOpts.headers['Content-Type'] = 'application/json';
@@ -109,6 +109,16 @@ app.get(`/api/user/ranking`, verifyJWT, async (req, res) => {
   let jwtInfo = req.infoUser
 
   const response = await axios.get(`http://localhost:8081/api/user/ranking/${jwtInfo.id}`)
+
+  res.send(response.data);
+
+});
+
+// DESAFIOS CONCLUIDOS
+app.get(`/api/ch/perfil`, verifyJWT, async (req, res) => {
+  let jwtInfo = req.infoUser
+
+  const response = await axios.get(`http://localhost:8083/api/ch/perfil/${jwtInfo.id}`)
 
   res.send(response.data);
 

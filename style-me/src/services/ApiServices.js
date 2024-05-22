@@ -84,3 +84,14 @@ export async function getRanking(tk){
 
   return response;
 }
+
+export async function getConcludedChallenges(tk){
+
+  const response = await axios.get(`${BASE_URL}/api/ch/perfil`, {
+    headers: {
+      'x-access-token': tk,
+    }
+  })
+
+  return response;
+}

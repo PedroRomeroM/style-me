@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './Profile.scss';
 import Ranking from '../../components/Ranking/Ranking';
-import { getUserInfo, getRanking } from "../../services/ApiServices";
+import { getUserInfo, getRanking, getConcludedChallenges} from "../../services/ApiServices";
 
 const ProfileLayout = () => {
     const initialChallenges = new Array(8).fill().map((_, index) => ({ id: index }));
@@ -26,7 +26,25 @@ const ProfileLayout = () => {
     const challengesPerPage = 3;
 
     const [profile2, setProfile2] = useState(null);
+    const [profile3, setProfile3] = useState(null);
     const [ranking, setRanking] = useState(null);
+
+    const [chDone, setchDone] = useState(null);
+
+    useEffect(() => {
+        const res = localStorage.getItem("auth");
+        const parsed = JSON.parse(res);
+        const token = parsed.token
+
+        const ranking = getConcludedChallenges(token)
+        ranking.then(res => {
+            console.log(res.data)
+            setchDone(res.data)
+        }).catch (e => {
+            console.log(e)
+        })
+        
+    }, [profile3]);
 
     useEffect(() => {
         const res = localStorage.getItem("auth");
@@ -115,11 +133,22 @@ const ProfileLayout = () => {
         setIsModalOpen(false);
     };
 
-    const renderChallenges = () => {
-        return initialChallenges.map(challenge => (
-            <ChallengeCard key={challenge.id} color={selectedDifficulty === 'Fácil' ? 'green' : selectedDifficulty === 'Médio' ? 'yellow' : 'red'} />
-        ));
+    const renderChallenges = (color) => {
+        if (chDone != null) {
+            return (
+                <div className="ChallengeListProfile">
+                    {
+                        chDone
+                        .map(challenge => (
+                            <ChallengeCard key={challenge.id} id={challenge.id} color={color} title={challenge.title} description={challenge.description} />
+                        ))
+    
+                    }
+                </div>
+            );
+        }
     };
+    
 
     return (
         <div className='Profile'>
@@ -194,7 +223,7 @@ const ProfileLayout = () => {
                     </div>
                 </div>
             </div>
-            {/* <div className='ConcludedChallenges'>
+            <div className='ConcludedChallenges'>
                 <div className='ChallengesContainer'>
                     <div className='Concluded'>
                         <ChallengeHeader 
@@ -202,14 +231,15 @@ const ProfileLayout = () => {
                             difficulty="Desafios Concluídos" 
                             selectedDifficulty={selectedDifficulty}
                             onSelectDifficulty={setSelectedDifficulty} 
+                            isPerfil={true}
                         />
                         <div className='ChallengesGrid'>
-                            {renderChallenges()}
+                            {renderChallenges('purple')}
                         </div>
                     </div>
                 </div>
                 <footer></footer>
-            </div> */}
+            </div>
         </div>
     );
 };
