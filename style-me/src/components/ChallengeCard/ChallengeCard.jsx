@@ -1,9 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import './ChallengeCard.scss';
+import { useNavigate } from 'react-router-dom';
 
 const ChallengeCard = ({ id, color, title, description }) => {
   const [isHovered, setIsHovered] = useState(false);
   const spanRef = useRef(null);
+
+  const navigate = useNavigate();
+
+  function desafio() {
+    navigate(`/desafio`)
+  }
 
   useEffect(() => {
     const spanElement = spanRef.current;
@@ -40,7 +47,7 @@ const ChallengeCard = ({ id, color, title, description }) => {
             <div className='CardTitle'>
               <h2> {title} </h2>
               <span ref={spanRef} className="CardDescription"> {description} </span>
-              <button className={`ChallengeButton ${color}`}>VISUALIZAR</button>
+              <button className={`ChallengeButton ${color}`} onClick={() => {desafio()}}>VISUALIZAR</button>
             </div>
           </div>
         </div>

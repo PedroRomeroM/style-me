@@ -24,8 +24,8 @@ const AppRouter = () => {
                     <Route path="/challenges" element={<ChallengesLayout />}/>
                     <Route path="/profile" element={<ProfileLayout />} />
                     <Route path="/ranking" element={<RankingLayout />} />
-                </Route>       
-                <Route path="/desafio" element={<DesafioLayout />} />
+                    <Route path="/desafio" element={<DesafioLayout />} />
+                </Route>                  
             </Routes>
         </Router>
     );

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import "./Desafio.scss";
 import Header from "../../components/Header/Header";
+import { getUserInfo } from "../../services/ApiServices";
 
 const initialCss = `#DESAFIO {\n\n}`;
 const maxLines = 5;
@@ -11,7 +12,41 @@ const GameComponent = () => {
   const [cssText, setCssText] = useState(initialCss);
   const iframeRef = useRef(null);
   const editorRef = useRef(null);
+  const [profile, setProfile] = useState(null);
   const previousValueRef = useRef(initialCss);
+  const [img, setImg] = useState(); 
+  const [imgType, setimgType] = useState();   
+  const [totalScore, setTotalScore] = useState();
+  const [username, setUsername] = useState();
+
+  useEffect(() => {
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token
+    getUsersInfo(token)
+
+    
+}, [profile]);
+
+
+function getUsersInfo(token) {
+    const profile = getUserInfo(token);
+    profile.then(res => {
+
+        setUsername(res.data.username)
+        setimgType(res.data.imgType)
+        setImg(res.data.img)
+
+        if (res.data.totalScore === null) {
+            setTotalScore(0);
+        } else {
+            setTotalScore(res.data.totalScore)
+        }
+
+      }).catch(e => {
+        console.log(e)
+    });
+};
 
   useEffect(() => {
     fetch("game1.html")
@@ -152,7 +187,7 @@ const GameComponent = () => {
 
   return (
     <div className="TelaDeDesafio">
-      <Header />
+      <Header username={username} img={img} imgType={imgType} totalScore={totalScore}/>
       <div className="DesafioBody">
         <iframe id="gameIframe" ref={iframeRef} srcDoc={gameHtml} />
         <div className="divEnviar">
