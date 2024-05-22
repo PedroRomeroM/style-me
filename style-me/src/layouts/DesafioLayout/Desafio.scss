@@ -98,6 +98,9 @@
 }
 
 .editorContainer {
+    .monaco-scrollable-element {
+        position: static !important;
+    }
     .decorationsOverviewRuler {
         display: none !important;
     }
