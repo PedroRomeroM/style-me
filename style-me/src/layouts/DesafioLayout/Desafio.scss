@@ -4,7 +4,7 @@
   background-color: #2d2c33;
   display: flex;
   flex-direction: row-reverse;
-  height: calc((100vh - 7.28rem));
+  height: 100%;
   justify-content: space-between;
   padding-left: 2rem;
   padding-right: 1rem;
@@ -26,6 +26,7 @@
   background-color: #3d3b4a;
   border-radius: 13px;
   padding: 0.5rem;
+  height: calc((100% - 3rem));
 }
 
 #cssInput {
@@ -59,10 +60,11 @@
   flex-direction: column;
   width: 33%;
   justify-content: space-between;
-  height: calc((100vh - 14rem));
+  height: calc((100% - 6.61rem));
   padding-top: 1.5rem;
   background-color: #3d3b4a;
   border-radius: 12px;
+  margin-right: 1rem;
 }
 
 #concluirDesafio {
@@ -98,20 +100,16 @@
 }
 
 .editorContainer {
-    .monaco-scrollable-element {
-        position: static !important;
+  .monaco-list {
+    .monaco-scrollable-element{
+      position: static !important;
     }
+  }
     .decorationsOverviewRuler {
         display: none !important;
     }
     .monaco-scrollable-element{
         left: 70px !important;
-    }
-    .monaco-editor{
-        border-radius: 8px;
-    }
-    .overflow-guard {
-        border-radius: 8px;
     }
   .margin {
     width: 40px !important;
@@ -121,5 +119,18 @@
     div {
       width: 40px !important;
     }
+  }
+}
+
+.divEditor {
+  height: 50%;
+  margin-top: 2rem;
+  background-color: #1e1e1e;
+  padding: 1rem;
+  padding-top: 2rem;
+  border-radius: 10px;
+
+  section {
+    height: 100% !important;
   }
 }

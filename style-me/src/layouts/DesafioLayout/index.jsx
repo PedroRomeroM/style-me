@@ -19,34 +19,34 @@ const GameComponent = () => {
   const [totalScore, setTotalScore] = useState();
   const [username, setUsername] = useState();
 
-  useEffect(() => {
-    const res = localStorage.getItem("auth");
-    const parsed = JSON.parse(res);
-    const token = parsed.token
-    getUsersInfo(token)
+//   useEffect(() => {
+//     const res = localStorage.getItem("auth");
+//     const parsed = JSON.parse(res);
+//     const token = parsed.token
+//     getUsersInfo(token)
 
     
-}, [profile]);
+// }, [profile]);
 
 
-function getUsersInfo(token) {
-    const profile = getUserInfo(token);
-    profile.then(res => {
+// function getUsersInfo(token) {
+//     const profile = getUserInfo(token);
+//     profile.then(res => {
 
-        setUsername(res.data.username)
-        setimgType(res.data.imgType)
-        setImg(res.data.img)
+//         setUsername(res.data.username)
+//         setimgType(res.data.imgType)
+//         setImg(res.data.img)
 
-        if (res.data.totalScore === null) {
-            setTotalScore(0);
-        } else {
-            setTotalScore(res.data.totalScore)
-        }
+//         if (res.data.totalScore === null) {
+//             setTotalScore(0);
+//         } else {
+//             setTotalScore(res.data.totalScore)
+//         }
 
-      }).catch(e => {
-        console.log(e)
-    });
-};
+//       }).catch(e => {
+//         console.log(e)
+//     });
+// };
 
   useEffect(() => {
     fetch("game1.html")
@@ -193,29 +193,31 @@ function getUsersInfo(token) {
         <div className="divEnviar">
           <div className="DescricaoDesafio">
             <h2>DESCRIÇÃO:</h2>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </div>
-          <Editor
-            defaultLanguage="css"
-            height='50%'
-            value={cssText}
-            theme="vs-dark"
-            className="editorContainer"
-            options={{
-              readOnly: false,
-              fontFamily: "Roboto",
-              fontSize: 30,
-              automaticLayout: true,
-              minimap: { enabled: false },
-              contextmenu: false,
-              scrollBeyondLastLine: false,
-              scrollbar: {
-                vertical: "hidden",
-                horizontal: "hidden",
-              },
-            }}
-            onMount={handleEditorDidMount}
-          />
+          <div className="divEditor">
+            <Editor
+              defaultLanguage="css"
+              height="50%"
+              value={cssText}
+              theme="vs-dark"
+              className="editorContainer"
+              options={{
+                readOnly: false,
+                fontFamily: "Roboto",
+                fontSize: 30,
+                automaticLayout: true,
+                minimap: { enabled: false },
+                contextmenu: false,
+                scrollBeyondLastLine: false,
+                scrollbar: {
+                  vertical: "hidden",
+                  horizontal: "hidden",
+                },
+              }}
+              onMount={handleEditorDidMount}
+            />
+          </div>
           <button id="concluirDesafio">Concluir desafio</button>
           <button className="BotaoFormatar" onClick={handleFormat}>
             Formatar
