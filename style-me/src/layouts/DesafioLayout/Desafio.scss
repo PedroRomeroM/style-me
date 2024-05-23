@@ -24,7 +24,7 @@
   border: none;
   height: 95%;
   background-color: #3d3b4a;
-  border-radius: 13px;
+  border-radius: 20px;
   padding: 0.5rem;
   height: calc((100% - 3rem));
 }
@@ -44,9 +44,15 @@
   color: white;
   background-color: #6d6c66;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
+  margin-top: 3%;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  transition: transform 0.5s;
+}
+
+.BotaoFormatar:hover {
+  transform: scale(1.05);
 }
 
 #botaoaplicarcss {
@@ -63,7 +69,7 @@
   height: calc((100% - 6.61rem));
   padding-top: 1.5rem;
   background-color: #3d3b4a;
-  border-radius: 12px;
+  border-radius: 20px;
   margin-right: 1rem;
 }
 
@@ -74,13 +80,16 @@
   color: white;
   background-color: #4caf50;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
+  margin-top: 3%;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  transition: transform 0.5s;
 }
 
 #concluirDesafio:hover {
   background-color: #45a049;
+  transform: scale(1.05);
 }
 
 #concluirDesafio:active {
@@ -90,13 +99,17 @@
 .DescricaoDesafio {
   background-color: #2d2c33;
   height: 10rem;
-  border-radius: 12px;
-  margin-top: 2rem;
+  border-radius: 20px;
   font-family: Roboto;
   font-size: larger;
   color: white;
   padding: 3rem;
   padding-top: 1rem;
+  transition: transform 0.5s;
+}
+
+.DescricaoDesafio:hover {
+  transform: scale(1.01);
 }
 
 .editorContainer {
@@ -124,13 +137,37 @@
 
 .divEditor {
   height: 50%;
-  margin-top: 2rem;
+  margin-top: 3%;
   background-color: #1e1e1e;
   padding: 1rem;
   padding-top: 2rem;
-  border-radius: 10px;
+  border-radius: 20px;
+  transition: transform 0.5s;
 
   section {
     height: 100% !important;
   }
+}
+
+.divEditor:hover {
+  transform: scale(1.01);
+}
+
+.voltar {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: $red;
+  border: none;
+  border-radius: 10px;
+  margin-top: 3%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  transition: transform 0.5s;
+}
+
+.voltar:hover {
+  background-color: darken($color: $red, $amount: 5);
+  transition: transform 0.5s;
+  transform: scale(1.05);
 }

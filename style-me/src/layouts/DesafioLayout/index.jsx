@@ -14,39 +14,39 @@ const GameComponent = () => {
   const editorRef = useRef(null);
   const [profile, setProfile] = useState(null);
   const previousValueRef = useRef(initialCss);
-  const [img, setImg] = useState(); 
-  const [imgType, setimgType] = useState();   
+  const [img, setImg] = useState();
+  const [imgType, setimgType] = useState();
   const [totalScore, setTotalScore] = useState();
   const [username, setUsername] = useState();
 
-//   useEffect(() => {
-//     const res = localStorage.getItem("auth");
-//     const parsed = JSON.parse(res);
-//     const token = parsed.token
-//     getUsersInfo(token)
-
-    
-// }, [profile]);
+  //   useEffect(() => {
+  //     const res = localStorage.getItem("auth");
+  //     const parsed = JSON.parse(res);
+  //     const token = parsed.token
+  //     getUsersInfo(token)
 
 
-// function getUsersInfo(token) {
-//     const profile = getUserInfo(token);
-//     profile.then(res => {
+  // }, [profile]);
 
-//         setUsername(res.data.username)
-//         setimgType(res.data.imgType)
-//         setImg(res.data.img)
 
-//         if (res.data.totalScore === null) {
-//             setTotalScore(0);
-//         } else {
-//             setTotalScore(res.data.totalScore)
-//         }
+  // function getUsersInfo(token) {
+  //     const profile = getUserInfo(token);
+  //     profile.then(res => {
 
-//       }).catch(e => {
-//         console.log(e)
-//     });
-// };
+  //         setUsername(res.data.username)
+  //         setimgType(res.data.imgType)
+  //         setImg(res.data.img)
+
+  //         if (res.data.totalScore === null) {
+  //             setTotalScore(0);
+  //         } else {
+  //             setTotalScore(res.data.totalScore)
+  //         }
+
+  //       }).catch(e => {
+  //         console.log(e)
+  //     });
+  // };
 
   useEffect(() => {
     fetch("game1.html")
@@ -185,9 +185,13 @@ const GameComponent = () => {
     }
   };
 
+  const goBack = () => {
+    window.history.back();
+  };
+
   return (
     <div className="TelaDeDesafio">
-      <Header username={username} img={img} imgType={imgType} totalScore={totalScore}/>
+      <Header username={username} img={img} imgType={imgType} totalScore={totalScore} />
       <div className="DesafioBody">
         <iframe id="gameIframe" ref={iframeRef} srcDoc={gameHtml} />
         <div className="divEnviar">
@@ -222,6 +226,7 @@ const GameComponent = () => {
           <button className="BotaoFormatar" onClick={handleFormat}>
             Formatar
           </button>
+          <button className="voltar" onClick={goBack}>Voltar</button>
         </div>
       </div>
     </div>

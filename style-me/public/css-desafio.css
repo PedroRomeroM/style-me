@@ -28,6 +28,11 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    transition: transform 0.5s;
+}
+
+.quadrado:hover {
+    transform: scale(1.05);
 }
 
 .areafantasma .objetivo2 {
@@ -35,6 +40,11 @@
     height: 8rem;
     margin: 10px;
     background-color: rgba(255, 0, 0, 0.295);
+}
+
+.objetivo2:hover {
+    transition: transform 0.5s;
+    transform: scale(1.05);
 }
 
 .areafantasma {
