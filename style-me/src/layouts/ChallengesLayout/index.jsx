@@ -29,6 +29,7 @@ const ChallengesLayout = () => {
 
         const challenges = getChallenges(token)
         challenges.then(res => {
+            console.log(res)
              setInitialChallenges(res);
         }).catch (e => {
             console.log(e)
@@ -63,6 +64,7 @@ const ChallengesLayout = () => {
                     {
                         
                         initialChallenges
+                        .filter(done => done.done == false)
                         .filter(level => {
                             if (difficulty === 'green') {
                                 return level.level === 1
