@@ -8,8 +8,8 @@ const ChallengeCard = ({ id, color, title, description }) => {
 
   const navigate = useNavigate();
 
-  function desafio() {
-    navigate(`/desafio`)
+  function desafio(id) {
+    navigate(`/desafio`, { state: { id } })
   }
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const ChallengeCard = ({ id, color, title, description }) => {
             <div className='CardTitle'>
               <h2> {title} </h2>
               <span ref={spanRef} className="CardDescription"> {description} </span>
-              <button className={`ChallengeButton ${color}`} onClick={() => {desafio()}}>VISUALIZAR</button>
+              <button className={`ChallengeButton ${color}`} onClick={() => {desafio(id)}}>VISUALIZAR</button>
             </div>
           </div>
         </div>

@@ -94,7 +94,7 @@ app.get(`/api/user`, verifyJWT, async (req, res) => {
 });
 
 
-// DESAFIOS
+// TELA INICIAL
 app.get(`/api/ch`, verifyJWT, async (req, res) => {
   let jwtInfo = req.infoUser
 
@@ -119,6 +119,17 @@ app.get(`/api/ch/perfil`, verifyJWT, async (req, res) => {
   let jwtInfo = req.infoUser
 
   const response = await axios.get(`http://localhost:8083/api/ch/perfil/${jwtInfo.id}`)
+
+  res.send(response.data);
+
+});
+
+// TELA DESAFIO
+app.get(`/api/ch/des`, verifyJWT, async (req, res) => {
+  let jwtInfo = req.infoUser
+  let idChallenge = req.headers['id-challenge'];
+
+  const response = await axios.get(`http://localhost:8083/api/ch/${jwtInfo.id}/${idChallenge}`)
 
   res.send(response.data);
 

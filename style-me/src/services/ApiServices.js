@@ -95,3 +95,45 @@ export async function getConcludedChallenges(tk){
 
   return response;
 }
+
+export async function getChallengeInfo(tk, idCh){
+
+  const response = await axios.get(`${BASE_URL}/api/ch/des`, {
+    headers: {
+      'x-access-token': tk,
+      'id-challenge': idCh
+    }
+  })
+
+  return response;
+}
+
+export async function fetchGameHtml(tk, idCh) {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/ch/des`, {
+      headers: {
+        'x-access-token': tk,
+        'id-challenge': idCh
+      }
+    })
+    return response.data.html; // Adjust this based on the actual response structure
+  } catch (error) {
+    console.error("Erro ao buscar HTML:", error);
+    return "";
+  }
+}
+
+export async function fetchGameCss(tk, idCh) {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/ch/des`, {
+      headers: {
+        'x-access-token': tk,
+        'id-challenge': idCh
+      }
+    })
+    return response.data.cssBase; // Adjust this based on the actual response structure
+  } catch (error) {
+    console.error("Erro ao buscar cssBase:", error);
+    return "";
+  }
+}

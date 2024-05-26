@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import "./Desafio.scss";
 import Header from "../../components/Header/Header";
-import { getUserInfo } from "../../services/ApiServices";
+import { getUserInfo, getChallengeInfo, fetchGameHtml, fetchGameCss } from "../../services/ApiServices";
+import { useLocation } from 'react-router-dom';
 
 const initialCss = `#DESAFIO {\n\n}`;
 const maxLines = 5;
@@ -10,6 +11,7 @@ const maxLines = 5;
 const GameComponent = () => {
   const [gameHtml, setGameHtml] = useState("");
   const [cssText, setCssText] = useState(initialCss);
+  const [gameCss, setGameCss] = useState(""); // Novo estado para o CSS do jogo
   const iframeRef = useRef(null);
   const editorRef = useRef(null);
   const [profile, setProfile] = useState(null);
@@ -18,40 +20,49 @@ const GameComponent = () => {
   const [imgType, setimgType] = useState();
   const [totalScore, setTotalScore] = useState();
   const [username, setUsername] = useState();
-
-  //   useEffect(() => {
-  //     const res = localStorage.getItem("auth");
-  //     const parsed = JSON.parse(res);
-  //     const token = parsed.token
-  //     getUsersInfo(token)
-
-
-  // }, [profile]);
-
-
-  // function getUsersInfo(token) {
-  //     const profile = getUserInfo(token);
-  //     profile.then(res => {
-
-  //         setUsername(res.data.username)
-  //         setimgType(res.data.imgType)
-  //         setImg(res.data.img)
-
-  //         if (res.data.totalScore === null) {
-  //             setTotalScore(0);
-  //         } else {
-  //             setTotalScore(res.data.totalScore)
-  //         }
-
-  //       }).catch(e => {
-  //         console.log(e)
-  //     });
-  // };
+  const { state } = useLocation();
+  const [description, setDescription] = useState();
 
   useEffect(() => {
-    fetch("game1.html")
-      .then((response) => response.text())
-      .then((html) => setGameHtml(html));
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token
+    getUsersInfo(token);
+    getChallengeInfoF(token, state.id);
+  }, [profile]);
+
+  function getChallengeInfoF(token, idCh) {
+    const challenge = getChallengeInfo(token, idCh);
+    challenge.then(res => {
+      setDescription(res.data.description)
+    }).catch(e => {
+      console.log(e)
+    });
+  }
+
+  function getUsersInfo(token) {
+    const profile = getUserInfo(token);
+    profile.then(res => {
+      setUsername(res.data.username)
+      setimgType(res.data.imgType)
+      setImg(res.data.img)
+
+      if (res.data.totalScore === null) {
+        setTotalScore(0);
+      } else {
+        setTotalScore(res.data.totalScore)
+      }
+    }).catch(e => {
+      console.log(e)
+    });
+  }
+
+  useEffect(() => {
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token
+    fetchGameHtml(token, state.id).then((html) => setGameHtml(html));
+    fetchGameCss(token, state.id).then((css) => setGameCss(css));
   }, []);
 
   useEffect(() => {
@@ -80,6 +91,7 @@ const GameComponent = () => {
     if (!styleElement) {
       styleElement = iframeDocument.createElement("style");
       styleElement.id = "dynamicStyles";
+      styleElement.textContent = gameCss;
       iframeDocument.head.appendChild(styleElement);
     }
 
@@ -90,6 +102,21 @@ const GameComponent = () => {
     } catch (error) {
       console.error("Erro ao aplicar CSS: ", error);
     }
+  };
+
+  const handleIframeLoad = () => {
+    const iframeDocument = iframeRef.current.contentDocument;
+    if (!iframeDocument) {
+      console.error("iframeDocument is null");
+      return;
+    }
+
+    let styleElement = iframeDocument.createElement("style");
+    styleElement.id = "initialStyles";
+    styleElement.textContent = gameCss;
+    iframeDocument.head.appendChild(styleElement);
+
+    applyStyles();
   };
 
   const checkForCompletion = (doc) => {
@@ -193,11 +220,16 @@ const GameComponent = () => {
     <div className="TelaDeDesafio">
       <Header username={username} img={img} imgType={imgType} totalScore={totalScore} />
       <div className="DesafioBody">
-        <iframe id="gameIframe" ref={iframeRef} srcDoc={gameHtml} />
+        <iframe
+          id="gameIframe"
+          ref={iframeRef}
+          srcDoc={gameHtml}
+          onLoad={handleIframeLoad}
+        />
         <div className="divEnviar">
           <div className="DescricaoDesafio">
             <h2>DESCRIÇÃO:</h2>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            {description}
           </div>
           <div className="divEditor">
             <Editor
