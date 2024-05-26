@@ -34,7 +34,7 @@ const Header = ({ username, img, imgType, totalScore }) => {
           <div className="userDetails">
             <div className="userDetailsContainer">
               <Link to="/profile" className="username">
-                <span lassName="text"> {username} </span>
+                <span className="text"> {username} </span>
               </Link>
               <Link to="/ranking" className="rankingInfo">
                 <span className="text"> {totalScore} </span>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import "./Desafio.scss";
 import Header from "../../components/Header/Header";
-import { getUserInfo, getChallengeInfo, fetchGameHtml, fetchGameCss } from "../../services/ApiServices";
+import { getUserInfo, getChallengeInfo, fetchGameHtml, fetchGameCss, ChDone } from "../../services/ApiServices";
 import { useLocation } from 'react-router-dom';
 
 const initialCss = `#DESAFIO {\n\n}`;
@@ -161,6 +161,14 @@ const GameComponent = () => {
     window.history.back();
   };
 
+  const handleConcluir = () => {
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token;
+
+    ChDone(token,state.id)
+  }
+
   return (
     <div className="TelaDeDesafio">
       <Header username={username} img={img} imgType={imgType} totalScore={totalScore} />
@@ -199,7 +207,7 @@ const GameComponent = () => {
               onMount={handleEditorDidMount}
             />
           </div>
-          <button id="concluirDesafio">Concluir desafio</button>
+          <button id="concluirDesafio" onClick={handleConcluir}>Concluir desafio</button>
           <button className="BotaoFormatar" onClick={handleFormat}>
             Formatar
           </button>

@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const { default: axios } = require('axios');
+const { debug } = require('console');
 require('dotenv').config();
 
 const app = express();
@@ -134,6 +135,26 @@ app.get(`/api/ch/des`, verifyJWT, async (req, res) => {
   res.send(response.data);
 
 });
+
+// Desafio user id
+app.post(`/api/ch/done`, verifyJWT, async (req, res) => {
+  let jwtInfo = req.infoUser.id;
+  let idChallenge = req.headers['id-challenge'];
+
+  let objSend = {
+    challengeId: idChallenge,
+    userId: jwtInfo   
+  };
+
+  try {
+    const response = await axios.post(`http://localhost:8080/api/orq/chdone`, objSend);
+    res.json(response.data); // Envia apenas os dados da resposta
+  } catch (error) {
+    console.error('Erro ao concluir desafio:', error);
+    res.status(500).json({ message: 'Erro ao concluir desafio' });
+  }
+});
+
 
 // Configuração da aplicação
 app.use(logger('dev'));
