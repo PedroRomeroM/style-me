@@ -1,21 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header/Header';
 import ChallengeCard from '../../components/ChallengeCard/ChallengeCard';
 import ChallengeHeader from '../../components/ChallengeHeader/ChallengeHeader';
 import './Challenges.scss';
+import { getUserInfo, getChallenges } from "../../services/ApiServices";
 
 const ChallengesLayout = () => {
-    const initialChallenges = new Array(16).fill().map((_, index) => ({ id: index }));
+    // eslint-disable-next-line
+    {/* eslint-disable jsx-a11y/anchor-is-valid */}
     const [selectedDifficulty, setSelectedDifficulty] = useState('Fácil');
+    const [username, setUsername] = useState();
+    const [initialChallenges, setInitialChallenges] = useState();
+    const [profile, setProfile] = useState(null);
+
+    const [img, setImg] = useState(); 
+    const [imgType, setimgType] = useState();   
+    const [totalScore, setTotalScore] = useState();
+
+    useEffect(() => {
+        renderChallenges('green')
+    }, [initialChallenges])
+
+    useEffect(() => {
+        const res = localStorage.getItem("auth");
+        const parsed = JSON.parse(res);
+        const token = parsed.token
+        getUsersInfo(token)
+
+        const challenges = getChallenges(token)
+        challenges.then(res => {
+            console.log(res)
+             setInitialChallenges(res);
+        }).catch (e => {
+            console.log(e)
+        })
+        
+    }, [profile]);
+ 
+
+    function getUsersInfo(token) {
+        const profile = getUserInfo(token);
+        profile.then(res => {
+
+            setUsername(res.data.username)
+            setimgType(res.data.imgType)
+            setImg(res.data.img)
+
+            if (res.data.totalScore === null) {
+                setTotalScore(0);
+            } else {
+                setTotalScore(res.data.totalScore)
+            }
+
+          }).catch(e => {
+            console.log(e)
+        });
+    };
 
     const renderChallenges = (difficulty) => {
-        return (
-            <div className="ChallengeList">
-                {initialChallenges.map(challenge => (
-                    <ChallengeCard key={challenge.id} color={difficulty} />
-                ))}
-            </div>
-        );
+        if (initialChallenges != null) {
+            return (
+                <div className="ChallengeList">
+                    {
+                        
+                        initialChallenges
+                        .filter(done => done.done == false)
+                        .filter(level => {
+                            if (difficulty === 'green') {
+                                return level.level === 1
+                            }else if (difficulty === 'yellow'){
+                                return level.level === 2
+                            }else{
+                                return level.level === 3
+                            }
+                        })
+                        .map(challenge => (
+                            <ChallengeCard key={challenge.id} id={challenge.id} color={difficulty} title={challenge.title} description={challenge.description} />
+                        ))
+    
+                    }
+                </div>
+            );
+        }
+        
     };
 
     const handleDifficultyChange = (difficulty) => {
@@ -24,7 +91,7 @@ const ChallengesLayout = () => {
 
     return (
         <div className='Challenges'>
-            <Header />
+            <Header username={username} img={img} imgType={imgType} totalScore={totalScore}/>
             <div className='ChallengesContainer'>
                 <div className={selectedDifficulty === 'Fácil' ? 'Fácil' : selectedDifficulty === 'Médio' ? 'Médio' : 'Difícil'}>
                     <ChallengeHeader

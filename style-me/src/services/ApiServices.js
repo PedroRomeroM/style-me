@@ -1,18 +1,181 @@
 import axios from "axios";
 
+const BASE_URL = "http://localhost:3001";
 
-const BASE_URL = 'http://localhost:3001/api';
+export async function createUser(formData) {
+  let objForm = Object.fromEntries(formData.entries());
 
-export async function createUser(formData){
+  async function getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.onerror = reject;
+    });
+  }
 
-    for (var pair of formData.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]); 
-    }
+  let base64String = "";
+  await getBase64(objForm.img)
+    .then((res) => (base64String = res))
+    .catch((err) => console.log(err));
 
-    const response = await axios.post(`${BASE_URL}/user`, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data"
-        }
+  base64String = base64String.replace("data:", "").replace(/^.+,/, "");
+
+  let objSend = {
+    email: objForm.email,
+    senha: objForm.senha,
+    username: objForm.username,
+    imgtype: objForm.img.type,
+    imgcontent: base64String,
+  };
+
+  const response = await axios.post(`${BASE_URL}/api/orq/cadastro`, objSend);
+
+  return response;
+}
+
+export async function login1(formData) {
+  const response = await axios.post(`${BASE_URL}/api/auth/login`, formData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response;
+}
+
+export async function getUserInfo(tk) {
+  const response = await axios.get(`${BASE_URL}/api/user`, {
+    headers: {
+      "x-access-token": tk,
+    },
+  });
+
+  return response;
+}
+
+export async function getChallenges(tk) {
+  const response = await axios.get(`${BASE_URL}/api/ch`, {
+    headers: {
+      "x-access-token": tk,
+    },
+  });
+
+  var levels = response.data;
+
+  return levels;
+}
+
+export async function getRanking(tk) {
+  const response = await axios.get(`${BASE_URL}/api/user/ranking`, {
+    headers: {
+      "x-access-token": tk,
+    },
+  });
+
+  return response;
+}
+
+export async function getConcludedChallenges(tk) {
+  const response = await axios.get(`${BASE_URL}/api/ch/perfil`, {
+    headers: {
+      "x-access-token": tk,
+    },
+  });
+
+  return response;
+}
+
+export async function getChallengeInfo(tk, idCh) {
+  const response = await axios.get(`${BASE_URL}/api/ch/des`, {
+    headers: {
+      "x-access-token": tk,
+      "id-challenge": idCh,
+    },
+  });
+
+  return response;
+}
+
+export async function fetchGameHtml(tk, idCh) {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/ch/des`, {
+      headers: {
+        "x-access-token": tk,
+        "id-challenge": idCh,
+      },
+    });
+    return response.data.html; // Adjust this based on the actual response structure
+  } catch (error) {
+    console.error("Erro ao buscar HTML:", error);
+    return "";
+  }
+}
+
+export async function fetchGameCss(tk, idCh) {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/ch/des`, {
+      headers: {
+        "x-access-token": tk,
+        "id-challenge": idCh,
+      },
+    });
+    return response.data.cssBase; 
+  } catch (error) {
+    console.error("Erro ao buscar cssBase:", error);
+    return "";
+  }
+}
+
+export async function ChDone(tk, idCh) {
+  try {
+    const response = await axios.post(`${BASE_URL}/api/ch/done`, {},{ 
+      headers: {
+        "x-access-token": tk,
+        "id-challenge": idCh,
+      },
     });
     return response;
+  } catch (error) {
+    console.error("Erro ao concluir desafio:", error);
+    return "";
+  }
+}
+
+export async function updateUser(tk, usern, imgFile) {
+  try {
+
+    let imgtype = ""
+    imgtype = imgFile.type
+
+    // Convertendo a imagem para base64
+    const toBase64 = file => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+
+    const imgBase64 = imgFile ? await toBase64(imgFile) : null;
+
+    let base64String = "";
+    base64String = imgBase64.replace("data:", "").replace(/^.+,/, "");
+
+
+    const response = await axios.put(`${BASE_URL}/api/user/up`, {}, {
+      headers: {
+        'x-access-token': tk,
+        'img': base64String,
+        'username': usern,
+        'img-type': imgtype,
+        'Content-Type': 'application/json'
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Erro ao atualizar o perfil:', error);
+    return '';
+  }
 }

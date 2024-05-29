@@ -6,18 +6,26 @@ import RankingLayout from './layouts/RankingLayout';
 import PasswordRecoverLayout from './layouts/PasswordRecoverLayout';
 import PasswordRecoverConfirmationLayout from './layouts/PasswordRecoverConfirmationLayout';
 import NewProfileLayout from './layouts/NewProfileLayout';
+import PrivateRoutes from './utils/PrivateRoutes';
+import DesafioLayout from './layouts/DesafioLayout';
 
 const AppRouter = () => {
     return (
         <Router>
             <Routes>
+                {/* PUBLIC */}
                 <Route exact path="/" element={<AutenticationLayout />} />
-                <Route path="/challenges" element={<ChallengesLayout />} />
-                <Route path="/profile" element={<ProfileLayout />} />
-                <Route path="/ranking" element={<RankingLayout />} />
                 <Route path="/recover-password" element={<PasswordRecoverLayout />} />
                 <Route path="/recover-password-confirmation" element={<PasswordRecoverConfirmationLayout />} />
                 <Route path="/new-profile" element={<NewProfileLayout />} />
+
+                {/* PROTECTED */}
+                <Route element={<PrivateRoutes />}>
+                    <Route path="/challenges" element={<ChallengesLayout />}/>
+                    <Route path="/profile" element={<ProfileLayout />} />
+                    <Route path="/ranking" element={<RankingLayout />} />
+                </Route>
+                <Route path="/desafio" element={<DesafioLayout />} />                  
             </Routes>
         </Router>
     );

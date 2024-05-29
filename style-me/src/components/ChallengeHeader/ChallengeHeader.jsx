@@ -3,7 +3,7 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
-const ChallengeHeader = ({ color, difficulty, selectedDifficulty, onSelectDifficulty }) => {
+const ChallengeHeader = ({ color, difficulty, selectedDifficulty, onSelectDifficulty, isPerfil }) => {
   return (
     <div className='ChallengeHeaderContainer'>
       <div className='ColumnLeftHeader'>
@@ -11,26 +11,30 @@ const ChallengeHeader = ({ color, difficulty, selectedDifficulty, onSelectDiffic
         <h1 className='ChallengeHeaderTitle'>{difficulty}</h1>
       </div>
       <div className='ColumnRightHeader'>
-        <div className="DifficultySelector">
-          <button
-            className={`DifficultyButton ${selectedDifficulty === 'Fácil' ? 'active' : ''}`}
-            onClick={() => onSelectDifficulty('Fácil')}
-          >
-            Fácil
-          </button>
-          <button
-            className={`DifficultyButton ${selectedDifficulty === 'Médio' ? 'active' : ''}`}
-            onClick={() => onSelectDifficulty('Médio')}
-          >
-            Médio
-          </button>
-          <button
-            className={`DifficultyButton ${selectedDifficulty === 'Difícil' ? 'active' : ''}`}
-            onClick={() => onSelectDifficulty('Difícil')}
-          >
-            Difícil
-          </button>
-        </div>
+        {isPerfil ? (
+          <div></div>
+        ) : 
+          <div className="DifficultySelector">
+            <button
+              className={`DifficultyButton ${selectedDifficulty === 'Fácil' ? 'active' : ''}`}
+              onClick={() => onSelectDifficulty('Fácil')}
+            >
+              Fácil
+            </button>
+            <button
+              className={`DifficultyButton ${selectedDifficulty === 'Médio' ? 'active' : ''}`}
+              onClick={() => onSelectDifficulty('Médio')}
+            >
+              Médio
+            </button>
+            <button
+              className={`DifficultyButton ${selectedDifficulty === 'Difícil' ? 'active' : ''}`}
+              onClick={() => onSelectDifficulty('Difícil')}
+            >
+              Difícil
+            </button>
+          </div>
+          }
       </div>
 
     </div>
