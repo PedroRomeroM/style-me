@@ -135,6 +135,9 @@
   }
 }
 
+.monaco-editor .suggest-widget {
+  z-index: 9999 !important;
+}
 .divEditor {
   height: 50%;
   margin-top: 3%;
@@ -143,7 +146,8 @@
   padding-top: 2rem;
   border-radius: 20px;
   transition: transform 0.5s;
-  overflow: hidden;
+  overflow: visible;
+  position: relative;
 
   section {
     height: 100% !important;
