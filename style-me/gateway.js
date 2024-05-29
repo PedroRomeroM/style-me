@@ -4,17 +4,17 @@ const httpProxy = require('express-http-proxy');
 const logger = require('morgan');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const { default: axios } = require('axios');
-const { debug } = require('console');
+const FormData = require('form-data');
 require('dotenv').config();
 
 const app = express();
 const port = 3001;
+app.use(cors({ origin: 'http://localhost:3000' }));
 
-app.use(cors({origin: 'http://localhost:3000'}));
+app.use(express.json());
 
 const tokenExpirationMin = 30; // Quantos minutos para o token expirar
 
@@ -22,7 +22,7 @@ const orquestradorServiceProxy = httpProxy(process.env.ORQUESTRADOR_API);
 
 // JWT
 const jwtServiceProxy = httpProxy(process.env.AUTH_API + '/auth/login', {
-  function(res) {  console.log(res); return res },
+  function(res) { console.log(res); return res },
   proxyReqOptDecorator: function (proxyReqOpts) {
     // Alteração do header
     proxyReqOpts.headers['Content-Type'] = 'application/json';
@@ -52,7 +52,6 @@ const jwtServiceProxy = httpProxy(process.env.AUTH_API + '/auth/login', {
       }
     } else {
       return userRes.status(401).json({ message: 'Login inválido!' });
-
     }
   },
 });
@@ -82,58 +81,52 @@ app.post('/api/orq/cadastro', (req, res, next) => orquestradorServiceProxy(req, 
 app.post('/api/auth/login', async (req, res, next) => { jwtServiceProxy(req, res, next); });
 
 app.get(`/api/user`, verifyJWT, async (req, res) => {
-  let jwtInfo = req.infoUser
+  let jwtInfo = req.infoUser;
 
-  const response = await axios.get(`http://localhost:8081/api/user/${jwtInfo.id}`)
+  const response = await axios.get(`http://localhost:8081/api/user/${jwtInfo.id}`);
 
   let email = jwtInfo.email;
 
   response.data.email = email;
 
   res.send(response.data);
-
 });
-
 
 // TELA INICIAL
 app.get(`/api/ch`, verifyJWT, async (req, res) => {
-  let jwtInfo = req.infoUser
+  let jwtInfo = req.infoUser;
 
-  const response = await axios.get(`http://localhost:8083/api/ch/${jwtInfo.id}`)
+  const response = await axios.get(`http://localhost:8083/api/ch/${jwtInfo.id}`);
 
   res.send(response.data);
-
 });
 
 // RANKING
 app.get(`/api/user/ranking`, verifyJWT, async (req, res) => {
-  let jwtInfo = req.infoUser
+  let jwtInfo = req.infoUser;
 
-  const response = await axios.get(`http://localhost:8081/api/user/ranking/${jwtInfo.id}`)
+  const response = await axios.get(`http://localhost:8081/api/user/ranking/${jwtInfo.id}`);
 
   res.send(response.data);
-
 });
 
 // DESAFIOS CONCLUIDOS
 app.get(`/api/ch/perfil`, verifyJWT, async (req, res) => {
-  let jwtInfo = req.infoUser
+  let jwtInfo = req.infoUser;
 
-  const response = await axios.get(`http://localhost:8083/api/ch/perfil/${jwtInfo.id}`)
+  const response = await axios.get(`http://localhost:8083/api/ch/perfil/${jwtInfo.id}`);
 
   res.send(response.data);
-
 });
 
 // TELA DESAFIO
 app.get(`/api/ch/des`, verifyJWT, async (req, res) => {
-  let jwtInfo = req.infoUser
+  let jwtInfo = req.infoUser;
   let idChallenge = req.headers['id-challenge'];
 
-  const response = await axios.get(`http://localhost:8083/api/ch/${jwtInfo.id}/${idChallenge}`)
+  const response = await axios.get(`http://localhost:8083/api/ch/${jwtInfo.id}/${idChallenge}`);
 
   res.send(response.data);
-
 });
 
 // Desafio user id
@@ -143,7 +136,7 @@ app.post(`/api/ch/done`, verifyJWT, async (req, res) => {
 
   let objSend = {
     challengeId: idChallenge,
-    userId: jwtInfo   
+    userId: jwtInfo
   };
 
   try {
@@ -155,13 +148,40 @@ app.post(`/api/ch/done`, verifyJWT, async (req, res) => {
   }
 });
 
+// Atualização do usuário
+app.put('/api/user/up', verifyJWT, async (req, res) => {
+  let idUser = req.infoUser.id;
+  let username = req.headers['username'];
+  let img = req.headers['img'];
+  let imgtype = req.headers['img-type'];
+
+  let payload = {
+    idUser: idUser,
+    username: username,
+    imgtype: imgtype,
+    img: img // img é uma string base64
+  };
+
+  try {
+    const response = await axios.put('http://localhost:8081/api/user', payload, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+    res.send(response.data);
+  } catch (error) {
+    console.error('Erro ao atualizar o perfil:', error);
+    res.status(500).json({ message: 'Erro ao atualizar o perfil' });
+  }
+});
+
 
 // Configuração da aplicação
 app.use(logger('dev'));
 app.use(helmet());
-app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 
 const server = http.createServer(app);
 server.listen(port, () => {

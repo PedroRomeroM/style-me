@@ -5,18 +5,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './Profile.scss';
 import Ranking from '../../components/Ranking/Ranking';
-import { getUserInfo, getRanking, getConcludedChallenges} from "../../services/ApiServices";
+import { getUserInfo, getRanking, getConcludedChallenges, updateUser} from "../../services/ApiServices";
 
 const ProfileLayout = () => {
-    const initialChallenges = new Array(8).fill().map((_, index) => ({ id: index }));
+
     const [isHovered, setIsHovered] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDifficulty, setSelectedDifficulty] = useState('Fácil');
     const [concludedPage, setConcludedPage] = useState();
+    const [file, setFile] = useState(null);
 
     const modalRef = useRef(null);
 
     const [username, setUsername] = useState();
+    const [usernamescreen, setUsernameScreen] = useState();
     
     const [img, setImg] = useState(); 
     const [imgType, setimgType] = useState();
@@ -38,7 +40,6 @@ const ProfileLayout = () => {
 
         const ranking = getConcludedChallenges(token)
         ranking.then(res => {
-            console.log(res.data)
             setchDone(res.data)
         }).catch (e => {
             console.log(e)
@@ -80,20 +81,6 @@ const ProfileLayout = () => {
         };
     }, [isModalOpen]);
 
-    const handleNext = (difficulty, direction) => {
-        switch (difficulty) {
-            case 'concluded':
-                if (direction === 'next') {
-                    setConcludedPage(prevPage => prevPage + 1);
-                } else {
-                    setConcludedPage(prevPage => prevPage - 1);
-                }
-                break;
-            default:
-                break;
-        }
-    };
-
     useEffect(() => {
         const res = localStorage.getItem("auth");
         const parsed = JSON.parse(res);
@@ -106,6 +93,7 @@ const ProfileLayout = () => {
         profile.then(res => {
 
             setUsername(res.data.username)
+            setUsernameScreen(res.data.username)
             setimgType(res.data.imgType)
             setImg(res.data.img)
             setEmail(res.data.email)
@@ -115,11 +103,6 @@ const ProfileLayout = () => {
         });
     };
 
-    const isLastPage = (difficulty, page) => {
-        const totalChallenges = initialChallenges.length;
-        const totalPages = Math.ceil(totalChallenges / challengesPerPage);
-        return page === totalPages - 1;
-    };
 
     const goBack = () => {
         window.history.back();
@@ -148,6 +131,24 @@ const ProfileLayout = () => {
             );
         }
     };
+
+    const handleImg = (event) => {
+        const file = event.target.files[0];
+    
+        if (file) {
+          const imageUrl = URL.createObjectURL(file);
+          setFile(file);
+        //   setImgRequest(file);
+        }
+    };
+
+    const updatePerfil = (username, img) => {
+        const res = localStorage.getItem("auth");
+        const parsed = JSON.parse(res);
+        const token = parsed.token
+
+        updateUser(token,username,img)
+    }
     
 
     return (
@@ -169,7 +170,7 @@ const ProfileLayout = () => {
                     <div className='ProfileHeaderColumnRight'>
                         <img src='./images/my-style.svg' alt='Logo' />
                         <div className="separador"></div>
-                        <h2 className='ProfileHeaderUsername'> {username} </h2>
+                        <h2 className='ProfileHeaderUsername'> {usernamescreen} </h2>
                     </div>
                 </div>
             </div>
@@ -178,8 +179,7 @@ const ProfileLayout = () => {
                     <span className="close" onClick={closeModal}>&times;</span>
                     <div className='modal-content-container'>
                         <h2 className='modal-title'>Nova foto de perfil</h2>
-                        <input className="file-input" type="file" accept="image/*" />
-                        <button className="SendButton">Enviar</button>
+                        <input className="file-input" type="file" accept="image/*" onChange={(e) => {handleImg(e); closeModal();}}/>
                     </div>
                 </div>
             </div>
@@ -193,10 +193,10 @@ const ProfileLayout = () => {
                             </div>
                             <div className='MyDataForm'>
                                 <span className='InputLabel'>Nome de usuário</span>
-                                <input type="text" className="Input" value={username}/>
+                                    <input type="text" className="Input" value={username} onChange={(e) => setUsername(e.target.value)}/>
                                 <span className='InputLabel'>Email</span>
-                                <input type="text" className="Input" value={email} readOnly/>
-                                <div className='MyDataFormColumns'>
+                                    <input type="text" className="Input" value={email} readOnly/>
+                                {/* <div className='MyDataFormColumns'>
                                     <div className='MyDataFormColumnLeft'>
                                         <span className='InputLabel'>Senha atual</span>
                                         <input type="password" className="Input" />
@@ -205,8 +205,8 @@ const ProfileLayout = () => {
                                         <span className='InputLabel'>Nova senha</span>
                                         <input type="password" className="Input" />
                                     </div>
-                                </div>
-                                <button className="loginButtonProfile">Atualizar</button>
+                                </div> */}
+                                <button className="loginButtonProfile" onClick={() => {updatePerfil(username, file);}}>Atualizar</button>
                             </div>
                         </div>
                     </div>

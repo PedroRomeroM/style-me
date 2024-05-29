@@ -142,3 +142,40 @@ export async function ChDone(tk, idCh) {
     return "";
   }
 }
+
+export async function updateUser(tk, usern, imgFile) {
+  try {
+
+    let imgtype = ""
+    imgtype = imgFile.type
+
+    // Convertendo a imagem para base64
+    const toBase64 = file => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+
+    const imgBase64 = imgFile ? await toBase64(imgFile) : null;
+
+    let base64String = "";
+    base64String = imgBase64.replace("data:", "").replace(/^.+,/, "");
+
+
+    const response = await axios.put(`${BASE_URL}/api/user/up`, {}, {
+      headers: {
+        'x-access-token': tk,
+        'img': base64String,
+        'username': usern,
+        'img-type': imgtype,
+        'Content-Type': 'application/json'
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Erro ao atualizar o perfil:', error);
+    return '';
+  }
+}
