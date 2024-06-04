@@ -33,6 +33,17 @@ const ProfileLayout = () => {
 
     const [chDone, setchDone] = useState(null);
 
+    const [senha, setSenha] = useState("");
+    const [confirmarSenha, setConfirmarSenha] = useState("");
+
+    const handleSenha = (event) => {
+        setSenha(event.target.value);
+    };
+    
+    const handleConfirmarSenha = (event) => {
+        setConfirmarSenha(event.target.value);
+    };
+
     useEffect(() => {
         const res = localStorage.getItem("auth");
         const parsed = JSON.parse(res);
@@ -142,10 +153,14 @@ const ProfileLayout = () => {
         }
     };
 
-    const updatePerfil = (username, img) => {
+    const updatePerfil = (username, img, senha, confirmarSenha) => {
         const res = localStorage.getItem("auth");
         const parsed = JSON.parse(res);
         const token = parsed.token
+
+        // if (!senha || !confirmarSenha) {
+            
+        // }
 
         updateUser(token,username,img)
     }
@@ -196,17 +211,17 @@ const ProfileLayout = () => {
                                     <input type="text" className="Input" value={username} onChange={(e) => setUsername(e.target.value)}/>
                                 <span className='InputLabel'>Email</span>
                                     <input type="text" className="Input" value={email} readOnly/>
-                                {/* <div className='MyDataFormColumns'>
+                                <div className='MyDataFormColumns'>
                                     <div className='MyDataFormColumnLeft'>
                                         <span className='InputLabel'>Senha atual</span>
-                                        <input type="password" className="Input" />
+                                        <input type="password" className="Input" onChange={handleSenha}/>
                                     </div>
                                     <div className='MyDataFormColumnRight'>
                                         <span className='InputLabel'>Nova senha</span>
-                                        <input type="password" className="Input" />
+                                        <input type="password" className="Input" onChange={handleConfirmarSenha}/>
                                     </div>
-                                </div> */}
-                                <button className="loginButtonProfile" onClick={() => {updatePerfil(username, file);}}>Atualizar</button>
+                                </div> 
+                                <button className="loginButtonProfile" onClick={() => {updatePerfil(username, file, senha, confirmarSenha);}}>Atualizar</button>
                             </div>
                         </div>
                     </div>
