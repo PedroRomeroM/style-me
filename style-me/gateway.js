@@ -163,10 +163,8 @@ app.put('/api/user/up', verifyJWT, async (req, res) => {
   };
 
   try {
+    console.log(payload)
     const response = await axios.put('http://localhost:8081/api/user', payload, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
     });
     res.send(response.data);
   } catch (error) {

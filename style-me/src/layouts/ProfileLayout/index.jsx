@@ -161,6 +161,8 @@ const ProfileLayout = () => {
         // if (!senha || !confirmarSenha) {
             
         // }
+        
+        console.log(senha, confirmarSenha)
 
         updateUser(token,username,img)
     }
