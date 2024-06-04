@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './Profile.scss';
 import Ranking from '../../components/Ranking/Ranking';
-import { getUserInfo, getRanking, getConcludedChallenges, updateUser} from "../../services/ApiServices";
+import { getUserInfo, getRanking, getConcludedChallenges, updateUser, updatePassword} from "../../services/ApiServices";
 
 const ProfileLayout = () => {
 
@@ -153,18 +153,20 @@ const ProfileLayout = () => {
         }
     };
 
+    const [errors, setErrors] = useState({});
+
     const updatePerfil = (username, img, senha, confirmarSenha) => {
         const res = localStorage.getItem("auth");
         const parsed = JSON.parse(res);
         const token = parsed.token
 
-        // if (!senha || !confirmarSenha) {
-            
-        // }
-        
-        console.log(senha, confirmarSenha)
-
-        updateUser(token,username,img)
+        if (senha && confirmarSenha) {
+            const validationErrors = {};
+            updatePassword(token, senha, confirmarSenha)
+        } 
+        if (username || img) {
+            updateUser(token,username,img)
+        }
     }
     
 
