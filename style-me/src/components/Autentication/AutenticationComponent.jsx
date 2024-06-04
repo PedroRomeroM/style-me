@@ -27,23 +27,36 @@ const AutenticationComponent = () => {
     setSenha(event.target.value);
   };
 
+  const [errors, setErrors] = useState({});
+
   function login(email, senha) {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("senha", senha);
-    var res = login1(formData);
 
-    res.then(data => {
-      var json = data.data
-      if (data.status === 200) {
-        auth(json)
-      } else {
-        alert('BOSTA')
-      }
-    }).catch(e => {
-      console.log(e)
-    });
+    const validationErrors = {};
+    if (!email ) {
+      validationErrors.email = "Email é obrigatório!"
+    }
+    if (!senha) {
+      validationErrors.senha = "Senha é obrigatório!"
+    }
 
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      var res = login1(formData);
+      res.then(data => {
+        var json = data.data
+        if (data.status === 200) {
+          auth(json)
+        } else {
+          alert('Erro no Login')
+        }
+      }).catch(e => {
+        console.log(e)
+      });
+    }
   }
 
   useEffect(() => {
@@ -71,7 +84,9 @@ const AutenticationComponent = () => {
                 <div className="separador"></div>
                 <div className="inputSection">
                   <input type="text" placeholder="Email" onChange={handleEmail}/>
+                  {errors.email && <span className="formError">{errors.email}</span>}
                   <input type="password" placeholder="Senha" onChange={handleSenha}/>
+                  {errors.senha && <span className="formError">{errors.senha}</span>}
                   <div className="loginLink">
                     <button className="loginButton" onClick={() => {login(email, senha);}}>Enviar</button>
                   </div>
