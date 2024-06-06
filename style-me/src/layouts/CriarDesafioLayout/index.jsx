@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
-import "./Desafio.scss";
+import "./CriarDesafio.scss";
 import Header from "../../components/Header/Header";
 import { getUserInfo, getChallengeInfo, fetchGameHtml, fetchGameCss, ChDone } from "../../services/ApiServices";
 import { useLocation } from 'react-router-dom';
@@ -70,7 +70,7 @@ const GameComponent = () => {
       styleElement.id = "dynamicStyles";
       iframeDocument.head.appendChild(styleElement);
     }
-    
+
     styleElement.textContent = gameCss + `\n#${gameArea.id} { ${extractContent(cssText)} }`;
     checkForCompletion(iframeDocument);
   };
@@ -166,48 +166,103 @@ const GameComponent = () => {
     const parsed = JSON.parse(res);
     const token = parsed.token;
 
-    ChDone(token,state.id)
+    ChDone(token, state.id)
   }
 
   return (
     <div className="TelaDeDesafio">
       <Header username={username} img={img} imgType={imgType} totalScore={totalScore} />
       <div className="DesafioBody">
-        <iframe
-          id="gameIframe"
-          ref={iframeRef}
-          srcDoc={gameHtml}
-          onLoad={applyStyles}
-        />
+        <div id="gameIframe">
+          <div className="ColumnLeft">
+            <span className='InputLabel'>CSS</span>
+            <div className="divEditor">
+              <Editor
+                defaultLanguage="css"
+                height="50%"
+                value={cssText}
+                theme="vs-dark"
+                className="editorContainer"
+                options={{
+                  readOnly: false,
+                  fontFamily: "Roboto",
+                  fontSize: 30,
+                  automaticLayout: false,
+                  minimap: { enabled: false },
+                  contextmenu: false,
+                  scrollBeyondLastLine: false,
+                  scrollbar: {
+                    vertical: "hidden",
+                    horizontal: "hidden",
+                  },
+                }}
+                onMount={handleEditorDidMount}
+              />
+            </div>
+            <span className='InputLabel bottom'>CSS Solução</span>
+            <div className="divEditor">
+              <Editor
+                defaultLanguage="css"
+                height="50%"
+                value={cssText}
+                theme="vs-dark"
+                className="editorContainer"
+                options={{
+                  readOnly: false,
+                  fontFamily: "Roboto",
+                  fontSize: 30,
+                  automaticLayout: false,
+                  minimap: { enabled: false },
+                  contextmenu: false,
+                  scrollBeyondLastLine: false,
+                  scrollbar: {
+                    vertical: "hidden",
+                    horizontal: "hidden",
+                  },
+                }}
+                onMount={handleEditorDidMount}
+              />
+            </div>
+          </div>
+          <div className="ColumnRight">
+            <span className='InputLabel'>HTML</span>
+            <div className="divEditor">
+              <Editor
+                defaultLanguage="html"
+                height="50%"
+                value={cssText}
+                theme="vs-dark"
+                className="editorContainer"
+                options={{
+                  readOnly: false,
+                  fontFamily: "Roboto",
+                  fontSize: 30,
+                  automaticLayout: false,
+                  minimap: { enabled: false },
+                  contextmenu: false,
+                  scrollBeyondLastLine: false,
+                  scrollbar: {
+                    vertical: "hidden",
+                    horizontal: "hidden",
+                  },
+                }}
+                onMount={handleEditorDidMount}
+              />
+            </div>
+          </div>
+        </div>
         <div className="divEnviar">
-          <div className="DescricaoDesafio">
-            <h2>DESCRIÇÃO:</h2>
-            {description}
-          </div>
-          <div className="divEditor">
-            <Editor
-              defaultLanguage="css"
-              height="50%"
-              value={cssText}
-              theme="vs-dark"
-              className="editorContainer"
-              options={{
-                readOnly: false,
-                fontFamily: "Roboto",
-                fontSize: 30,
-                automaticLayout: false, 
-                minimap: { enabled: false },
-                contextmenu: false,
-                scrollBeyondLastLine: false,
-                scrollbar: {
-                  vertical: "hidden",
-                  horizontal: "hidden",
-                },
-              }}
-              onMount={handleEditorDidMount}
-            />
-          </div>
-          <button id="concluirDesafio" onClick={handleConcluir}>Concluir desafio</button>
+          <span className='InputLabel'>Título</span>
+          <input type="text" className="Input title" />
+          <span className='InputLabel'>Dificuldade</span>
+          <select type="text" className="Input admin select">
+            <option value="1" className="values">Fácil</option>
+            <option value="2" className="values">Médio</option>
+            <option value="3" className="values">Difícil</option>
+          </select>
+          <span className='InputLabel'>Descrição</span>
+          <input type="text" className="Input description" />
+          <button className="concluir">Concluir desafio</button>
           <button className="BotaoFormatar" onClick={handleFormat}>
             Formatar
           </button>

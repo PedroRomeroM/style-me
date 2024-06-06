@@ -1,0 +1,215 @@
+@import "../../variables";
+
+.DesafioBody {
+  background-color: #2d2c33;
+  display: flex;
+  flex-direction: row-reverse;
+  height: 100%;
+  justify-content: space-between;
+  padding-left: 2rem;
+  padding-right: 1rem;
+}
+
+.TelaDeDesafio {
+  display: flex;
+  flex-direction: column;
+  background-color: #2d2c33;
+  height: 100vh;
+}
+
+#gameIframe {
+  display: table;
+}
+
+.ColumnLeft {
+  width: 90%;
+}
+
+.ColumnRight {
+  width: 90%;
+}
+
+#cssInput {
+  margin-left: 2rem;
+  width: 100%;
+  height: 60%;
+  font-size: large;
+  font-weight: bold;
+}
+
+.BotaoFormatar {
+  display: block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #6d6c66;
+  border: none;
+  border-radius: 10px;
+  margin-top: 3%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  transition: transform 0.5s;
+}
+
+.BotaoFormatar:hover {
+  transform: scale(1.05);
+}
+
+#botaoaplicarcss {
+  justify-content: space-between;
+}
+
+.divEnviar {
+  margin-top: 1rem;
+  display: flex;
+  padding: 3rem;
+  flex-direction: column;
+  width: 33%;
+  justify-content: space-between;
+  height: calc((100% - 6.61rem));
+  padding-top: 1.5rem;
+  background-color: #3d3b4a;
+  border-radius: 20px;
+  margin-right: 1rem;
+}
+
+#concluirDesafio {
+  display: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 10px;
+  margin-top: 3%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  transition: transform 0.5s;
+}
+
+#concluirDesafio:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+#concluirDesafio:active {
+  background-color: #397d34;
+}
+
+.DescricaoDesafio {
+  background-color: #2d2c33;
+  height: 10rem;
+  border-radius: 20px;
+  font-family: Roboto;
+  font-size: larger;
+  color: white;
+  padding: 3rem;
+  padding-top: 1rem;
+  transition: transform 0.5s;
+}
+
+.DescricaoDesafio:hover {
+  transform: scale(1.01);
+}
+
+.editorContainer {
+  .monaco-list {
+    .monaco-scrollable-element{
+      position: static !important;
+    }
+  }
+    .decorationsOverviewRuler {
+        display: none !important;
+    }
+    .monaco-scrollable-element{
+        left: 70px !important;
+    }
+  .margin {
+    width: 40px !important;
+  }
+  .margin-view-overlays {
+    width: 50px !important;
+    div {
+      width: 40px !important;
+    }
+  }
+}
+
+.divEditor {
+  height: 50%;
+  margin-top: 3%;
+  background-color: #1e1e1e;
+  padding: 1rem;
+  padding-top: 2rem;
+  border-radius: 20px;
+  transition: transform 0.5s;
+  overflow: hidden;
+
+  section {
+    height: 100% !important;
+  }
+}
+
+.divEditor:hover {
+  transform: scale(1.01);
+}
+
+.voltar {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: $red;
+  border: none;
+  border-radius: 10px;
+  margin-top: 3%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  transition: transform 0.5s;
+}
+
+.voltar:hover {
+  background-color: darken($color: $red, $amount: 5);
+  transition: transform 0.5s;
+  transform: scale(1.05);
+}
+
+.concluir {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: $green;
+  border: none;
+  border-radius: 10px;
+  margin-top: 3%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  transition: transform 0.5s;
+}
+
+.concluir:hover {
+  background-color: darken($color: $green, $amount: 5);
+  transition: transform 0.5s;
+  transform: scale(1.05);
+}
+
+.admin {
+  height: 10%;
+  width: 100%;
+}
+
+.title {
+  height: 10%;
+}
+
+.description {
+  height: 40%;
+}
+
+.values {
+  height: 100%;
+}
+
+.bottom {
+  padding-top: 1%;
+  display: flex;
+}

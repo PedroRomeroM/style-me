@@ -2,15 +2,11 @@ import React, { useState } from "react";
 import "./Header.scss";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUser,
-  faTrophy,
-  faSignOutAlt,
-} from "@fortawesome/free-solid-svg-icons"; // Importe os ícones que você precisa
+import { faUser, faTrophy, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
-const Header = ({ username, img, imgType, totalScore }) => {
+const Header = ({ username, img, imgType, totalScore, isAdmin }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-
+  isAdmin = true
   const handleMouseEnter = () => {
     setDropdownVisible(true);
   };
@@ -32,15 +28,21 @@ const Header = ({ username, img, imgType, totalScore }) => {
 
         <div className="groupRight">
           <div className="userDetails">
-            <div className="userDetailsContainer">
-              <Link to="/profile" className="username">
-                <span className="text"> {username} </span>
+            {isAdmin ? (
+              <Link to="/criar-desafio" className="adminButton">
+                <button className="addButton">Criar desafio</button>
               </Link>
-              <Link to="/ranking" className="rankingInfo">
-                <span className="text"> {totalScore} </span>
-                <FontAwesomeIcon icon={faTrophy} className="icon" />
-              </Link>
-            </div>
+            ) : (
+              <div className="userDetailsContainer">
+                <Link to="/profile" className="username">
+                  <span className="text"> {username} </span>
+                </Link>
+                <Link to="/ranking" className="rankingInfo">
+                  <span className="text"> {totalScore} </span>
+                  <FontAwesomeIcon icon={faTrophy} className="icon" />
+                </Link>
+              </div>
+            )}
           </div>
           <div
             className="profileDropdown"
