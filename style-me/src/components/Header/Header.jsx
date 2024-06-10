@@ -6,7 +6,6 @@ import { faUser, faTrophy, faSignOutAlt } from "@fortawesome/free-solid-svg-icon
 
 const Header = ({ username, img, imgType, totalScore, isAdmin }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  isAdmin = true
   const handleMouseEnter = () => {
     setDropdownVisible(true);
   };

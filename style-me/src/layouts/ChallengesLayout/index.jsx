@@ -3,7 +3,7 @@ import Header from '../../components/Header/Header';
 import ChallengeCard from '../../components/ChallengeCard/ChallengeCard';
 import ChallengeHeader from '../../components/ChallengeHeader/ChallengeHeader';
 import './Challenges.scss';
-import { getUserInfo, getChallenges } from "../../services/ApiServices";
+import { getUserInfo, getChallenges, getTypeUser } from "../../services/ApiServices";
 
 const ChallengesLayout = () => {
     // eslint-disable-next-line
@@ -16,6 +16,7 @@ const ChallengesLayout = () => {
     const [img, setImg] = useState(); 
     const [imgType, setimgType] = useState();   
     const [totalScore, setTotalScore] = useState();
+    const [isAdmin, setIsAdmin] = useState();
 
     useEffect(() => {
         renderChallenges('green')
@@ -26,10 +27,10 @@ const ChallengesLayout = () => {
         const parsed = JSON.parse(res);
         const token = parsed.token
         getUsersInfo(token)
+        getTipoUser(token)
 
         const challenges = getChallenges(token)
         challenges.then(res => {
-            console.log(res)
              setInitialChallenges(res);
         }).catch (e => {
             console.log(e)
@@ -37,6 +38,18 @@ const ChallengesLayout = () => {
         
     }, [profile]);
  
+    function getTipoUser (token) {
+        const response = getTypeUser(token);
+        response.then(res => {
+            if (res.data != 'ADM') {
+                setIsAdmin(false)
+            } else {
+                setIsAdmin(true)
+            }
+        }).catch (e => {
+            console.log(e)
+        })
+    }
 
     function getUsersInfo(token) {
         const profile = getUserInfo(token);
@@ -91,7 +104,7 @@ const ChallengesLayout = () => {
 
     return (
         <div className='Challenges'>
-            <Header username={username} img={img} imgType={imgType} totalScore={totalScore}/>
+            <Header username={username} img={img} imgType={imgType} totalScore={totalScore} isAdmin={isAdmin}/>
             <div className='ChallengesContainer'>
                 <div className={selectedDifficulty === 'Fácil' ? 'Fácil' : selectedDifficulty === 'Médio' ? 'Médio' : 'Difícil'}>
                     <ChallengeHeader

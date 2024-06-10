@@ -179,3 +179,13 @@ export async function updateUser(tk, usern, imgFile) {
     return '';
   }
 }
+
+export async function getTypeUser(tk) {
+  const response = await axios.get(`${BASE_URL}/api/tipo/user`, {
+    headers: {
+      "x-access-token": tk,
+    },
+  });
+
+  return response;
+}

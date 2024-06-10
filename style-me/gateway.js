@@ -175,6 +175,13 @@ app.put('/api/user/up', verifyJWT, async (req, res) => {
   }
 });
 
+app.get(`/api/tipo/user`, verifyJWT, async (req, res) => {
+  let jwtInfo = req.infoUser;
+  let tipoUser = jwtInfo.tipoUser;
+
+  res.send(tipoUser);
+}); 
+
 
 // Configuração da aplicação
 app.use(logger('dev'));
