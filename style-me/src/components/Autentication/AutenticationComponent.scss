@@ -1,5 +1,9 @@
 @import "../../variables";
 
+.formError{
+  color: red;
+}
+
 .MainContainer {
   position: relative;
   display: flex;

@@ -21,6 +21,7 @@ const NewProfileLayout = () => {
   const [imgRequest, setImgRequest] = useState(null);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
   const [isCreated, setIsCreated] = useState(false);
 
   const handleUsernameChange = (event) => {
@@ -33,6 +34,10 @@ const NewProfileLayout = () => {
 
   const handleSenha = (event) => {
     setSenha(event.target.value);
+  };
+
+  const handleConfirmarSenha = (event) => {
+    setConfirmarSenha(event.target.value);
   };
 
   const handleImg = (event) => {
@@ -91,26 +96,49 @@ const NewProfileLayout = () => {
     }
   }, [isCreated]);
 
-  function createUserProfile(user_name, file, email, senha) {
+  const [errors, setErrors] = useState({});
+
+  function createUserProfile(user_name, file, email, senha, confirmarSenha) {
 
     const formData = new FormData();
     formData.append("username", user_name);
     formData.append("img", file);
     formData.append("email", email);
     formData.append("senha", senha);
-    var response = createUser(formData);
 
-    response.then(data => {
-      if (data.status === 200) {
-        setIsCreated(true)
-      } else {
-        alert('BOSTA')
-      }  
-    }).catch(e => {
-      console.log(e)
-    });
+    const validationErrors = {};
+    if (!user_name) {
+      validationErrors.username = "Nome de usuário é obrigatório!"
+    }
+    if (!email ) {
+      validationErrors.email = "Email é obrigatório!"
+    }
+    if (!senha) {
+      validationErrors.senha = "Senha é obrigatório!"
+    }
+    if (!confirmarSenha) {
+      validationErrors.confirmarSenha = "Confirme sua senha!"
+    }else if (confirmarSenha !== senha) {
+      validationErrors.confirmarSenha = "Senhas não correspondem"
+    }
 
-    return 
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      var response = createUser(formData);
+
+      response.then(data => {
+        if (data.status === 200) {
+          setIsCreated(true)
+        } else {
+          alert('BOSTA')
+        }
+      }).catch(e => {
+        console.log(e)
+      });
+
+      return
+    }
   }
 
   return (
@@ -144,7 +172,9 @@ const NewProfileLayout = () => {
               type="text"
               className="NewProfileInput"
               onChange={handleUsernameChange}
+
             />
+            {errors.username && <span className="formError">{errors.username}</span>}
           </div>
           <div className="NewProfileModal">
             <div
@@ -177,10 +207,13 @@ const NewProfileLayout = () => {
           <div className="ColumnRight">
             <span className="InputLabelNewProfile">Email:</span>
             <input type="text" className="NewProfileInput" onChange={handleEmail}/>
+            {errors.email && <span className="formError">{errors.email}</span>}
             <span className="InputLabelNewProfile">Senha:</span>
-            <input type="text" className="NewProfileInput" onChange={handleSenha}/>
+            <input type="password" className="NewProfileInput" onChange={handleSenha}/>
+            {errors.senha && <span className="formError">{errors.senha}</span>}
             <span className="InputLabelNewProfile">Confirme sua senha:</span>
-            <input type="text" className="NewProfileInput" />
+            <input type="password" className="NewProfileInput" onChange={handleConfirmarSenha} />
+            {errors.confirmarSenha && <span className="formError">{errors.confirmarSenha}</span>}
           </div>
         </div>
         <div
@@ -189,7 +222,7 @@ const NewProfileLayout = () => {
           <button
             className="newProfileButton"
             onClick={() => {
-              createUserProfile(userName, file, email, senha);
+              createUserProfile(userName, file, email, senha, confirmarSenha);
             }}
           >
             Enviar

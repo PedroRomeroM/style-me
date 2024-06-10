@@ -163,15 +163,47 @@ app.put('/api/user/up', verifyJWT, async (req, res) => {
   };
 
   try {
+    console.log(payload)
     const response = await axios.put('http://localhost:8081/api/user', payload, {
+    });
+    res.send(response.data);
+  } catch (error) {
+    console.error('Erro ao atualizar o perfil:', error);
+    res.status(500).json({ message: 'Erro ao atualizar o perfil' });
+  }
+});
+
+// RECUPERAÇÃO DE SENHA
+app.get(`/api/rec/senha`, async (req, res) => {
+  let email = req.headers['email'];
+
+  const response = await axios.get(`http://localhost:8082/api/auth/recover/${email}`);
+
+  res.send(response.data);
+});
+
+// ATUALIZAR SENHA
+app.put('/api/password/up', verifyJWT, async (req, res) => {
+  let emailReq = req.infoUser.email;
+  let senhaReq = req.headers['senha'];
+  let confirmarSenhaReq = req.headers['confirmar-senha'];
+
+  let payload = {
+    email: emailReq,
+    senha: senhaReq,
+    newsenha: confirmarSenhaReq,
+  };
+
+  try {
+    const response = await axios.put('http://localhost:8082/api/auth', payload, {
       headers: {
         'Content-Type': 'application/json'
       },
     });
     res.send(response.data);
   } catch (error) {
-    console.error('Erro ao atualizar o perfil:', error);
-    res.status(500).json({ message: 'Erro ao atualizar o perfil' });
+    console.error('Erro ao atualizar a senha:', error);
+    res.status(500).json({ message: 'Erro ao atualizar a senha' });
   }
 });
 

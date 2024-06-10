@@ -180,12 +180,39 @@ export async function updateUser(tk, usern, imgFile) {
   }
 }
 
+
 export async function getTypeUser(tk) {
   const response = await axios.get(`${BASE_URL}/api/tipo/user`, {
     headers: {
       "x-access-token": tk,
     },
-  });
-
+  })
   return response;
+};
+
+  export async function recoverPassword(email) {
+    const response = await axios.get(`${BASE_URL}/api/rec/senha`, {
+      headers: {
+        "email": email
+      },
+    });
+  return response;
+}
+
+export async function updatePassword(tk, senha, confSenha) {
+  try {
+    const response = await axios.put(`${BASE_URL}/api/password/up`, {}, {
+      headers: {
+        'x-access-token': tk,
+        'senha': senha,
+        'confirmar-senha': confSenha,
+        'Content-Type': 'application/json'
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Erro ao atualizar o perfil:', error);
+    return '';
+  }
 }

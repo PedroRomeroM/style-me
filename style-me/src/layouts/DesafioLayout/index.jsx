@@ -170,7 +170,7 @@ const GameComponent = () => {
   }
 
   return (
-    <div className="TelaDeDesafio">
+<div className="TelaDeDesafio">
       <Header username={username} img={img} imgType={imgType} totalScore={totalScore} />
       <div className="DesafioBody">
         <iframe
