@@ -1,0 +1,96 @@
+@import "../../variables";
+
+.tabs-container {
+  width: 100%;
+  margin: 0;
+  height: 100%;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: none;
+}
+
+.tab-link {
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  background-color: #2d2c33;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+.tab-link:hover {
+  background-color: green;
+}
+
+.tab-link.active {
+  background-color: green;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+#cssInput {
+  margin-left: 2rem;
+  width: 100%;
+  height: 60%;
+  font-size: large;
+  font-weight: bold;
+}
+
+.divEditor {
+  height: 35rem;
+  margin-top: 3%;
+  background-color: #1e1e1e;
+  padding: 1rem;
+  padding-top: 2rem;
+  border-radius: 20px;
+  transition: transform 0.5s;
+  overflow: hidden;
+
+  section {
+    height: 100% !important;
+  }
+}
+
+.divEditor:hover {
+  transform: scale(1.01);
+}
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.dropdown-container label {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.styled-select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.styled-select:focus {
+  border-color: #007BFF;
+}
