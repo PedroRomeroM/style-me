@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import "./Tabs.scss";
 import EditorTex from "@monaco-editor/react";
 
-const initialCss = `#DESAFIO {\n\n}`;
+const initialCss = `#DESAFIO {\n\n\n\n}`;
 
 const Tabs = ({ maxLine }) => {
   const [activeTab, setActiveTab] = useState("tab2");
@@ -41,6 +41,7 @@ const Tabs = ({ maxLine }) => {
           <EditorTex
             defaultLanguage="css"
             theme="vs-dark"
+            value={initialCss}
             options={{
               readOnly: false,
               automaticLayout: true, 
