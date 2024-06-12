@@ -1,16 +1,34 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./Tabs.scss";
 import EditorTex from "@monaco-editor/react";
 
-const initialCss = `#DESAFIO {\n\n\n\n}`;
+const initialCss = `#DESAFIO {\n\n}`;
 
-const Tabs = ({ maxLine }) => {
+const Tabs = (dificuldade) => {
   const [activeTab, setActiveTab] = useState("tab2");
   const [cssText, setCssText] = useState(initialCss);
   const editorRef = useRef(null);
   const previousValueRef = useRef(initialCss);
 
-  const maxLines = maxLine;
+  const handleFormat = () => {
+    if (editorRef.current) {
+      editorRef.current.getAction("editor.action.formatDocument").run();
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.keyCode === 9) { 
+        event.preventDefault(); 
+        handleFormat(); // Formata o editor de texto
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown); 
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown); 
+    };
+  }, []);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -44,11 +62,11 @@ const Tabs = ({ maxLine }) => {
             value={initialCss}
             options={{
               readOnly: false,
-              automaticLayout: true, 
+              automaticLayout: true,
               fontFamily: "Roboto",
               fontSize: 30,
               minimap: { enabled: false },
-              contextmenu: false,
+              contextmenu: true,
               scrollBeyondLastLine: false,
               scrollbar: {
                 vertical: "hidden",
@@ -65,7 +83,7 @@ const Tabs = ({ maxLine }) => {
         <span className="InputLabel">HTML</span>
         <div className="divEditor">
           <div class="dropdown-container">
-            <label for="numberSelect">
+            <label htmlFor="numberSelect">
               Selecione o número de caixas no desafio:
             </label>
             <select id="numberSelect" class="styled-select">

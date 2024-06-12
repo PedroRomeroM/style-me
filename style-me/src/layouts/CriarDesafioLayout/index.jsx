@@ -8,6 +8,7 @@ import Tabs from "../../components/Tabs/Tabs";
 
 const initialCss = `#DESAFIO {\n\n}`;
 const maxLines = 5;
+const dificuldade = 3;
 
 const GameComponent = () => {
   const [gameHtml, setGameHtml] = useState("");
@@ -83,12 +84,6 @@ const GameComponent = () => {
     }, 100);
   };
 
-  const handleFormat = () => {
-    if (editorRef.current) {
-      editorRef.current.getAction("editor.action.formatDocument").run();
-    }
-  };
-
   const goBack = () => {
     window.history.back();
   };
@@ -99,12 +94,9 @@ const GameComponent = () => {
       <div className="DesafioBody">
         <div id="gameIframe">          
           <div className="ColumnLeft">
-            <Tabs /> 
-
+            <Tabs dificuldade={dificuldade}/> 
           </div>
           <div className="ColumnRight">
-            
-
           </div>
         </div>
         <div className="divEnviar">
@@ -119,9 +111,6 @@ const GameComponent = () => {
           <span className='InputLabel'>Descrição</span>
           <input type="text" className="Input description" />
           <button className="concluir">Concluir desafio</button>
-          <button className="BotaoFormatar" onClick={handleFormat}>
-            Formatar
-          </button>
           <button className="voltar" onClick={goBack}>Voltar
           </button>
         </div>
