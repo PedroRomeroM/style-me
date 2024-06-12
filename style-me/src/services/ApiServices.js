@@ -216,3 +216,13 @@ export async function updatePassword(tk, senha, confSenha) {
     return '';
   }
 }
+
+export async function deleteChallenge(tk, idChallenge) {
+  const response = await axios.delete(`${BASE_URL}/api/del/ch`, {
+    headers: {
+      "x-access-token": tk,
+      "challenge-id": idChallenge
+    },
+  })
+  return response;
+};

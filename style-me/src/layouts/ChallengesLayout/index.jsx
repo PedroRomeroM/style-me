@@ -13,6 +13,8 @@ const ChallengesLayout = () => {
     const [initialChallenges, setInitialChallenges] = useState();
     const [profile, setProfile] = useState(null);
 
+    const [tipoUser, setTipoUser] = useState();
+
     const [img, setImg] = useState(); 
     const [imgType, setimgType] = useState();   
     const [totalScore, setTotalScore] = useState();
@@ -35,6 +37,7 @@ const ChallengesLayout = () => {
         }).catch (e => {
             console.log(e)
         })
+
         
     }, [profile]);
  
@@ -42,9 +45,9 @@ const ChallengesLayout = () => {
         const response = getTypeUser(token);
         response.then(res => {
             if (res.data != 'ADM') {
-                setIsAdmin(false)
+                setIsAdmin('false')
             } else {
-                setIsAdmin(true)
+                setIsAdmin('true')
             }
         }).catch (e => {
             console.log(e)
@@ -88,7 +91,7 @@ const ChallengesLayout = () => {
                             }
                         })
                         .map(challenge => (
-                            <ChallengeCard key={challenge.id} id={challenge.id} color={difficulty} title={challenge.title} description={challenge.description} />
+                            <ChallengeCard key={challenge.id} id={challenge.id} color={difficulty} title={challenge.title} description={challenge.description} isAdmin={isAdmin}/>
                         ))
     
                     }

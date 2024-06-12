@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Header.scss";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +14,10 @@ const Header = ({ username, img, imgType, totalScore, isAdmin }) => {
     setDropdownVisible(false);
   };
 
+  useEffect(() => {
+    console.log(isAdmin)
+  }, []);
+
   function logOut() {
     localStorage.removeItem("auth");
   }
@@ -27,7 +31,7 @@ const Header = ({ username, img, imgType, totalScore, isAdmin }) => {
 
         <div className="groupRight">
           <div className="userDetails">
-            {isAdmin ? (
+            {isAdmin === 'true' ? (
               <Link to="/criar-desafio" className="adminButton">
                 <button className="addButton">Criar desafio</button>
               </Link>

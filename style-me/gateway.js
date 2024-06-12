@@ -214,6 +214,19 @@ app.get(`/api/tipo/user`, verifyJWT, async (req, res) => {
   res.send(tipoUser);
 }); 
 
+app.delete(`/api/del/ch`, verifyJWT, async (req, res) => {
+  let chId = req.headers['challenge-id'];
+
+  try {
+    const response = await axios.delete(`http://localhost:8080/api/orq/chdelete/${chId}`);
+    res.send(response.data);
+  } catch (error) {
+    console.error('Erro ao excluir o desafio:', error);
+    res.status(500).json({ message: 'Erro ao excluir o desafio' });
+  }
+
+}); 
+
 
 // Configuração da aplicação
 app.use(logger('dev'));
