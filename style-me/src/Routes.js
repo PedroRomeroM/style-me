@@ -30,10 +30,9 @@ const AppRouter = () => {
                 </Route>
 
                 <Route element={<PrivateRoutesAdmin/>}>
-                    <Route path="/criar-desafio" element={<CriarDesafioLayout />}/>
+                    <Route path="/criar-desafio" element={<CriarDesafioLayout />}/>  
                     <Route path="/challenges" element={<ChallengesLayout />}/> 
-                </Route>      
-                           
+                </Route>            
             </Routes>
         </Router>
     );

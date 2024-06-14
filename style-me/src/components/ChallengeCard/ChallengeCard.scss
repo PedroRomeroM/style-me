@@ -108,6 +108,20 @@
     background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="gray" d="M7 10l5 5 5-5z"/></svg>') no-repeat center center;
 }
 
+.deleteIcon{
+    cursor: pointer;
+    transition: transform 0.5s;
+}
+
+.deleteIcon:hover{
+    transform: scale(1.15);
+}
+
+.deleteDiv{
+    margin-top: 9.6rem;
+    margin-left: 6rem;
+}
+
 .ChallengeButton {
     margin-top: 8%;
     margin-bottom: 5%;
