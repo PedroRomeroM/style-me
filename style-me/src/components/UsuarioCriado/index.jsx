@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./UsuarioCriado.scss";
 
-const UsuarioCriado = ({ color }) => {
+const UsuarioCriado = ({ color, text }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <>
-      <h1 className="UserCreatedH1">Usuário criado com sucesso!!!</h1>
+      <h1 className="UserCreatedH1">{ text }</h1>
       <span className="animationSpan"></span>
       <span className="animationSpan"></span>
       <span className="animationSpan"></span>

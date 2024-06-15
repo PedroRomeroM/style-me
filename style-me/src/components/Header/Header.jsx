@@ -38,7 +38,7 @@ const Header = ({ username, img, imgType, totalScore, isAdmin }) => {
             ) : (
               <div className="userDetailsContainer">
                 <Link to="/profile" className="username">
-                  <span className="text"> {username} </span>
+                  <span className="textusername"> {username} </span>
                 </Link>
                 <Link to="/ranking" className="rankingInfo">
                   <span className="text"> {totalScore} </span>
@@ -57,25 +57,45 @@ const Header = ({ username, img, imgType, totalScore, isAdmin }) => {
               src={`data:${imgType};base64,${img}`}
               alt="Foto de perfil"
             />
-            <div className={`dropdownContent ${dropdownVisible ? "show" : ""}`}>
-              <Link to="/profile">
-                <FontAwesomeIcon icon={faUser} className="icon" />{" "}
-                <span className="text">Meu Perfil</span>
-              </Link>
-              <Link to="/ranking">
-                <FontAwesomeIcon icon={faTrophy} className="icon" />{" "}
-                <span className="text">Ranking</span>
-              </Link>
-              <Link
-                to="/"
-                onClick={() => {
-                  logOut();
-                }}
-              >
-                <FontAwesomeIcon icon={faSignOutAlt} className="icon" />{" "}
-                <span className="text">Sair</span>
-              </Link>
-            </div>
+            {isAdmin === 'true' ? (
+              <div className={`dropdownContent ${dropdownVisible ? "show" : ""}`}>
+                <Link to="/ranking">
+                  <FontAwesomeIcon icon={faTrophy} className="icon" />{" "}
+                  <span className="text">Ranking</span>
+                </Link>
+                <Link
+                  to="/"
+                  onClick={() => {
+                    logOut();
+                  }}
+                >
+                  <FontAwesomeIcon icon={faSignOutAlt} className="icon" />{" "}
+                  <span className="text">Sair</span>
+                </Link>
+              </div>
+            ) : (
+              <div className={`dropdownContent ${dropdownVisible ? "show" : ""}`}>
+                <Link to="/profile">
+                  <FontAwesomeIcon icon={faUser} className="icon" />{" "}
+                  <span className="text">Meu Perfil</span>
+                </Link>
+                <Link to="/ranking">
+                  <FontAwesomeIcon icon={faTrophy} className="icon" />{" "}
+                  <span className="text">Ranking</span>
+                </Link>
+                <Link
+                  to="/"
+                  onClick={() => {
+                    logOut();
+                  }}
+                >
+                  <FontAwesomeIcon icon={faSignOutAlt} className="icon" />{" "}
+                  <span className="text">Sair</span>
+                </Link>
+              </div>
+            )
+            }
+
           </div>
         </div>
       </header>

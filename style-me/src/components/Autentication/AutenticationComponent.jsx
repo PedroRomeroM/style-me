@@ -3,6 +3,7 @@ import Typed from "typed.js";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { login1 } from "../../services/ApiServices";
+import Message from "../../components/UsuarioCriado";
 
 const AutenticationComponent = () => {
   // eslint-disable-next-line
@@ -13,6 +14,7 @@ const AutenticationComponent = () => {
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [errorMsg, setErrorMsg] = useState();
 
   function auth(response){
     localStorage.setItem('auth', JSON.stringify(response));
@@ -44,6 +46,7 @@ const AutenticationComponent = () => {
 
     setErrors(validationErrors);
 
+
     if (Object.keys(validationErrors).length === 0) {
       var res = login1(formData);
       res.then(data => {
@@ -54,8 +57,18 @@ const AutenticationComponent = () => {
           alert('Erro no Login')
         }
       }).catch(e => {
-        console.log(e)
+        var err = e.response.data.message
+        setErrorMsg(err)
+        // alert('Erro ao fazer o login: ' + err)
       });
+    }
+  }
+
+  function checkMsgErr () {
+    if (errorMsg != null) {
+      return (
+        <Message text={'Erro ao fazer o login: ' + errorMsg} />
+      )
     }
   }
 
@@ -78,6 +91,9 @@ const AutenticationComponent = () => {
       <div className="MainContainer">
         <div className="formContainer">
           <div className="LoginContainer">
+            {
+               checkMsgErr() 
+            }
             <div className="LeftContainer">
               <div className="LoginSection">
                 <img src="./images/logo.svg" alt="Logo do site" />
