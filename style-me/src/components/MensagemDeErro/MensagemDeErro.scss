@@ -1,0 +1,27 @@
+@import '../../variables';
+
+.UserCreatedH1 {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-family;
+    color: white;
+    position: fixed;
+    z-index: 9999;
+    right: 1rem;
+    top: 5rem;
+    background: linear-gradient(25deg,
+    rgba(85, 64, 218, 1) 7.17%,
+    rgba(150, 49, 168, 1) 100%);
+    border-radius: 20px; 
+    width: 35rem;  
+    height: 8rem;
+    animation: fadeOut ease-in-out 5s;
+    opacity: 0;
+}
+
+
+
+
+

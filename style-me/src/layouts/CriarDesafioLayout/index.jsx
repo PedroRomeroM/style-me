@@ -1,122 +1,144 @@
 import React, { useState, useEffect, useRef } from "react";
-import Editor from "@monaco-editor/react";
 import "./CriarDesafio.scss";
 import Header from "../../components/Header/Header";
-import { getUserInfo, getChallengeInfo, fetchGameHtml, fetchGameCss, ChDone } from "../../services/ApiServices";
-import { useLocation } from 'react-router-dom';
-import Tabs from "../../components/Tabs/Tabs";
+import DesafioComponent from "../../components/DesafioComponent";
 
-const initialCss = `#DESAFIO {\n\n}`;
-const maxLines = 5;
-const dificuldade = 3;
-
-const GameComponent = () => {
-  const [gameHtml, setGameHtml] = useState("");
-  const [cssText, setCssText] = useState(initialCss);
-  const [gameCss, setGameCss] = useState("");
-  const iframeRef = useRef(null);
-  const editorRef = useRef(null);
-  const previousValueRef = useRef(initialCss);
-  const [profile, setProfile] = useState(null);
+const CriarDesafio = () => {
   const [img, setImg] = useState();
   const [imgType, setImgType] = useState();
   const [totalScore, setTotalScore] = useState();
   const [username, setUsername] = useState();
-  const { state } = useLocation();
-  const [description, setDescription] = useState();
-
-  const extractContent = (value) => {
-    const match = value.match(/#DESAFIO\s*{([^}]*)}/);
-    return match ? match[1].trim() : "";
-  };
-
-  const handleEditorDidMount = (editor, monaco) => {
-    editorRef.current = editor;
-    editor.onDidChangeModelContent(() => {
-      let value = editor.getValue();
-      const start = "#DESAFIO {";
-      const end = "}";
-
-      const lines = value.split("\n");
-
-      if (lines[0] !== start || !value.endsWith(end)) {
-        value = previousValueRef.current;
-      } else {
-        for (let i = 0; i < lines.length - 1; i++) {
-          const semicolonIndex = lines[i].lastIndexOf(";");
-          if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
-            lines[i] = lines[i].substring(0, semicolonIndex + 1);
-          }
-        }
-
-        if (lines[lines.length - 1].trim() !== end) {
-          lines[lines.length - 1] = end;
-        }
-
-        while (lines.length > maxLines) {
-          lines.splice(maxLines - 1, 1);
-        }
-
-        value = lines.join("\n");
-        previousValueRef.current = value;
-      }
-
-      if (value !== editor.getValue()) {
-        editor.executeEdits("", [
-          {
-            range: new monaco.Range(
-              1,
-              1,
-              editor.getModel().getLineCount(),
-              editor.getModel().getLineMaxColumn(editor.getModel().getLineCount())
-            ),
-            text: value,
-            forceMoveMarkers: true,
-          },
-        ]);
-      }
-
-      setCssText(value);
-    });
-
-    setTimeout(() => {
-      editor.layout();
-    }, 100);
-  };
+  const [dificuldade, setDificuldade] = useState("");
+  const [telaAtual, setTelaAtual] = useState(1);
+  const [descricao, setDescricao] = useState("");
+  const [numeroDeCaixas, setNumeroDeCaixas] = useState(0);
+  const [title, setTitle] = useState("");
+  const [cssSolucao, setCssSolucao] = useState("");
+  const [cssBase, setCssBase ] = useState("");
+  const [htmlBase, setGameHtmlBase] = useState("");
 
   const goBack = () => {
     window.history.back();
   };
 
+  //Variaveis usadas para integrar com o back
+    // title
+    // dificuldade
+    // descricao
+    // htmlBase
+    // cssBase
+    // cssSolucao
+
+  const handleDificuldadeChange = (event) => {
+    setDificuldade(event.target.value);
+  };
+
+  const handleDescricao = (event) => {
+    setDescricao(event.target.value);
+  };
+
+  const handleNumeroDeCaixas = (event) => {
+    setNumeroDeCaixas(event.target.value);
+  };
+
+  const handleTitle = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const handleTela = () => {
+    if (telaAtual === 1) {
+      setTelaAtual(2);
+    }
+    if (telaAtual === 2) {
+      setTelaAtual(1);
+    }
+  };
+
   return (
     <div className="TelaDeDesafio">
-      <Header username={username} img={img} imgType={imgType} totalScore={totalScore} />
-      <div className="DesafioBody">
-        <div id="gameIframe">          
-          <div className="ColumnLeft">
-            <Tabs dificuldade={dificuldade}/> 
-          </div>
-          <div className="ColumnRight">
+      <Header
+        username={username}
+        img={img}
+        imgType={imgType}
+        totalScore={totalScore}
+      />
+      {telaAtual == 1 ? (
+        <div className="DesafioBody">
+          <div className="divEnviar">
+            <span className="InputLabel">Título</span>
+            <input
+              type="text"
+              className="Input title"
+              onInput={handleTitle}
+              value={title}
+            />
+            <span className="InputLabel">Dificuldade</span>
+            <select
+              type="text"
+              className="Input admin select"
+              id="Dificuldade"
+              value={dificuldade}
+              onChange={handleDificuldadeChange}
+            >
+              <option value="1" className="values">
+                Fácil
+              </option>
+              <option value="2" className="values">
+                Médio
+              </option>
+              <option value="3" className="values">
+                Difícil
+              </option>
+            </select>
+            {dificuldade === "2" && (
+              <>
+                <span className="InputLabel">Numero De Caixas</span>
+                <select
+                  type="text"
+                  className="Input admin select"
+                  id="NumeroDeCaixas"
+                  value={numeroDeCaixas}
+                  onChange={handleNumeroDeCaixas}
+                >
+                  <option value="1" className="values">
+                    1
+                  </option>
+                  <option value="2" className="values">
+                    2
+                  </option>
+                  <option value="3" className="values">
+                    3
+                  </option>
+                </select>
+              </>
+            )}
+            <span className="InputLabel">Descrição</span>
+            <input
+              type="text"
+              className="Input description"
+              onInput={handleDescricao}
+              value={descricao}
+            />
+            <button className="concluir" onClick={handleTela}>
+              Avançar
+            </button>
+            <button className="voltar" onClick={goBack}>
+              Voltar
+            </button>
           </div>
         </div>
-        <div className="divEnviar">
-          <span className='InputLabel'>Título</span>
-          <input type="text" className="Input title" />
-          <span className='InputLabel'>Dificuldade</span>
-          <select type="text" className="Input admin select">
-            <option value="1" className="values">Fácil</option>
-            <option value="2" className="values">Médio</option>
-            <option value="3" className="values">Difícil</option>
-          </select>
-          <span className='InputLabel'>Descrição</span>
-          <input type="text" className="Input description" />
-          <button className="concluir">Concluir desafio</button>
-          <button className="voltar" onClick={goBack}>Voltar
-          </button>
-        </div>
-      </div>
+      ) : (
+        <DesafioComponent
+          goBack={handleTela}
+          descricao={descricao}
+          numeroDeCaixas={numeroDeCaixas}
+          setCssSolucao={setCssSolucao}
+          setCssBase={setCssBase}
+          setGameHtmlBase={setGameHtmlBase}
+        />
+      )}
     </div>
   );
 };
 
-export default GameComponent;
+export default CriarDesafio;

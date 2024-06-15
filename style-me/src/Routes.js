@@ -20,7 +20,7 @@ const AppRouter = () => {
                 <Route path="/recover-password" element={<PasswordRecoverLayout />} />
                 <Route path="/recover-password-confirmation" element={<PasswordRecoverConfirmationLayout />} />
                 <Route path="/new-profile" element={<NewProfileLayout />} />
-
+                <Route path="/criar-desafio" element={<CriarDesafioLayout />}/>
                 {/* PROTECTED USER */}
                 <Route element={<PrivateRoutes />}>
                     <Route path="/challenges" element={<ChallengesLayout />}/>
@@ -30,7 +30,6 @@ const AppRouter = () => {
                 </Route>
 
                 <Route element={<PrivateRoutesAdmin/>}>
-                    <Route path="/criar-desafio" element={<CriarDesafioLayout />}/>  
                     <Route path="/challenges" element={<ChallengesLayout />}/> 
                 </Route>            
             </Routes>

@@ -3,9 +3,8 @@
 .DesafioBody {
   background-color: #2d2c33;
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   height: 100%;
-  justify-content: center;
   padding-left: 2rem;
   padding-right: 1rem;
 }
@@ -18,16 +17,15 @@
 }
 
 #gameIframe {
-  display: table;
-}
-
-.ColumnLeft {
-  width: 90%;
-  height: 90%;
-}
-
-.ColumnRight {
-  width: 90%;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  width: 60%;
+  border: none;
+  height: 95%;
+  background-color: #3d3b4a;
+  border-radius: 20px;
+  padding: 0.5rem;
+  height: calc((100% - 3rem));
 }
 
 #cssInput {
@@ -65,7 +63,7 @@
   display: flex;
   padding: 3rem;
   flex-direction: column;
-  width: 50%;
+  width: 33%;
   justify-content: space-between;
   height: calc((100% - 6.61rem));
   padding-top: 1.5rem;
@@ -74,8 +72,7 @@
   margin-right: 1rem;
 }
 
-#concluirDesafio {
-  display: none;
+#concluirDesafioC {
   padding: 10px 20px;
   font-size: 16px;
   color: white;
@@ -88,12 +85,12 @@
   transition: transform 0.5s;
 }
 
-#concluirDesafio:hover {
+#concluirDesafioC:hover {
   background-color: #45a049;
   transform: scale(1.05);
 }
 
-#concluirDesafio:active {
+#concluirDesafioC:active {
   background-color: #397d34;
 }
 
@@ -110,6 +107,52 @@
 }
 
 .DescricaoDesafio:hover {
+  transform: scale(1.01);
+}
+
+.editorContainer {
+  .monaco-list {
+    .monaco-scrollable-element{
+      position: static !important;
+    }
+  }
+    .decorationsOverviewRuler {
+        display: none !important;
+    }
+    .monaco-scrollable-element{
+        left: 70px !important;
+    }
+  .margin {
+    width: 40px !important;
+  }
+  .margin-view-overlays {
+    width: 50px !important;
+    div {
+      width: 40px !important;
+    }
+  }
+}
+
+.monaco-editor .suggest-widget {
+  z-index: 9999 !important;
+}
+.divEditor {
+  height: 50%;
+  margin-top: 3%;
+  background-color: #1e1e1e;
+  padding: 1rem;
+  padding-top: 2rem;
+  border-radius: 20px;
+  transition: transform 0.5s;
+  overflow: visible;
+  position: relative;
+
+  section {
+    height: 100% !important;
+  }
+}
+
+.divEditor:hover {
   transform: scale(1.01);
 }
 
@@ -130,45 +173,4 @@
   background-color: darken($color: $red, $amount: 5);
   transition: transform 0.5s;
   transform: scale(1.05);
-}
-
-.concluir {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: white;
-  background-color: $green;
-  border: none;
-  border-radius: 10px;
-  margin-top: 3%;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  transition: transform 0.5s;
-}
-
-.concluir:hover {
-  background-color: darken($color: $green, $amount: 5);
-  transition: transform 0.5s;
-  transform: scale(1.05);
-}
-
-.admin {
-  height: 10%;
-  width: 98%;
-}
-
-.title {
-  height: 10%;
-}
-
-.description {
-  height: 40%;
-}
-
-.values {
-  height: 100%;
-}
-
-.bottom {
-  padding-top: 1%;
-  display: flex;
 }
