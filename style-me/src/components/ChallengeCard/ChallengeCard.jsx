@@ -2,12 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import './ChallengeCard.scss';
 import { useNavigate } from 'react-router-dom';
 import { deleteChallenge } from "../../services/ApiServices";
+import Message from "../../components/UsuarioCriado";
 
 const ChallengeCard = ({ id, color, title, description, isAdmin }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [profile, setProfile] = useState(null);
   const [token, setToken] = useState(null);
   const spanRef = useRef(null);
+  const [isDeleted, setIsDeleted] = useState();
+  const [deleted, setDeleted] = useState(false);
 
   const navigate = useNavigate();
 
@@ -54,9 +57,9 @@ const ChallengeCard = ({ id, color, title, description, isAdmin }) => {
       var res = deleteChallenge(tk, idCh);
       res.then(data => {
         if (data.status === 200) {
-          alert('Desafio deletado com sucesso!')
+          setIsDeleted(true)
         } else {
-          alert('Erro ao deletar o desafio')
+          setIsDeleted(false)
         }
       }).catch(e => {
         console.log(e)
@@ -65,10 +68,26 @@ const ChallengeCard = ({ id, color, title, description, isAdmin }) => {
     }
   }
 
+  function checkIsDeleted () {
+    if (isDeleted === true) {
+      return (
+        <Message text={'Desafio excluido com sucesso!'} />
+      )
+    } else if (isDeleted === false) {
+      return (
+        <Message text={'Erro ao excluir o desafio!'}/>
+      )
+    }
+  }
+
+  
+
   return (
     <div className={`ChallengeCardContainer ${isHovered ? 'hovered' : ''}`}
          onMouseEnter={() => setIsHovered(true)}
          onMouseLeave={() => setIsHovered(false)}>
+          { checkIsDeleted()
+          }
       <div className='ChallengeCard'>
         <div className='Card'>
           <span className='ChallengeNumber'># {id}</span>

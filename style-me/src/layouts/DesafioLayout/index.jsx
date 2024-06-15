@@ -4,6 +4,7 @@ import "./Desafio.scss";
 import Header from "../../components/Header/Header";
 import { getUserInfo, getChallengeInfo, fetchGameHtml, fetchGameCss, ChDone } from "../../services/ApiServices";
 import { useLocation } from 'react-router-dom';
+import Message from "../../components/UsuarioCriado";
 
 const initialCss = `#DESAFIO {\n\n}`;
 const maxLines = 5;
@@ -23,28 +24,30 @@ const GameComponent = () => {
   const { state } = useLocation();
   const [description, setDescription] = useState();
 
-  // useEffect(() => {
-  //   const res = localStorage.getItem("auth");
-  //   const parsed = JSON.parse(res);
-  //   const token = parsed.token;
+  const [isDone, setIsDone] = useState();
 
-  //   Promise.all([
-  //     getUserInfo(token),
-  //     getChallengeInfo(token, state.id),
-  //     fetchGameHtml(token, state.id),
-  //     fetchGameCss(token, state.id)
-  //   ]).then(([userInfo, challengeInfo, html, css]) => {
-  //     setProfile(userInfo.data);
-  //     setDescription(challengeInfo.data.description);
-  //     setGameHtml(html);
-  //     setGameCss(css);
+  useEffect(() => {
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token;
 
-  //     setUsername(userInfo.data.username);
-  //     setImgType(userInfo.data.imgType);
-  //     setImg(userInfo.data.img);
-  //     setTotalScore(userInfo.data.totalScore || 0);
-  //   }).catch(console.log);
-  // }, [state.id]);
+    Promise.all([
+      getUserInfo(token),
+      getChallengeInfo(token, state.id),
+      fetchGameHtml(token, state.id),
+      fetchGameCss(token, state.id)
+    ]).then(([userInfo, challengeInfo, html, css]) => {
+      setProfile(userInfo.data);
+      setDescription(challengeInfo.data.description);
+      setGameHtml(html);
+      setGameCss(css);
+
+      setUsername(userInfo.data.username);
+      setImgType(userInfo.data.imgType);
+      setImg(userInfo.data.img);
+      setTotalScore(userInfo.data.totalScore || 0);
+    }).catch(console.log);
+  }, [state.id]);
 
   useEffect(() => {
     if (iframeRef.current && iframeRef.current.contentDocument) {
@@ -70,7 +73,7 @@ const GameComponent = () => {
       styleElement.id = "dynamicStyles";
       iframeDocument.head.appendChild(styleElement);
     }
-    
+
     styleElement.textContent = gameCss + `\n#${gameArea.id} { ${extractContent(cssText)} }`;
     checkForCompletion(iframeDocument);
   };
@@ -166,13 +169,37 @@ const GameComponent = () => {
     const parsed = JSON.parse(res);
     const token = parsed.token;
 
-    ChDone(token,state.id)
+    const checkDone = ChDone(token, state.id)
+    checkDone.then(res => {
+      if (res.status === 200) {
+        setIsDone(true)
+      } else {
+        setIsDone(false)
+      }
+    }).catch(e => {
+      console.log(e)
+    })
+  }
+
+  function checkIsDone () {
+    if (isDone === true) {
+      return(
+        <Message text={'Desafio concluido com sucesso!'}/>
+        
+      )
+    } else if (isDone === false) {
+      return (
+        <Message text={'Tente novamente!'}/>
+      )
+    }
   }
 
   return (
-<div className="TelaDeDesafio">
+    <div className="TelaDeDesafio">
       <Header username={username} img={img} imgType={imgType} totalScore={totalScore} />
       <div className="DesafioBody">
+        { checkIsDone()
+        }
         <iframe
           id="gameIframe"
           ref={iframeRef}
@@ -195,7 +222,7 @@ const GameComponent = () => {
                 readOnly: false,
                 fontFamily: "Roboto",
                 fontSize: 30,
-                automaticLayout: false, 
+                automaticLayout: false,
                 minimap: { enabled: false },
                 contextmenu: false,
                 scrollBeyondLastLine: false,
