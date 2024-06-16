@@ -14,6 +14,7 @@ const DesafioComponent = ({
   setCssSolucao,
   setCssBase,
   setGameHtmlBase,
+  handleConcluir
 }) => {
   const [gameHtml, setGameHtml] = useState("");
   const [cssText, setCssText] = useState(initialCss);
@@ -21,7 +22,6 @@ const DesafioComponent = ({
   const iframeRef = useRef(null);
   const editorRef = useRef(null);
   const previousValueRef = useRef(initialCss);
-  const { state } = useLocation();
 
   const generateQuadrados = (num) => {
     let quadrados = "";
@@ -214,7 +214,7 @@ const DesafioComponent = ({
   };
 
   const handleConcluirClick = () => {
-    setCssSolucao(extractContent(cssText));
+    handleConcluir()
   };
 
   return (
@@ -238,6 +238,7 @@ const DesafioComponent = ({
               value={cssText}
               theme="vs-dark"
               className="editorContainer"
+              onChange={setCssSolucao(extractContent(cssText))}
               options={{
                 readOnly: false,
                 fontFamily: "Roboto",

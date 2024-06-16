@@ -68,14 +68,6 @@ function getTipoUser (token) {
   })
 }
 
-  //Variaveis usadas para integrar com o back
-    // title
-    // dificuldade
-    // descricao
-    // htmlBase
-    // cssBase
-    // cssSolucao
-
   const handleDificuldadeChange = (event) => {
     setDificuldade(event.target.value);
   };
@@ -100,6 +92,19 @@ function getTipoUser (token) {
       setTelaAtual(1);
     }
   };
+
+  const handleConcluir = () => {
+
+    //INTEGRAR AQUI
+    
+    //Variaveis usadas para integrar com o back
+    // title
+    // dificuldade
+    // descricao
+    // htmlBase
+    // cssBase
+    // cssSolucao
+  }
 
   return (
     <div className="TelaDeDesafio">
@@ -183,6 +188,7 @@ function getTipoUser (token) {
           setCssSolucao={setCssSolucao}
           setCssBase={setCssBase}
           setGameHtmlBase={setGameHtmlBase}
+          handleConcluir={handleConcluir}
         />
       )}
     </div>
