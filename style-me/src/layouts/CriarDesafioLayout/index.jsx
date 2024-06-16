@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./CriarDesafio.scss";
 import Header from "../../components/Header/Header";
 import DesafioComponent from "../../components/DesafioComponent";
+import { getUserInfo, getTypeUser } from "../../services/ApiServices";
 
 const CriarDesafio = () => {
   const [img, setImg] = useState();
@@ -17,9 +18,55 @@ const CriarDesafio = () => {
   const [cssBase, setCssBase ] = useState("");
   const [htmlBase, setGameHtmlBase] = useState("");
 
+  const [profile, setProfile] = useState(null);
+  const [isAdmin, setIsAdmin] = useState();
+
+  const [isCreateCh, setCreateCh] = useState();
+
   const goBack = () => {
     window.history.back();
   };
+
+  useEffect(() => {
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token
+    getUsersInfo(token)
+    getTipoUser(token)
+
+}, [profile]);
+
+function getUsersInfo(token) {
+  const profile = getUserInfo(token);
+  profile.then(res => {
+
+      setUsername(res.data.username)
+      setImgType(res.data.imgType)
+      setImg(res.data.img)
+
+      if (res.data.totalScore === null) {
+          setTotalScore(0);
+      } else {
+          setTotalScore(res.data.totalScore)
+      }
+
+    }).catch(e => {
+      console.log(e)
+  });
+};
+
+function getTipoUser (token) {
+  const response = getTypeUser(token);
+  response.then(res => {
+      if (res.data != 'ADM') {
+          setIsAdmin('false')
+      } else {
+          setIsAdmin('true')
+      }
+  }).catch (e => {
+      console.log(e)
+  })
+}
 
   //Variaveis usadas para integrar com o back
     // title
@@ -61,6 +108,7 @@ const CriarDesafio = () => {
         img={img}
         imgType={imgType}
         totalScore={totalScore}
+        isAdmin={isAdmin}
       />
       {telaAtual == 1 ? (
         <div className="DesafioBody">

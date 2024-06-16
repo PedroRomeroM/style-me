@@ -226,3 +226,23 @@ export async function deleteChallenge(tk, idChallenge) {
   })
   return response;
 };
+
+export async function createChallenge(tk, title, level, description, html, cssBase, CssFinal) {
+  try {
+    const response = await axios.post(`${BASE_URL}/api/cr/ch`, {},{ 
+      headers: {
+        "x-access-token": tk,
+        "ch-title": title,
+        "ch-level": level,
+        "ch-description": description,
+        "ch-HTML": html,
+        "ch-CssBase": cssBase,
+        "ch-CssFinal": CssFinal,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Erro ao criar o desafio:", error);
+    return "";
+  }
+}
