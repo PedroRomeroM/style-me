@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import "./Desafio.scss";
 import Header from "../../components/Header/Header";
-import { getUserInfo, getChallengeInfo, fetchGameHtml, fetchGameCss, ChDone } from "../../services/ApiServices";
+import { getUserInfo, getChallengeInfo, fetchGameHtml, fetchGameCss, ChDone, getTypeUser } from "../../services/ApiServices";
 import { useLocation } from 'react-router-dom';
 import Message from "../../components/UsuarioCriado";
 
@@ -23,6 +23,8 @@ const GameComponent = () => {
   const [username, setUsername] = useState();
   const { state } = useLocation();
   const [description, setDescription] = useState();
+
+  const [isAdmin, setIsAdmin] = useState();
 
   const [isDone, setIsDone] = useState();
 
@@ -54,6 +56,27 @@ const GameComponent = () => {
       applyStyles();
     }
   }, [cssText, gameCss]);
+
+  useEffect(() => {
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token
+    getTipoUser(token)
+
+  }, [isAdmin]);
+
+  function getTipoUser (token) {
+    const response = getTypeUser(token);
+    response.then(res => {
+        if (res.data != 'ADM') {
+            setIsAdmin('false')
+        } else {
+            setIsAdmin('true')
+        }
+    }).catch (e => {
+        console.log(e)
+    })
+}
 
   const extractContent = (value) => {
     const match = value.match(/#DESAFIO\s*{([^}]*)}/);
@@ -196,7 +219,7 @@ const GameComponent = () => {
 
   return (
     <div className="TelaDeDesafio">
-      <Header username={username} img={img} imgType={imgType} totalScore={totalScore} />
+      <Header username={username} img={img} imgType={imgType} totalScore={totalScore} isAdmin={isAdmin}/>
       <div className="DesafioBody">
         { checkIsDone()
         }

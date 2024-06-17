@@ -14,7 +14,8 @@ const DesafioComponent = ({
   setCssSolucao,
   setCssBase,
   setGameHtmlBase,
-  handleConcluir
+  handleConcluir,
+  isCreateCh
 }) => {
   const [gameHtml, setGameHtml] = useState("");
   const [cssText, setCssText] = useState(initialCss);
@@ -255,9 +256,17 @@ const DesafioComponent = ({
               onMount={handleEditorDidMount}
             />
           </div>
-          <button id="concluirDesafioC" onClick={handleConcluirClick}>
-            Concluir desafio
-          </button>
+          {
+            isCreateCh ? (
+              <button id="concluirDesafioC" onClick={handleConcluirClick}>
+                Criar desafio
+              </button>
+            ) : (
+              <button id="concluirDesafioC" onClick={handleConcluirClick}>
+                Concluir desafio
+              </button>
+            )
+          }
           <button className="BotaoFormatar" onClick={handleFormat}>
             Formatar
           </button>

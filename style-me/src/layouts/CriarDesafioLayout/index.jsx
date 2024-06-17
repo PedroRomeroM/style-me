@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./CriarDesafio.scss";
 import Header from "../../components/Header/Header";
 import DesafioComponent from "../../components/DesafioComponent";
-import { getUserInfo, getTypeUser } from "../../services/ApiServices";
+import { getUserInfo, getTypeUser, createChallenge } from "../../services/ApiServices";
 
 const CriarDesafio = () => {
   const [img, setImg] = useState();
@@ -33,6 +33,8 @@ const CriarDesafio = () => {
     const token = parsed.token
     getUsersInfo(token)
     getTipoUser(token)
+
+    setCreateCh(true)
 
 }, [profile]);
 
@@ -104,6 +106,24 @@ function getTipoUser (token) {
     // htmlBase
     // cssBase
     // cssSolucao
+
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token
+
+    const response = createChallenge(token,title, dificuldade, descricao, htmlBase, cssBase, cssSolucao)
+    response.then(res => {
+      if (res.status === 200) {
+        alert('Desafio criado com sucesso!')
+      } else {
+        alert('Erro ao criar o desafio!')
+      }
+    }).catch(e => {
+      console.log(e)
+    })
+
+    console.log('AAAAA')
+
   }
 
   return (
@@ -189,6 +209,7 @@ function getTipoUser (token) {
           setCssBase={setCssBase}
           setGameHtmlBase={setGameHtmlBase}
           handleConcluir={handleConcluir}
+          isCreateCh={isCreateCh}
         />
       )}
     </div>
