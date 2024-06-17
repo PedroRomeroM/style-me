@@ -32,6 +32,11 @@ const DesafioComponent = ({
     return quadrados;
   };
 
+  const generateCSSSolucao = () => {
+    return cssText;
+  }
+
+
   const generateObjetivos = (num) => {
     let objetivos = "";
     for (let i = 0; i < num; i++) {
@@ -87,8 +92,8 @@ const DesafioComponent = ({
 
                 #ondeOCSSVaiSerAplicado {
                   display: flex;
-                  justify-content: flex-start;
-                  align-items: center;
+                  justify-content: flex-end;
+                  align-items: space-around;
                   height: 100%;
                   width: 100%;
                 }
@@ -120,8 +125,12 @@ const DesafioComponent = ({
                   bottom: 0;
                   display: flex;
                   padding: 1rem;
-                }`);
-  }, []);
+                }
+                  
+                ${generateCSSSolucao()}`
+              );
+              console.log(gameCss)
+  }, [gameCss,gameHtml,cssText]);
 
   useEffect(() => {
     if (iframeRef.current && iframeRef.current.contentDocument) {

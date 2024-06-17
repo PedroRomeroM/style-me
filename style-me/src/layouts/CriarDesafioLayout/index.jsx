@@ -173,6 +173,10 @@ function getTipoUser (token) {
                   value={numeroDeCaixas}
                   onChange={handleNumeroDeCaixas}
                 >
+                  <option value="0" className="values">
+                    Selecione o número de caixas
+                  </option>
+
                   <option value="1" className="values">
                     1
                   </option>
