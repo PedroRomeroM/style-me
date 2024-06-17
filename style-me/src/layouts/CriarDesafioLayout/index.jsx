@@ -121,9 +121,6 @@ function getTipoUser (token) {
     }).catch(e => {
       console.log(e)
     })
-
-    console.log('AAAAA')
-
   }
 
   return (

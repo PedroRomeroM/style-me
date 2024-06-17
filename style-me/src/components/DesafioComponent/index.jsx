@@ -33,7 +33,7 @@ const DesafioComponent = ({
   };
 
   const generateCSSSolucao = () => {
-    return cssText;
+    return extractContent(cssText);
   }
 
 
@@ -125,11 +125,10 @@ const DesafioComponent = ({
                   bottom: 0;
                   display: flex;
                   padding: 1rem;
-                }
-                  
-                ${generateCSSSolucao()}`
+
+                  ${generateCSSSolucao()}
+                }`
               );
-              console.log(gameCss)
   }, [gameCss,gameHtml,cssText]);
 
   useEffect(() => {
