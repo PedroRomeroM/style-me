@@ -92,8 +92,8 @@ const DesafioComponent = ({
 
                 #ondeOCSSVaiSerAplicado {
                   display: flex;
-                  justify-content: flex-end;
-                  align-items: space-around;
+                  justify-content: center;
+                  align-items: center;
                   height: 100%;
                   width: 100%;
                 }

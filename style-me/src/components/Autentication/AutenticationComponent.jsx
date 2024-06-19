@@ -67,7 +67,7 @@ const AutenticationComponent = () => {
   function checkMsgErr () {
     if (errorMsg != null) {
       return (
-        <Message text={'Erro ao fazer o login: ' + errorMsg} />
+        <Message text={'Erro ao fazer o login: ' + errorMsg} isError={true}/>
       )
     }
   }

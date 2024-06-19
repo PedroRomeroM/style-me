@@ -71,11 +71,11 @@ const ChallengeCard = ({ id, color, title, description, isAdmin }) => {
   function checkIsDeleted () {
     if (isDeleted === true) {
       return (
-        <Message text={'Desafio excluido com sucesso!'} />
+        <Message text={'Desafio excluido com sucesso!'} isError={false}/>
       )
     } else if (isDeleted === false) {
       return (
-        <Message text={'Erro ao excluir o desafio!'}/>
+        <Message text={'Erro ao excluir o desafio!'} isError={true}/>
       )
     }
   }
