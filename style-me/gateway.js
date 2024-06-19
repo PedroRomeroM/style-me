@@ -163,7 +163,6 @@ app.put('/api/user/up', verifyJWT, async (req, res) => {
   };
 
   try {
-    console.log(payload)
     const response = await axios.put('http://localhost:8081/api/user', payload, {
     });
     res.send(response.data);
@@ -226,6 +225,50 @@ app.delete(`/api/del/ch`, verifyJWT, async (req, res) => {
   }
 
 }); 
+
+app.post(`/api/cr/ch`, verifyJWT, async (req, res) => {
+
+  let chTitle = req.headers['ch-title'];
+  let chLevel = req.headers['ch-level'];
+  let chDescription = req.headers['ch-description'];
+  let chHtml = req.headers['ch-HTML'];
+  let chCssBase = req.headers['ch-CssBase'];
+  let chCssFinal = req.headers['ch-CssFinal'];
+  
+
+  let objSend = {
+    title: chTitle,
+    level: chLevel,
+    description: chDescription,
+    html: chHtml,
+    cssBase: chCssBase,
+    cssFinal: chCssFinal
+  };
+
+  try {
+    const response = await axios.post(`http://localhost:8083/api/ch`, objSend);
+    res.json(response.data);
+  } catch (error) {
+    console.error('Erro ao criar o desafio:', error);
+    res.status(500).json({ message: 'Erro ao criar o desafio' });
+  }
+});
+
+app.get(`/api/user/exists`, async (req, res) => {
+  let username = req.headers['username'];
+
+  const response = await axios.get(`http://localhost:8081/api/user/usernameExists/${username}`);
+
+  res.send(response.data);
+});
+
+app.get(`/api/email/exists`, async (req, res) => {
+  let email = req.headers['email'];
+
+  const response = await axios.get(`http://localhost:8082/api/auth/emailexists/${email}`);
+
+  res.send(response.data);
+});
 
 
 // Configuração da aplicação

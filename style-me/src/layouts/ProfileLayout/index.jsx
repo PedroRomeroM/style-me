@@ -153,19 +153,25 @@ const ProfileLayout = () => {
         }
     };
 
-    const [errors, setErrors] = useState({});
-
     const updatePerfil = (username, img, senha, confirmarSenha) => {
         const res = localStorage.getItem("auth");
         const parsed = JSON.parse(res);
         const token = parsed.token
 
         if (senha && confirmarSenha) {
-            const validationErrors = {};
             updatePassword(token, senha, confirmarSenha)
         } 
         if (username || img) {
-            updateUser(token,username,img)
+            const response = updateUser(token,username,img)
+            response.then(data => {
+                if (data.status === 200) {
+                    alert('Perfil atualizado com sucesso!')
+                } else {
+                  alert('Erro ao atualizar o perfil ' + data.msg)
+                }
+              }).catch(e => {
+                console.log(e)
+              });
         }
     }
     

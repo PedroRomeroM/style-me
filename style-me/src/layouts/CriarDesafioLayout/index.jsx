@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./CriarDesafio.scss";
 import Header from "../../components/Header/Header";
 import DesafioComponent from "../../components/DesafioComponent";
+import { getUserInfo, getTypeUser, createChallenge } from "../../services/ApiServices";
 
 const CriarDesafio = () => {
   const [img, setImg] = useState();
@@ -17,17 +18,57 @@ const CriarDesafio = () => {
   const [cssBase, setCssBase ] = useState("");
   const [htmlBase, setGameHtmlBase] = useState("");
 
+  const [profile, setProfile] = useState(null);
+  const [isAdmin, setIsAdmin] = useState();
+
+  const [isCreateCh, setCreateCh] = useState();
+
   const goBack = () => {
     window.history.back();
   };
 
-  //Variaveis usadas para integrar com o back
-    // title
-    // dificuldade
-    // descricao
-    // htmlBase
-    // cssBase
-    // cssSolucao
+  useEffect(() => {
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token
+    getUsersInfo(token)
+    getTipoUser(token)
+
+    setCreateCh(true)
+
+}, [profile]);
+
+function getUsersInfo(token) {
+  const profile = getUserInfo(token);
+  profile.then(res => {
+
+      setUsername(res.data.username)
+      setImgType(res.data.imgType)
+      setImg(res.data.img)
+
+      if (res.data.totalScore === null) {
+          setTotalScore(0);
+      } else {
+          setTotalScore(res.data.totalScore)
+      }
+
+    }).catch(e => {
+      console.log(e)
+  });
+};
+
+function getTipoUser (token) {
+  const response = getTypeUser(token);
+  response.then(res => {
+      if (res.data != 'ADM') {
+          setIsAdmin('false')
+      } else {
+          setIsAdmin('true')
+      }
+  }).catch (e => {
+      console.log(e)
+  })
+}
 
   const handleDificuldadeChange = (event) => {
     setDificuldade(event.target.value);
@@ -54,6 +95,34 @@ const CriarDesafio = () => {
     }
   };
 
+  const handleConcluir = () => {
+
+    //INTEGRAR AQUI
+    
+    //Variaveis usadas para integrar com o back
+    // title
+    // dificuldade
+    // descricao
+    // htmlBase
+    // cssBase
+    // cssSolucao
+
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token
+
+    const response = createChallenge(token,title, dificuldade, descricao, htmlBase, cssBase, cssSolucao)
+    response.then(res => {
+      if (res.status === 200) {
+        alert('Desafio criado com sucesso!')
+      } else {
+        alert('Erro ao criar o desafio!')
+      }
+    }).catch(e => {
+      console.log(e)
+    })
+  }
+
   return (
     <div className="TelaDeDesafio">
       <Header
@@ -61,6 +130,7 @@ const CriarDesafio = () => {
         img={img}
         imgType={imgType}
         totalScore={totalScore}
+        isAdmin={isAdmin}
       />
       {telaAtual == 1 ? (
         <div className="DesafioBody">
@@ -100,6 +170,10 @@ const CriarDesafio = () => {
                   value={numeroDeCaixas}
                   onChange={handleNumeroDeCaixas}
                 >
+                  <option value="0" className="values">
+                    Selecione o número de caixas
+                  </option>
+
                   <option value="1" className="values">
                     1
                   </option>
@@ -135,6 +209,8 @@ const CriarDesafio = () => {
           setCssSolucao={setCssSolucao}
           setCssBase={setCssBase}
           setGameHtmlBase={setGameHtmlBase}
+          handleConcluir={handleConcluir}
+          isCreateCh={isCreateCh}
         />
       )}
     </div>

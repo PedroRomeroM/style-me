@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate  } from "react-router-dom";
-import { createUser } from "../../services/ApiServices";
+import { createUser, checkUsernameExists} from "../../services/ApiServices";
 
 const NewProfileLayout = () => {
   // eslint-disable-next-line
@@ -23,6 +23,8 @@ const NewProfileLayout = () => {
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
   const [isCreated, setIsCreated] = useState(false);
+
+  const [usernameExists, setUsernameExists] = useState();
 
   const handleUsernameChange = (event) => {
     setUserName(event.target.value);
@@ -131,7 +133,7 @@ const NewProfileLayout = () => {
         if (data.status === 200) {
           setIsCreated(true)
         } else {
-          alert('BOSTA')
+          alert('Erro ao criar o usuário: ' + data.msg)
         }
       }).catch(e => {
         console.log(e)

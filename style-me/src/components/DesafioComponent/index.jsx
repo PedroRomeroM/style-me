@@ -14,6 +14,8 @@ const DesafioComponent = ({
   setCssSolucao,
   setCssBase,
   setGameHtmlBase,
+  handleConcluir,
+  isCreateCh
 }) => {
   const [gameHtml, setGameHtml] = useState("");
   const [cssText, setCssText] = useState(initialCss);
@@ -21,7 +23,6 @@ const DesafioComponent = ({
   const iframeRef = useRef(null);
   const editorRef = useRef(null);
   const previousValueRef = useRef(initialCss);
-  const { state } = useLocation();
 
   const generateQuadrados = (num) => {
     let quadrados = "";
@@ -30,6 +31,11 @@ const DesafioComponent = ({
     }
     return quadrados;
   };
+
+  const generateCSSSolucao = () => {
+    return extractContent(cssText);
+  }
+
 
   const generateObjetivos = (num) => {
     let objetivos = "";
@@ -86,8 +92,8 @@ const DesafioComponent = ({
 
                 #ondeOCSSVaiSerAplicado {
                   display: flex;
-                  justify-content: flex-start;
-                  align-items: center;
+                  justify-content: flex-end;
+                  align-items: space-around;
                   height: 100%;
                   width: 100%;
                 }
@@ -119,8 +125,11 @@ const DesafioComponent = ({
                   bottom: 0;
                   display: flex;
                   padding: 1rem;
-                }`);
-  }, []);
+
+                  ${generateCSSSolucao()}
+                }`
+              );
+  }, [gameCss,gameHtml,cssText]);
 
   useEffect(() => {
     if (iframeRef.current && iframeRef.current.contentDocument) {
@@ -214,7 +223,7 @@ const DesafioComponent = ({
   };
 
   const handleConcluirClick = () => {
-    setCssSolucao(extractContent(cssText));
+    handleConcluir()
   };
 
   return (
@@ -238,6 +247,7 @@ const DesafioComponent = ({
               value={cssText}
               theme="vs-dark"
               className="editorContainer"
+              onChange={setCssSolucao(extractContent(cssText))}
               options={{
                 readOnly: false,
                 fontFamily: "Roboto",
@@ -254,9 +264,17 @@ const DesafioComponent = ({
               onMount={handleEditorDidMount}
             />
           </div>
-          <button id="concluirDesafioC" onClick={handleConcluirClick}>
-            Concluir desafio
-          </button>
+          {
+            isCreateCh ? (
+              <button id="concluirDesafioC" onClick={handleConcluirClick}>
+                Criar desafio
+              </button>
+            ) : (
+              <button id="concluirDesafioC" onClick={handleConcluirClick}>
+                Concluir desafio
+              </button>
+            )
+          }
           <button className="BotaoFormatar" onClick={handleFormat}>
             Formatar
           </button>

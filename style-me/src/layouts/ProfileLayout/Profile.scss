@@ -209,12 +209,13 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    width: 100%;
 }
 
 .ChallengeListProfile{
     display: flex;
-    flex-direction: row;
-    
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 //modal

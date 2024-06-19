@@ -3,7 +3,35 @@ import axios from "axios";
 const BASE_URL = "http://localhost:3001";
 
 export async function createUser(formData) {
+
   let objForm = Object.fromEntries(formData.entries());
+
+  let response2 = await axios.get(`${BASE_URL}/api/user/exists`, {
+    headers: {
+      "username": objForm.username
+    },
+  });
+ 
+  if (response2.data === 'OK') {
+    response2.status = 401
+    response2.msg = 'Nome de usuário já existe!'
+    let res = response2
+    return res
+  }
+
+  let response3 = await axios.get(`${BASE_URL}/api/email/exists`, {
+    headers: {
+      "email": objForm.email
+    },
+  });
+ 
+  if (response3.data === 'OK') {
+    response3.status = 401
+    response3.msg = 'Email já cadastrado!'
+    let res = response3
+    return res
+  }
+  
 
   async function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -146,6 +174,19 @@ export async function ChDone(tk, idCh) {
 export async function updateUser(tk, usern, imgFile) {
   try {
 
+    let response2 = await axios.get(`${BASE_URL}/api/user/exists`, {
+      headers: {
+        "username": usern
+      },
+    });
+   
+    if (response2.data === 'OK') {
+      response2.status = 401
+      response2.msg = 'Nome de usuário já existe!'
+      let res = response2
+      return res
+    }
+
     let imgtype = ""
     imgtype = imgFile.type
 
@@ -226,3 +267,32 @@ export async function deleteChallenge(tk, idChallenge) {
   })
   return response;
 };
+
+export async function createChallenge(tk, title, level, description, html, cssBase, CssFinal) {
+  try {
+
+    let objSend = {
+      title: title,
+      level: level,
+      description: description,
+      html: html,
+      cssBase: cssBase,
+      cssFinal: CssFinal
+    };
+
+    const response = await axios.post(`http://localhost:8083/api/ch`, objSend);
+    return response;
+  } catch (error) {
+    console.error("Erro ao criar o desafio:", error);
+    return "";
+  }
+}
+
+export async function checkUsernameExists(username) {
+  const response = await axios.get(`${BASE_URL}/api/user/exists`, {
+    headers: {
+      "username": username
+    },
+  });
+return response;
+}
