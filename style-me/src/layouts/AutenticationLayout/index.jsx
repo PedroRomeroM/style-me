@@ -13,7 +13,7 @@ const AutenticationLayout = (created) => {
       <div className="AutenticationContainer">
         {userCreated && (
           <>
-            <UsuarioCriado className= "userCreated"/>
+            <UsuarioCriado className= "userCreated" text={'Usuário criado com sucesso!'}/>
           </>
         )}
         <Login />
