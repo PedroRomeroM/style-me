@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./CriarDesafio.scss";
 import Header from "../../components/Header/Header";
 import DesafioComponent from "../../components/DesafioComponent";
+import Message from "../../components/UsuarioCriado";
 import { getUserInfo, getTypeUser, createChallenge } from "../../services/ApiServices";
 
 const CriarDesafio = () => {
@@ -22,6 +23,9 @@ const CriarDesafio = () => {
   const [isAdmin, setIsAdmin] = useState();
 
   const [isCreateCh, setCreateCh] = useState();
+
+  const [isCreated, setIsCreated] = useState('');
+  
 
   const goBack = () => {
     window.history.back();
@@ -114,13 +118,26 @@ function getTipoUser (token) {
     const response = createChallenge(token,title, dificuldade, descricao, htmlBase, cssBase, cssSolucao)
     response.then(res => {
       if (res.status === 200) {
-        alert('Desafio criado com sucesso!')
+        setIsCreated('true')
       } else {
-        alert('Erro ao criar o desafio!')
+        setIsCreated('false')
       }
     }).catch(e => {
       console.log(e)
     })
+  }
+
+
+  function checkIsCreated () {
+    if (isCreated === 'true') {
+      return (
+        <Message text={'Desafio criado com sucesso!'} isError={false}/>
+      )
+    } else if (isCreated === 'false') {
+      return (
+        <Message text={'Erro ao criar o desafio!'} isError={true}/>
+      )
+    }
   }
 
   return (
@@ -132,6 +149,9 @@ function getTipoUser (token) {
         totalScore={totalScore}
         isAdmin={isAdmin}
       />
+      {
+        checkIsCreated()
+      }
       {telaAtual == 1 ? (
         <div className="DesafioBody">
           <div className="divEnviar">

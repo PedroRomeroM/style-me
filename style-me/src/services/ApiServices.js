@@ -171,43 +171,13 @@ export async function ChDone(tk, idCh) {
   }
 }
 
-export async function updateUser(tk, usern, imgFile) {
+export async function updateUser(tk, usern, bas64, imgtype) {
   try {
-
-    let response2 = await axios.get(`${BASE_URL}/api/user/exists`, {
-      headers: {
-        "username": usern
-      },
-    });
-   
-    if (response2.data === 'OK') {
-      response2.status = 401
-      response2.msg = 'Nome de usuário já existe!'
-      let res = response2
-      return res
-    }
-
-    let imgtype = ""
-    imgtype = imgFile.type
-
-    // Convertendo a imagem para base64
-    const toBase64 = file => new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-
-    const imgBase64 = imgFile ? await toBase64(imgFile) : null;
-
-    let base64String = "";
-    base64String = imgBase64.replace("data:", "").replace(/^.+,/, "");
-
 
     const response = await axios.put(`${BASE_URL}/api/user/up`, {}, {
       headers: {
         'x-access-token': tk,
-        'img': base64String,
+        'img': bas64,
         'username': usern,
         'img-type': imgtype,
         'Content-Type': 'application/json'

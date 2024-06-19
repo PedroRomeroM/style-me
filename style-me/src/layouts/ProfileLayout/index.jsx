@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './Profile.scss';
 import Ranking from '../../components/Ranking/Ranking';
-import { getUserInfo, getRanking, getConcludedChallenges, updateUser, updatePassword} from "../../services/ApiServices";
+import { getUserInfo, getRanking, getConcludedChallenges, updateUser, updatePassword, checkUsernameExists} from "../../services/ApiServices";
+import Message from "../../components/UsuarioCriado";
 
 const ProfileLayout = () => {
 
@@ -35,6 +36,8 @@ const ProfileLayout = () => {
 
     const [senha, setSenha] = useState("");
     const [confirmarSenha, setConfirmarSenha] = useState("");
+
+    const [isUpdated, setIsUpdated] = useState('');
 
     const handleSenha = (event) => {
         setSenha(event.target.value);
@@ -153,27 +156,82 @@ const ProfileLayout = () => {
         }
     };
 
-    const updatePerfil = (username, img, senha, confirmarSenha) => {
+    async function toBase64 (imgFile) {
+    
+        // Convertendo a imagem para base64
+        const toBase64 = file => new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+        });
+    
+        const imgBase64 = imgFile ? await toBase64(imgFile) : null;
+    
+        let base64String = "";
+        base64String = imgBase64.replace("data:", "").replace(/^.+,/, "");
+
+        return base64String
+
+    }
+
+    async function updatePerfil (username, file, senha, confirmarSenha) {
         const res = localStorage.getItem("auth");
         const parsed = JSON.parse(res);
         const token = parsed.token
 
+        let base64 = ""
+        let imgType1 = ""
+
         if (senha && confirmarSenha) {
             updatePassword(token, senha, confirmarSenha)
+            setIsUpdated('true')
         } 
-        if (username || img) {
-            const response = updateUser(token,username,img)
+        if (username || file) {
+            if (file === null) {
+                base64 = img
+                imgType1 = imgType
+            } else {
+                base64 = await toBase64(file)
+
+                imgType1 = file.type
+            }
+
+            if (usernamescreen != username){
+                const check = checkUsernameExists(username)
+                check.then(data => {
+                    if (data.statusText === 'OK') {
+                        setIsUpdated('false')
+                    }
+                  }).catch(e => {
+                    console.log(e)
+                  });
+            }
+
+            const response = updateUser(token,username,base64, imgType1)
             response.then(data => {
                 if (data.status === 200) {
-                    alert('Perfil atualizado com sucesso!')
+                  setIsUpdated('true')
                 } else {
-                  alert('Erro ao atualizar o perfil ' + data.msg)
+                  setIsUpdated('false')
                 }
               }).catch(e => {
                 console.log(e)
               });
         }
     }
+
+    function checkIsUpdated () {
+        if (isUpdated === 'true') {
+          return (
+            <Message text={'Perfil atualizado com sucesso!'} isError={false}/>
+          )
+        } else if (isUpdated === 'false') {
+          return (
+            <Message text={'Erro ao atualizar o perfil!'} isError={true}/>
+          )
+        }
+      }
     
 
     return (
@@ -182,6 +240,8 @@ const ProfileLayout = () => {
                 <FontAwesomeIcon icon={faAngleLeft} />
                 <span>Voltar</span>
             </a>
+            { checkIsUpdated()
+            }
             <div className='ProfileHeader'>
                 <div className='ProfileHeaderContainer'>
                     <div className='profilePicContainer' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={openModal}>

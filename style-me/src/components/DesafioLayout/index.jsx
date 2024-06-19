@@ -23,28 +23,28 @@ const GameComponent = () => {
   const { state } = useLocation();
   const [description, setDescription] = useState();
 
-  // useEffect(() => {
-  //   const res = localStorage.getItem("auth");
-  //   const parsed = JSON.parse(res);
-  //   const token = parsed.token;
+  useEffect(() => {
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token;
 
-  //   Promise.all([
-  //     getUserInfo(token),
-  //     getChallengeInfo(token, state.id),
-  //     fetchGameHtml(token, state.id),
-  //     fetchGameCss(token, state.id)
-  //   ]).then(([userInfo, challengeInfo, html, css]) => {
-  //     setProfile(userInfo.data);
-  //     setDescription(challengeInfo.data.description);
-  //     setGameHtml(html);
-  //     setGameCss(css);
+    Promise.all([
+      getUserInfo(token),
+      getChallengeInfo(token, state.id),
+      fetchGameHtml(token, state.id),
+      fetchGameCss(token, state.id)
+    ]).then(([userInfo, challengeInfo, html, css]) => {
+      setProfile(userInfo.data);
+      setDescription(challengeInfo.data.description);
+      setGameHtml(html);
+      setGameCss(css);
 
-  //     setUsername(userInfo.data.username);
-  //     setImgType(userInfo.data.imgType);
-  //     setImg(userInfo.data.img);
-  //     setTotalScore(userInfo.data.totalScore || 0);
-  //   }).catch(console.log);
-  // }, [state.id]);
+      setUsername(userInfo.data.username);
+      setImgType(userInfo.data.imgType);
+      setImg(userInfo.data.img);
+      setTotalScore(userInfo.data.totalScore || 0);
+    }).catch(console.log);
+  }, [state.id]);
 
   useEffect(() => {
     if (iframeRef.current && iframeRef.current.contentDocument) {
