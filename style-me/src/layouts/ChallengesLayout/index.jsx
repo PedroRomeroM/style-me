@@ -78,7 +78,6 @@ const ChallengesLayout = () => {
             return (
                 <div className="ChallengeList">
                     {
-                        
                         initialChallenges
                         .filter(done => done.done == false)
                         .filter(level => {
@@ -92,13 +91,11 @@ const ChallengesLayout = () => {
                         })
                         .map(challenge => (
                             <ChallengeCard key={challenge.id} id={challenge.id} color={difficulty} title={challenge.title} description={challenge.description} isAdmin={isAdmin}/>
-                        ))
-    
+                        ))    
                     }
                 </div>
             );
-        }
-        
+        }        
     };
 
     const handleDifficultyChange = (difficulty) => {

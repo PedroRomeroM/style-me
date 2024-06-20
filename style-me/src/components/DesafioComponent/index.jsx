@@ -15,7 +15,8 @@ const DesafioComponent = ({
   setCssBase,
   setGameHtmlBase,
   handleConcluir,
-  isCreateCh
+  isCreateCh,
+  dificuldade,
 }) => {
   const [gameHtml, setGameHtml] = useState("");
   const [cssText, setCssText] = useState(initialCss);
@@ -34,8 +35,7 @@ const DesafioComponent = ({
 
   const generateCSSSolucao = () => {
     return extractContent(cssText);
-  }
-
+  };
 
   const generateObjetivos = (num) => {
     let objetivos = "";
@@ -51,13 +51,9 @@ const DesafioComponent = ({
   }, [gameCss, gameHtml]);
 
   useEffect(() => {
-    setGameHtml(`<!DOCTYPE html>
+    if (dificuldade == 2) {
+      setGameHtml(`<!DOCTYPE html>
                   <html lang="pt">
-                    <head>
-                      <meta charset="UTF-8" />
-                      <title>Área do Jogo</title>
-                      <link rel="stylesheet" href="css-desafio.css" />
-                    </head>
                     <body>
                       <div class="areadesafio">
                         <div id="ondeOCSSVaiSerAplicado">
@@ -70,7 +66,7 @@ const DesafioComponent = ({
                     </body>
                   </html>`);
 
-    setGameCss(`.objetivo2:hover {
+      setGameCss(`.objetivo2:hover {
                   transition: transform 0.5s;
                   transform: scale(1.05);
                 }
@@ -127,9 +123,81 @@ const DesafioComponent = ({
                   padding: 1rem;
 
                   ${generateCSSSolucao()}
-                }`
-              );
-  }, [gameCss,gameHtml,cssText]);
+                }`);
+    }
+    if (dificuldade == 1) {
+      setGameHtml(`<!DOCTYPE html>
+          <body>
+            <div class="areadesafio">
+              <div class="areaDoUser">
+                <div class="quadrado" id="ondeOCSSVaiSerAplicado"></div>
+              </div>
+              <div class="areafantasma" >
+                <div class="objetivo2" id=AlvoDoDesafio></div>
+              </div>
+            </div>
+          </body>
+        </html>`);
+
+      setGameCss(`
+      .objetivo2:hover {
+        transition: transform 0.5s;
+        transform: scale(1.05);
+      }
+      .quadrado:hover {
+        transform: scale(1.05);
+      }
+
+      .areaDoUser{
+        display: flex;
+        align-items: center;
+      }
+      .areadesafio {
+        width: calc(100% - 2rem);
+        height: calc((100vh - 3.3rem));
+        background-color: #747185;
+        background-image: url("images/textura.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        border-radius: 13px;
+        padding: 1rem;
+        display:flex;
+        justify-content:space-around;
+      }
+
+      .quadrado {
+        width: 18rem;
+        height: 18rem;
+        margin: 10px;
+        z-index: 2;
+        background-color: green;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        transition: all 0.5s ease;
+      }
+
+      .areafantasma .objetivo2 {
+        width: 18rem;
+        height: 18rem;
+        margin: 10px;
+        background-color: rgba(255, 0, 0, 0.295);
+        ${generateCSSSolucao()}
+      }
+
+      .areafantasma {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        padding: 1rem;
+        align-items: center;
+        }`
+      );
+    }
+  }, [gameCss, gameHtml, cssText]);
 
   useEffect(() => {
     if (iframeRef.current && iframeRef.current.contentDocument) {
@@ -223,7 +291,7 @@ const DesafioComponent = ({
   };
 
   const handleConcluirClick = () => {
-    handleConcluir()
+    handleConcluir();
   };
 
   return (
@@ -264,17 +332,15 @@ const DesafioComponent = ({
               onMount={handleEditorDidMount}
             />
           </div>
-          {
-            isCreateCh ? (
-              <button id="concluirDesafioC" onClick={handleConcluirClick}>
-                Criar desafio
-              </button>
-            ) : (
-              <button id="concluirDesafioC" onClick={handleConcluirClick}>
-                Concluir desafio
-              </button>
-            )
-          }
+          {isCreateCh ? (
+            <button id="concluirDesafioC" onClick={handleConcluirClick}>
+              Criar desafio
+            </button>
+          ) : (
+            <button id="concluirDesafioC" onClick={handleConcluirClick}>
+              Concluir desafio
+            </button>
+          )}
           <button className="BotaoFormatar" onClick={handleFormat}>
             Formatar
           </button>
