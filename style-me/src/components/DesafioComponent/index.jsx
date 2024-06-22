@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 
 const initialCss = `#POSITION {\n\n}`;
 const initialCss2 = `#STYLE {\n\n}`;
+const initialCss3 = `#POSITION {\n\n}\n#STYLE {\n\n}`;
 const maxLines = 20;
 
 const DesafioComponent = ({
@@ -20,11 +21,15 @@ const DesafioComponent = ({
   dificuldade,
 }) => {
   const [gameHtml, setGameHtml] = useState("");
-  const [cssText, setCssText] = useState(dificuldade == 2 ? initialCss : initialCss2);
+  const [cssText, setCssText] = useState(
+    dificuldade == 2 ? initialCss : dificuldade == 1 ? initialCss2 : initialCss3
+  );
   const [gameCss, setGameCss] = useState("");
   const iframeRef = useRef(null);
   const editorRef = useRef(null);
-  const previousValueRef = useRef(dificuldade == 2 ? initialCss : initialCss2);
+  const previousValueRef = useRef(
+    dificuldade == 2 ? initialCss : dificuldade == 1 ? initialCss2 : initialCss3
+  );
 
   const generateQuadrados = (num) => {
     let quadrados = "";
@@ -44,7 +49,7 @@ const DesafioComponent = ({
       if (dificuldade == 2) {
         objetivos += `<div class="objetivo2"></div>`;
       } else {
-        objetivos += `<div class="objetivo2" id="ondeOCSSVaiSerAplicado2"></div>`;
+        objetivos += `<div class="objetivo2" id="AlvoDoDesafioS"></div>`;
       }
     }
     return objetivos;
@@ -272,9 +277,9 @@ const DesafioComponent = ({
                     bottom: 0;
                     display: flex;
                     padding: 1rem;
-  
-                    ${generateCSSSolucao()}
-                  }`);
+                  }
+                  ${generateCSSSolucao()}`
+                );
     }
   }, [gameCss, gameHtml, cssText]);
 
@@ -284,14 +289,28 @@ const DesafioComponent = ({
     }
   }, [cssText, gameCss]);
 
-  const extractContent = (value) => {
-    if (dificuldade == 2) {
-      const match = value.match(/#POSITION\s*{([^}]*)}/);
-      return match ? match[1].trim() : "";
-    } else if (dificuldade == 1) {
-      const match = value.match(/#STYLE\s*{([^}]*)}/);
-      return match ? match[1].trim() : "";
+  const extractContent = (cssText) => {
+    if (dificuldade == 2 || dificuldade == 1) {
+      const startIndex = cssText.indexOf("{") + 1;
+      const endIndex = cssText.lastIndexOf("}");
+      console.log(cssText.substring(startIndex, endIndex).trim());
+      return cssText.substring(startIndex, endIndex).trim();
     }
+
+    if (dificuldade == 3) {
+      const positionRegex = /#POSITION\s*\{([^}]*)\}/;
+      const styleRegex = /#STYLE\s*\{([^}]*)\}/;
+
+      const positionMatch = cssText.match(positionRegex);
+      const styleMatch = cssText.match(styleRegex);
+
+      const positionContent = positionMatch ? positionMatch[1].trim() : "";
+      const styleContent = styleMatch ? styleMatch[1].trim() : "";
+
+      return `#AlvoDoDesafio { ${positionContent} }\n#AlvoDoDesafioS { ${styleContent} }`;
+    }
+
+    return "";
   };
 
   const applyStyles = () => {
@@ -316,39 +335,77 @@ const DesafioComponent = ({
     editorRef.current = editor;
     editor.onDidChangeModelContent(() => {
       let value = editor.getValue();
-      let start;
-      if (dificuldade == 2) {
-        start = "#POSITION {";
-      }
-      if (dificuldade == 1) {
-        start = "#STYLE {";
-      } else {
-        start = "#POSITION {";
-      }
+      let startPosition;
+      let startStyle;
       const end = "}";
+
+      if (dificuldade == 2) {
+        startPosition = "#POSITION {";
+      } else if (dificuldade == 1) {
+        startStyle = "#STYLE {";
+      } else if (dificuldade == 3) {
+        startPosition = "#POSITION {";
+        startStyle = "#STYLE {";
+      }
 
       const lines = value.split("\n");
 
-      if (lines[0] !== start || !value.endsWith(end)) {
-        value = previousValueRef.current;
-      } else {
-        for (let i = 0; i < lines.length - 1; i++) {
-          const semicolonIndex = lines[i].lastIndexOf(";");
-          if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
-            lines[i] = lines[i].substring(0, semicolonIndex + 1);
+      if (dificuldade == 3) {
+        const hasStartPosition = lines[0].startsWith(startPosition);
+        const hasStartStyle = lines.some(
+          (line, index) =>
+            line.startsWith(startStyle) &&
+            index > 0 &&
+            lines[index - 1].trim() === end
+        );
+        const endsCorrectly = lines[lines.length - 1].trim() === end;
+
+        if (!hasStartPosition || !hasStartStyle || !endsCorrectly) {
+          value = previousValueRef.current;
+        } else {
+          for (let i = 0; i < lines.length; i++) {
+            const semicolonIndex = lines[i].lastIndexOf(";");
+            if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
+              lines[i] = lines[i].substring(0, semicolonIndex + 1);
+            }
           }
-        }
 
-        if (lines[lines.length - 1].trim() !== end) {
-          lines[lines.length - 1] = end;
-        }
+          if (lines[lines.length - 1].trim() !== end) {
+            lines[lines.length - 1] = end;
+          }
 
-        while (lines.length > maxLines) {
-          lines.splice(maxLines - 1, 1);
-        }
+          while (lines.length > maxLines) {
+            lines.splice(maxLines - 1, 1);
+          }
 
-        value = lines.join("\n");
-        previousValueRef.current = value;
+          value = lines.join("\n");
+          previousValueRef.current = value;
+        }
+      } else {
+        if (
+          lines[0] !== (dificuldade == 2 ? startPosition : startStyle) ||
+          !value.endsWith(end)
+        ) {
+          value = previousValueRef.current;
+        } else {
+          for (let i = 0; i < lines.length - 1; i++) {
+            const semicolonIndex = lines[i].lastIndexOf(";");
+            if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
+              lines[i] = lines[i].substring(0, semicolonIndex + 1);
+            }
+          }
+
+          if (lines[lines.length - 1].trim() !== end) {
+            lines[lines.length - 1] = end;
+          }
+
+          while (lines.length > maxLines) {
+            lines.splice(maxLines - 1, 1);
+          }
+
+          value = lines.join("\n");
+          previousValueRef.current = value;
+        }
       }
 
       if (value !== editor.getValue()) {
