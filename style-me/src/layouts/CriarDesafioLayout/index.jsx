@@ -173,7 +173,7 @@ function getTipoUser (token) {
                 Difícil
               </option>
             </select>
-            {dificuldade === "2" && (
+            {(dificuldade === "2" || dificuldade === "3") && (
               <>
                 <span className="InputLabel">Numero De Caixas</span>
                 <select

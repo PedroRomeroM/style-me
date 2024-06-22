@@ -13,16 +13,15 @@ import {
 import { useLocation } from "react-router-dom";
 import Message from "../../components/UsuarioCriado";
 
-const initialCss = `#DESAFIO {\n\n}`;
+const initialCss = `#POSITION {\n\n}`;
+const initialCss2 = `#STYLE {\n\n}`;
 const maxLines = 5;
 
 const GameComponent = () => {
   const [gameHtml, setGameHtml] = useState("");
-  const [cssText, setCssText] = useState(initialCss);
   const [gameCss, setGameCss] = useState("");
   const iframeRef = useRef(null);
   const editorRef = useRef(null);
-  const previousValueRef = useRef(initialCss);
   const [profile, setProfile] = useState(null);
   const [img, setImg] = useState();
   const [imgType, setImgType] = useState();
@@ -32,9 +31,10 @@ const GameComponent = () => {
   const [description, setDescription] = useState();
   const [dificuldade, setDificuldade] = useState();
   const [cssSolucao, setCssSolucao] = useState();
+  const [cssText, setCssText] = useState(state.color == "yellow" ? initialCss : initialCss2);
+  const previousValueRef = useRef(state.color == "yellow" ? initialCss : initialCss2);
 
   const [isAdmin, setIsAdmin] = useState();
-
   const [isDone, setIsDone] = useState();
 
   useEffect(() => {
@@ -93,8 +93,13 @@ const GameComponent = () => {
   }
 
   const extractContent = (value) => {
-    const match = value.match(/#DESAFIO\s*{([^}]*)}/);
-    return match ? match[1].trim() : "";
+    if (state.color == "yellow") {
+      const match = value.match(/#POSITION\s*{([^}]*)}/);
+      return match ? match[1].trim() : "";
+    } else if (state.color == "green") {
+      const match = value.match(/#STYLE\s*{([^}]*)}/);
+      return match ? match[1].trim() : "";
+    }
   };
 
   const applyStyles = () => {
@@ -158,7 +163,15 @@ const GameComponent = () => {
     editorRef.current = editor;
     editor.onDidChangeModelContent(() => {
       let value = editor.getValue();
-      const start = "#DESAFIO {";
+      let start;
+      if (state.color == "yellow") {
+        start = "#POSITION {";
+      }
+      if (state.color == "green") {
+        start = "#STYLE {";
+      } else {
+        start = "#POSITION {";
+      }
       const end = "}";
 
       const lines = value.split("\n");
