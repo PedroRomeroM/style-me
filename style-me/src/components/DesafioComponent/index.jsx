@@ -34,7 +34,12 @@ const DesafioComponent = ({
   const generateQuadrados = (num) => {
     let quadrados = "";
     for (let i = 0; i < num; i++) {
-      quadrados += `<div class="quadrado"></div>`;
+      if(dificuldade == 3){
+        quadrados += `<div class="quadrado" id="EstiloQuadrado"></div>`;
+      }else {
+        quadrados += `<div class="quadrado"></div>`;
+      }
+
     }
     return quadrados;
   };
@@ -234,7 +239,6 @@ const DesafioComponent = ({
                     width: calc(100% - 2rem);
                     height: calc((100vh - 3.3rem));
                     background-color: #747185;
-                    background-image: url("images/textura.png");
                     background-size: cover;
                     background-repeat: no-repeat;
                     background-position: center;
@@ -255,11 +259,11 @@ const DesafioComponent = ({
                     height: 8rem;
                     margin: 10px;
                     z-index: 2;
-                    background-image: url("images/caixa.jpg");
                     background-size: cover;
                     background-repeat: no-repeat;
                     background-position: center;
                     transition: all 0.5s ease;
+                    background-color: green;
                   }
   
                   .areafantasma .objetivo2 {
@@ -278,8 +282,7 @@ const DesafioComponent = ({
                     display: flex;
                     padding: 1rem;
                   }
-                  ${generateCSSSolucao()}`
-                );
+                  ${generateCSSSolucao()}`);
     }
   }, [gameCss, gameHtml, cssText]);
 
@@ -306,10 +309,8 @@ const DesafioComponent = ({
 
       const positionContent = positionMatch ? positionMatch[1].trim() : "";
       const styleContent = styleMatch ? styleMatch[1].trim() : "";
-
       return `#AlvoDoDesafio { ${positionContent} }\n#AlvoDoDesafioS { ${styleContent} }`;
     }
-
     return "";
   };
 

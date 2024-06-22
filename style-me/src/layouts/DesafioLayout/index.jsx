@@ -15,7 +15,8 @@ import Message from "../../components/UsuarioCriado";
 
 const initialCss = `#POSITION {\n\n}`;
 const initialCss2 = `#STYLE {\n\n}`;
-const maxLines = 5;
+const initialCss3 = `#POSITION {\n\n}\n#STYLE {\n\n}`;
+const maxLines = 15;
 
 const GameComponent = () => {
   const [gameHtml, setGameHtml] = useState("");
@@ -31,8 +32,8 @@ const GameComponent = () => {
   const [description, setDescription] = useState();
   const [dificuldade, setDificuldade] = useState();
   const [cssSolucao, setCssSolucao] = useState();
-  const [cssText, setCssText] = useState(state.color == "yellow" ? initialCss : initialCss2);
-  const previousValueRef = useRef(state.color == "yellow" ? initialCss : initialCss2);
+  const [cssText, setCssText] = useState(state.color == "yellow" ? initialCss : state.color == "green" ? initialCss2 : initialCss3);
+  const previousValueRef = useRef(state.color == "yellow" ? initialCss : state.color == "green" ? initialCss2 : initialCss3);
 
   const [isAdmin, setIsAdmin] = useState();
   const [isDone, setIsDone] = useState();
@@ -92,14 +93,27 @@ const GameComponent = () => {
       });
   }
 
-  const extractContent = (value) => {
-    if (state.color == "yellow") {
-      const match = value.match(/#POSITION\s*{([^}]*)}/);
-      return match ? match[1].trim() : "";
-    } else if (state.color == "green") {
-      const match = value.match(/#STYLE\s*{([^}]*)}/);
-      return match ? match[1].trim() : "";
+  const extractContent = (cssText) => {
+    if (state.color == "yellow" || state.color == "green") {
+      const startIndex = cssText.indexOf("{") + 1;
+      const endIndex = cssText.lastIndexOf("}");
+      console.log(cssText.substring(startIndex, endIndex).trim());
+      return cssText.substring(startIndex, endIndex).trim();
     }
+
+    if (state.color == "red") {
+      const positionRegex = /#POSITION\s*\{([^}]*)\}/;
+      const styleRegex = /#STYLE\s*\{([^}]*)\}/;
+
+      const positionMatch = cssText.match(positionRegex);
+      const styleMatch = cssText.match(styleRegex);
+
+      const positionContent = positionMatch ? positionMatch[1].trim() : "";
+      const styleContent = styleMatch ? styleMatch[1].trim() : "";
+
+      return ` ${positionContent} }\n#EstiloQuadrado { ${styleContent} `;
+    }
+    return "";
   };
 
   const applyStyles = () => {
@@ -115,9 +129,10 @@ const GameComponent = () => {
       styleElement.id = "dynamicStyles";
       iframeDocument.head.appendChild(styleElement);
     }
-
+    
     styleElement.textContent =
       gameCss + `\n#${gameArea.id} { ${extractContent(cssText)} }`;
+
     checkForCompletion(iframeDocument);
   };
 
@@ -131,7 +146,7 @@ const GameComponent = () => {
 }
 
   const checkForCompletion = (doc) => {
-    if (dificuldade == 2) {
+    if (state.color == "yellow") {
       const quadrados = doc.querySelectorAll(".quadrado");
       const objetivos = doc.querySelectorAll(".objetivo2");
       const objetivosAlcancados = Array.from(quadrados).filter(
@@ -141,7 +156,7 @@ const GameComponent = () => {
       document.getElementById("concluirDesafio").style.display =
       objetivosAlcancados === objetivos.length ? "block" : "none";
     }
-    if (dificuldade === 1) {
+    if (state.color == "green") {
       document.getElementById("concluirDesafio").style.display =
       normalizeText(extractContent(cssText)) == normalizeText(cssSolucao) ? "block" : "none";      
     }
@@ -163,39 +178,77 @@ const GameComponent = () => {
     editorRef.current = editor;
     editor.onDidChangeModelContent(() => {
       let value = editor.getValue();
-      let start;
-      if (state.color == "yellow") {
-        start = "#POSITION {";
-      }
-      if (state.color == "green") {
-        start = "#STYLE {";
-      } else {
-        start = "#POSITION {";
-      }
+      let startPosition;
+      let startStyle;
       const end = "}";
+
+      if (state.color == "yellow") {
+        startPosition = "#POSITION {";
+      } else if (state.color == "green") {
+        startStyle = "#STYLE {";
+      } else if (state.color == "red") {
+        startPosition = "#POSITION {";
+        startStyle = "#STYLE {";
+      }
 
       const lines = value.split("\n");
 
-      if (lines[0] !== start || !value.endsWith(end)) {
-        value = previousValueRef.current;
-      } else {
-        for (let i = 0; i < lines.length - 1; i++) {
-          const semicolonIndex = lines[i].lastIndexOf(";");
-          if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
-            lines[i] = lines[i].substring(0, semicolonIndex + 1);
+      if (state.color == "red") {
+        const hasStartPosition = lines[0].startsWith(startPosition);
+        const hasStartStyle = lines.some(
+          (line, index) =>
+            line.startsWith(startStyle) &&
+            index > 0 &&
+            lines[index - 1].trim() === end
+        );
+        const endsCorrectly = lines[lines.length - 1].trim() === end;
+
+        if (!hasStartPosition || !hasStartStyle || !endsCorrectly) {
+          value = previousValueRef.current;
+        } else {
+          for (let i = 0; i < lines.length; i++) {
+            const semicolonIndex = lines[i].lastIndexOf(";");
+            if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
+              lines[i] = lines[i].substring(0, semicolonIndex + 1);
+            }
           }
-        }
 
-        if (lines[lines.length - 1].trim() !== end) {
-          lines[lines.length - 1] = end;
-        }
+          if (lines[lines.length - 1].trim() !== end) {
+            lines[lines.length - 1] = end;
+          }
 
-        while (lines.length > maxLines) {
-          lines.splice(maxLines - 1, 1);
-        }
+          while (lines.length > maxLines) {
+            lines.splice(maxLines - 1, 1);
+          }
 
-        value = lines.join("\n");
-        previousValueRef.current = value;
+          value = lines.join("\n");
+          previousValueRef.current = value;
+        }
+      } else {
+        if (
+          lines[0] !== (state.color == "yellow" ? startPosition : startStyle) ||
+          !value.endsWith(end)
+        ) {
+          value = previousValueRef.current;
+        } else {
+          for (let i = 0; i < lines.length - 1; i++) {
+            const semicolonIndex = lines[i].lastIndexOf(";");
+            if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
+              lines[i] = lines[i].substring(0, semicolonIndex + 1);
+            }
+          }
+
+          if (lines[lines.length - 1].trim() !== end) {
+            lines[lines.length - 1] = end;
+          }
+
+          while (lines.length > maxLines) {
+            lines.splice(maxLines - 1, 1);
+          }
+
+          value = lines.join("\n");
+          previousValueRef.current = value;
+        }
       }
 
       if (value !== editor.getValue()) {
