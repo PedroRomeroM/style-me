@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import "./Desafio.scss";
-import { ChDone } from "../../services/ApiServices";
+import { ChDone, getChallengeInfo } from "../../services/ApiServices";
 import { useLocation } from "react-router-dom";
 
 const initialCss = `#DESAFIO {\n\n}`;
@@ -15,7 +15,9 @@ const DesafioComponent = ({
   setCssBase,
   setGameHtmlBase,
   handleConcluir,
-  isCreateCh
+  isCreateCh,
+  isEditar,
+  chId
 }) => {
   const [gameHtml, setGameHtml] = useState("");
   const [cssText, setCssText] = useState(initialCss);
@@ -46,6 +48,21 @@ const DesafioComponent = ({
   };
 
   useEffect(() => {
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token
+
+    if (isEditar === 'OK') {
+      const chInfo = getChallengeInfo(token, chId)
+      chInfo.then(res => {
+        setCssBase(res.data.cssBase)
+        setGameHtmlBase(res.data.html)
+        setCssSolucao(res.data.cssFinal)
+      }).catch(e => {
+        console.log(e)
+      })
+    }
+
     setCssBase(gameCss);
     setGameHtmlBase(gameHtml);
   }, [gameCss, gameHtml]);
@@ -267,7 +284,13 @@ const DesafioComponent = ({
           {
             isCreateCh ? (
               <button id="concluirDesafioC" onClick={handleConcluirClick}>
-                Criar desafio
+                {
+                  isEditar === 'OK' ? (
+                    'Editar desafio'
+                  ) : (
+                    'Criar desafio'
+                  )
+                }
               </button>
             ) : (
               <button id="concluirDesafioC" onClick={handleConcluirClick}>

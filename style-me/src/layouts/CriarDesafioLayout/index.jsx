@@ -3,7 +3,8 @@ import "./CriarDesafio.scss";
 import Header from "../../components/Header/Header";
 import DesafioComponent from "../../components/DesafioComponent";
 import Message from "../../components/UsuarioCriado";
-import { getUserInfo, getTypeUser, createChallenge } from "../../services/ApiServices";
+import { getUserInfo, getTypeUser, createChallenge, getChallengeInfo, updateChallenge } from "../../services/ApiServices";
+import { useLocation } from 'react-router-dom';
 
 const CriarDesafio = () => {
   const [img, setImg] = useState();
@@ -18,6 +19,7 @@ const CriarDesafio = () => {
   const [cssSolucao, setCssSolucao] = useState("");
   const [cssBase, setCssBase ] = useState("");
   const [htmlBase, setGameHtmlBase] = useState("");
+  const { state } = useLocation();
 
   const [profile, setProfile] = useState(null);
   const [isAdmin, setIsAdmin] = useState();
@@ -35,9 +37,20 @@ const CriarDesafio = () => {
     const res = localStorage.getItem("auth");
     const parsed = JSON.parse(res);
     const token = parsed.token
+    
+    if (state.isEditar === 'OK') {
+      const chInfo = getChallengeInfo(token, state.id)
+      chInfo.then(res => {
+        setTitle(res.data.title)
+        setDescricao(res.data.description)
+        setDificuldade(res.data.level)
+      }).catch(e => {
+        console.log(e)
+      })
+    }
+
     getUsersInfo(token)
     getTipoUser(token)
-
     setCreateCh(true)
 
 }, [profile]);
@@ -231,6 +244,8 @@ function getTipoUser (token) {
           setGameHtmlBase={setGameHtmlBase}
           handleConcluir={handleConcluir}
           isCreateCh={isCreateCh}
+          isEditar={state.isEditar}
+          chId={state.id}
         />
       )}
     </div>

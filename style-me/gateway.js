@@ -270,6 +270,39 @@ app.get(`/api/email/exists`, async (req, res) => {
   res.send(response.data);
 });
 
+app.put('/api/ch/up', verifyJWT, async (req, res) => {
+  let chId = req.headers['ch-id'];
+  let chTitle = req.headers['ch-title'];
+  let chLevel = req.headers['ch-level'];
+  let chDescription = req.headers['ch-description'];
+  let chHtml = req.headers['ch-html'];
+  let chCssBase = req.headers['ch-cssBase'];
+  let chCssFinal = req.headers['ch-cssFinal'];
+
+
+  let payload = {
+    id: chId,
+    title: chTitle,
+    level: chLevel,
+    description: chDescription,
+    html: chHtml,
+    cssBase: chCssBase,
+    cssFinal: chCssFinal,
+  };
+
+  try {
+    const response = await axios.put('http://localhost:8083/api/ch', payload, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+    res.send(response.data);
+  } catch (error) {
+    console.error('Erro ao atualizar o desafio:', error);
+    res.status(500).json({ message: 'Erro ao atualizar o desafio' });
+  }
+});
+
 
 // Configuração da aplicação
 app.use(logger('dev'));
