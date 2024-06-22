@@ -2,20 +2,27 @@ import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import "./Desafio.scss";
 import Header from "../../components/Header/Header";
-import { getUserInfo, getChallengeInfo, fetchGameHtml, fetchGameCss, ChDone, getTypeUser } from "../../services/ApiServices";
-import { useLocation } from 'react-router-dom';
+import {
+  getUserInfo,
+  getChallengeInfo,
+  fetchGameHtml,
+  fetchGameCss,
+  ChDone,
+  getTypeUser,
+} from "../../services/ApiServices";
+import { useLocation } from "react-router-dom";
 import Message from "../../components/UsuarioCriado";
 
-const initialCss = `#DESAFIO {\n\n}`;
-const maxLines = 5;
+const initialCss = `#POSITION {\n\n}`;
+const initialCss2 = `#STYLE {\n\n}`;
+const initialCss3 = `#POSITION {\n\n}\n#STYLE {\n\n}`;
+const maxLines = 15;
 
 const GameComponent = () => {
   const [gameHtml, setGameHtml] = useState("");
-  const [cssText, setCssText] = useState(initialCss);
   const [gameCss, setGameCss] = useState("");
   const iframeRef = useRef(null);
   const editorRef = useRef(null);
-  const previousValueRef = useRef(initialCss);
   const [profile, setProfile] = useState(null);
   const [img, setImg] = useState();
   const [imgType, setImgType] = useState();
@@ -23,9 +30,24 @@ const GameComponent = () => {
   const [username, setUsername] = useState();
   const { state } = useLocation();
   const [description, setDescription] = useState();
+  const [dificuldade, setDificuldade] = useState();
+  const [cssSolucao, setCssSolucao] = useState();
+  const [cssText, setCssText] = useState(
+    state.color == "yellow"
+      ? initialCss
+      : state.color == "green"
+      ? initialCss2
+      : initialCss3
+  );
+  const previousValueRef = useRef(
+    state.color == "yellow"
+      ? initialCss
+      : state.color == "green"
+      ? initialCss2
+      : initialCss3
+  );
 
   const [isAdmin, setIsAdmin] = useState();
-
   const [isDone, setIsDone] = useState();
 
   useEffect(() => {
@@ -37,18 +59,22 @@ const GameComponent = () => {
       getUserInfo(token),
       getChallengeInfo(token, state.id),
       fetchGameHtml(token, state.id),
-      fetchGameCss(token, state.id)
-    ]).then(([userInfo, challengeInfo, html, css]) => {
-      setProfile(userInfo.data);
-      setDescription(challengeInfo.data.description);
-      setGameHtml(html);
-      setGameCss(css);
+      fetchGameCss(token, state.id),
+    ])
+      .then(([userInfo, challengeInfo, html, css]) => {
+        setProfile(userInfo.data);
+        setDescription(challengeInfo.data.description);
+        setGameHtml(html);
+        setGameCss(css);
+        setDificuldade(challengeInfo.data.level);
+        setCssSolucao(challengeInfo.data.cssFinal);
 
-      setUsername(userInfo.data.username);
-      setImgType(userInfo.data.imgType);
-      setImg(userInfo.data.img);
-      setTotalScore(userInfo.data.totalScore || 0);
-    }).catch(console.log);
+        setUsername(userInfo.data.username);
+        setImgType(userInfo.data.imgType);
+        setImg(userInfo.data.img);
+        setTotalScore(userInfo.data.totalScore || 0);
+      })
+      .catch(console.log);
   }, [state.id]);
 
   useEffect(() => {
@@ -60,27 +86,62 @@ const GameComponent = () => {
   useEffect(() => {
     const res = localStorage.getItem("auth");
     const parsed = JSON.parse(res);
-    const token = parsed.token
-    getTipoUser(token)
-
+    const token = parsed.token;
+    getTipoUser(token);
   }, [isAdmin]);
 
-  function getTipoUser (token) {
+  function getTipoUser(token) {
     const response = getTypeUser(token);
-    response.then(res => {
-        if (res.data != 'ADM') {
-            setIsAdmin('false')
+    response
+      .then((res) => {
+        if (res.data != "ADM") {
+          setIsAdmin("false");
         } else {
-            setIsAdmin('true')
+          setIsAdmin("true");
         }
-    }).catch (e => {
-        console.log(e)
-    })
-}
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
 
-  const extractContent = (value) => {
-    const match = value.match(/#DESAFIO\s*{([^}]*)}/);
-    return match ? match[1].trim() : "";
+  const extractContent = (cssText) => {
+    if (state.color == "yellow" || state.color == "green") {
+      const startIndex = cssText.indexOf("{") + 1;
+      const endIndex = cssText.lastIndexOf("}");
+      console.log(cssText.substring(startIndex, endIndex).trim());
+      return cssText.substring(startIndex, endIndex).trim();
+    }
+
+    if (state.color == "red") {
+      const positionRegex = /#POSITION\s*\{([^}]*)\}/;
+      const styleRegex = /#STYLE\s*\{([^}]*)\}/;
+
+      const positionMatch = cssText.match(positionRegex);
+      const styleMatch = cssText.match(styleRegex);
+
+      const positionContent = positionMatch ? positionMatch[1].trim() : "";
+      const styleContent = styleMatch ? styleMatch[1].trim() : "";
+
+      return ` ${positionContent} }\n#EstiloQuadrado { ${styleContent} `;
+    }
+    return "";
+  };
+
+  const extractStyleContent = (cssText, type) => {
+    if(type == 1) {
+      const styleRegex = /#STYLE\s*\{([^}]*)\}/;
+      const styleMatch = cssText.match(styleRegex);
+      const styleContent = styleMatch ? styleMatch[1].trim() : "";
+  
+      return `${styleContent} `;
+    }else if (type == 2){
+      const styleRegex = /#AlvoDoDesafioS\s*\{([^}]*)\}/;
+      const styleMatch = cssText.match(styleRegex);
+      const styleContent = styleMatch ? styleMatch[1].trim() : "";
+  
+      return `${styleContent} `;
+    }
   };
 
   const applyStyles = () => {
@@ -97,18 +158,52 @@ const GameComponent = () => {
       iframeDocument.head.appendChild(styleElement);
     }
 
-    styleElement.textContent = gameCss + `\n#${gameArea.id} { ${extractContent(cssText)} }`;
+    styleElement.textContent =
+      gameCss + `\n#${gameArea.id} { ${extractContent(cssText)} }`;
+
     checkForCompletion(iframeDocument);
   };
 
-  const checkForCompletion = (doc) => {
-    const quadrados = doc.querySelectorAll(".quadrado");
-    const objetivos = doc.querySelectorAll(".objetivo1, .objetivo2");
-    const objetivosAlcancados = Array.from(quadrados).filter((quadrado, index) =>
-      isOverlapping(quadrado, objetivos[index])
-    ).length;
+  function normalizeText(text) {
+    return text
+      .toLowerCase()
+      .split(";")
+      .map((word) => word.trim().replace(/[ ;]/g, ""))
+      .sort()
+      .join("");
+  }
 
-    document.getElementById("concluirDesafio").style.display = objetivosAlcancados === objetivos.length ? "block" : "none";
+  const checkForCompletion = (doc) => {
+    if (state.color == "yellow") {
+      const quadrados = doc.querySelectorAll(".quadrado");
+      const objetivos = doc.querySelectorAll(".objetivo2");
+      const objetivosAlcancados = Array.from(quadrados).filter(
+        (quadrado, index) => isOverlapping(quadrado, objetivos[index])
+      ).length;
+
+      document.getElementById("concluirDesafio").style.display =
+        objetivosAlcancados === objetivos.length ? "block" : "none";
+    }
+    if (state.color == "green") {
+      document.getElementById("concluirDesafio").style.display =
+        normalizeText(extractContent(cssText)) == normalizeText(cssSolucao)
+          ? "block"
+          : "none";
+    }
+    if (state.color == "red") {
+      const quadrados = doc.querySelectorAll(".quadrado");
+      const objetivos = doc.querySelectorAll(".objetivo2");
+      const objetivosAlcancados = Array.from(quadrados).filter(
+        (quadrado, index) => isOverlapping(quadrado, objetivos[index])
+      ).length;
+
+      console.log(normalizeText(extractStyleContent(cssSolucao,2)));
+      document.getElementById("concluirDesafio").style.display =
+        normalizeText(extractStyleContent(cssText,1)) == normalizeText(extractStyleContent(cssSolucao,2)) &&
+        objetivosAlcancados === objetivos.length
+          ? "block"
+          : "none";
+    }
   };
 
   const isOverlapping = (elem1, elem2) => {
@@ -127,31 +222,77 @@ const GameComponent = () => {
     editorRef.current = editor;
     editor.onDidChangeModelContent(() => {
       let value = editor.getValue();
-      const start = "#DESAFIO {";
+      let startPosition;
+      let startStyle;
       const end = "}";
+
+      if (state.color == "yellow") {
+        startPosition = "#POSITION {";
+      } else if (state.color == "green") {
+        startStyle = "#STYLE {";
+      } else if (state.color == "red") {
+        startPosition = "#POSITION {";
+        startStyle = "#STYLE {";
+      }
 
       const lines = value.split("\n");
 
-      if (lines[0] !== start || !value.endsWith(end)) {
-        value = previousValueRef.current;
-      } else {
-        for (let i = 0; i < lines.length - 1; i++) {
-          const semicolonIndex = lines[i].lastIndexOf(";");
-          if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
-            lines[i] = lines[i].substring(0, semicolonIndex + 1);
+      if (state.color == "red") {
+        const hasStartPosition = lines[0].startsWith(startPosition);
+        const hasStartStyle = lines.some(
+          (line, index) =>
+            line.startsWith(startStyle) &&
+            index > 0 &&
+            lines[index - 1].trim() === end
+        );
+        const endsCorrectly = lines[lines.length - 1].trim() === end;
+
+        if (!hasStartPosition || !hasStartStyle || !endsCorrectly) {
+          value = previousValueRef.current;
+        } else {
+          for (let i = 0; i < lines.length; i++) {
+            const semicolonIndex = lines[i].lastIndexOf(";");
+            if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
+              lines[i] = lines[i].substring(0, semicolonIndex + 1);
+            }
           }
-        }
 
-        if (lines[lines.length - 1].trim() !== end) {
-          lines[lines.length - 1] = end;
-        }
+          if (lines[lines.length - 1].trim() !== end) {
+            lines[lines.length - 1] = end;
+          }
 
-        while (lines.length > maxLines) {
-          lines.splice(maxLines - 1, 1);
-        }
+          while (lines.length > maxLines) {
+            lines.splice(maxLines - 1, 1);
+          }
 
-        value = lines.join("\n");
-        previousValueRef.current = value;
+          value = lines.join("\n");
+          previousValueRef.current = value;
+        }
+      } else {
+        if (
+          lines[0] !== (state.color == "yellow" ? startPosition : startStyle) ||
+          !value.endsWith(end)
+        ) {
+          value = previousValueRef.current;
+        } else {
+          for (let i = 0; i < lines.length - 1; i++) {
+            const semicolonIndex = lines[i].lastIndexOf(";");
+            if (semicolonIndex !== -1 && semicolonIndex < lines[i].length - 1) {
+              lines[i] = lines[i].substring(0, semicolonIndex + 1);
+            }
+          }
+
+          if (lines[lines.length - 1].trim() !== end) {
+            lines[lines.length - 1] = end;
+          }
+
+          while (lines.length > maxLines) {
+            lines.splice(maxLines - 1, 1);
+          }
+
+          value = lines.join("\n");
+          previousValueRef.current = value;
+        }
       }
 
       if (value !== editor.getValue()) {
@@ -161,7 +302,9 @@ const GameComponent = () => {
               1,
               1,
               editor.getModel().getLineCount(),
-              editor.getModel().getLineMaxColumn(editor.getModel().getLineCount())
+              editor
+                .getModel()
+                .getLineMaxColumn(editor.getModel().getLineCount())
             ),
             text: value,
             forceMoveMarkers: true,
@@ -192,37 +335,39 @@ const GameComponent = () => {
     const parsed = JSON.parse(res);
     const token = parsed.token;
 
-    const checkDone = ChDone(token, state.id)
-    checkDone.then(res => {
-      if (res.status === 200) {
-        setIsDone(true)
-      } else {
-        setIsDone(false)
-      }
-    }).catch(e => {
-      console.log(e)
-    })
-  }
+    const checkDone = ChDone(token, state.id);
+    checkDone
+      .then((res) => {
+        if (res.status === 200) {
+          setIsDone(true);
+        } else {
+          setIsDone(false);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
-  function checkIsDone () {
+  function checkIsDone() {
     if (isDone === true) {
-      return(
-        <Message text={'Desafio concluido com sucesso!'}/>
-        
-      )
+      return <Message text={"Desafio concluido com sucesso!"} />;
     } else if (isDone === false) {
-      return (
-        <Message text={'Tente novamente!'}/>
-      )
+      return <Message text={"Tente novamente!"} />;
     }
   }
 
   return (
     <div className="TelaDeDesafio">
-      <Header username={username} img={img} imgType={imgType} totalScore={totalScore} isAdmin={isAdmin}/>
+      <Header
+        username={username}
+        img={img}
+        imgType={imgType}
+        totalScore={totalScore}
+        isAdmin={isAdmin}
+      />
       <div className="DesafioBody">
-        { checkIsDone()
-        }
+        {checkIsDone()}
         <iframe
           id="gameIframe"
           ref={iframeRef}
@@ -257,11 +402,14 @@ const GameComponent = () => {
               onMount={handleEditorDidMount}
             />
           </div>
-          <button id="concluirDesafio" onClick={handleConcluir}>Concluir desafio</button>
+          <button id="concluirDesafio" onClick={handleConcluir}>
+            Concluir desafio
+          </button>
           <button className="BotaoFormatar" onClick={handleFormat}>
             Formatar
           </button>
-          <button className="voltar" onClick={goBack}>Voltar
+          <button className="voltar" onClick={goBack}>
+            Voltar
           </button>
         </div>
       </div>

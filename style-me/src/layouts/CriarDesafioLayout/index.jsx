@@ -113,17 +113,7 @@ function getTipoUser (token) {
   };
 
   const handleConcluir = () => {
-
-    //INTEGRAR AQUI
-    
-    //Variaveis usadas para integrar com o back
-    // title
-    // dificuldade
-    // descricao
-    // htmlBase
-    // cssBase
-    // cssSolucao
-
+    console.log(cssBase)
     const res = localStorage.getItem("auth");
     const parsed = JSON.parse(res);
     const token = parsed.token
@@ -183,6 +173,9 @@ function getTipoUser (token) {
               value={dificuldade}
               onChange={handleDificuldadeChange}
             >
+              <option value="0" className="values">
+                    Selecione a dificuldade
+                  </option>
               <option value="1" className="values">
                 Fácil
               </option>
@@ -193,7 +186,7 @@ function getTipoUser (token) {
                 Difícil
               </option>
             </select>
-            {dificuldade === "2" && (
+            {(dificuldade === "2" || dificuldade === "3") && (
               <>
                 <span className="InputLabel">Numero De Caixas</span>
                 <select
@@ -238,6 +231,7 @@ function getTipoUser (token) {
         <DesafioComponent
           goBack={handleTela}
           descricao={descricao}
+          dificuldade={dificuldade}
           numeroDeCaixas={numeroDeCaixas}
           setCssSolucao={setCssSolucao}
           setCssBase={setCssBase}
