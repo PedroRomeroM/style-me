@@ -32,8 +32,20 @@ const GameComponent = () => {
   const [description, setDescription] = useState();
   const [dificuldade, setDificuldade] = useState();
   const [cssSolucao, setCssSolucao] = useState();
-  const [cssText, setCssText] = useState(state.color == "yellow" ? initialCss : state.color == "green" ? initialCss2 : initialCss3);
-  const previousValueRef = useRef(state.color == "yellow" ? initialCss : state.color == "green" ? initialCss2 : initialCss3);
+  const [cssText, setCssText] = useState(
+    state.color == "yellow"
+      ? initialCss
+      : state.color == "green"
+      ? initialCss2
+      : initialCss3
+  );
+  const previousValueRef = useRef(
+    state.color == "yellow"
+      ? initialCss
+      : state.color == "green"
+      ? initialCss2
+      : initialCss3
+  );
 
   const [isAdmin, setIsAdmin] = useState();
   const [isDone, setIsDone] = useState();
@@ -116,6 +128,22 @@ const GameComponent = () => {
     return "";
   };
 
+  const extractStyleContent = (cssText, type) => {
+    if(type == 1) {
+      const styleRegex = /#STYLE\s*\{([^}]*)\}/;
+      const styleMatch = cssText.match(styleRegex);
+      const styleContent = styleMatch ? styleMatch[1].trim() : "";
+  
+      return `${styleContent} `;
+    }else if (type == 2){
+      const styleRegex = /#AlvoDoDesafioS\s*\{([^}]*)\}/;
+      const styleMatch = cssText.match(styleRegex);
+      const styleContent = styleMatch ? styleMatch[1].trim() : "";
+  
+      return `${styleContent} `;
+    }
+  };
+
   const applyStyles = () => {
     const iframeDocument = iframeRef.current.contentDocument;
     if (!iframeDocument) return;
@@ -129,7 +157,7 @@ const GameComponent = () => {
       styleElement.id = "dynamicStyles";
       iframeDocument.head.appendChild(styleElement);
     }
-    
+
     styleElement.textContent =
       gameCss + `\n#${gameArea.id} { ${extractContent(cssText)} }`;
 
@@ -138,12 +166,12 @@ const GameComponent = () => {
 
   function normalizeText(text) {
     return text
-        .toLowerCase()
-        .split(';') 
-        .map(word => word.trim().replace(/[ ;]/g, '')) 
-        .sort() 
-        .join('');
-}
+      .toLowerCase()
+      .split(";")
+      .map((word) => word.trim().replace(/[ ;]/g, ""))
+      .sort()
+      .join("");
+  }
 
   const checkForCompletion = (doc) => {
     if (state.color == "yellow") {
@@ -154,11 +182,27 @@ const GameComponent = () => {
       ).length;
 
       document.getElementById("concluirDesafio").style.display =
-      objetivosAlcancados === objetivos.length ? "block" : "none";
+        objetivosAlcancados === objetivos.length ? "block" : "none";
     }
     if (state.color == "green") {
       document.getElementById("concluirDesafio").style.display =
-      normalizeText(extractContent(cssText)) == normalizeText(cssSolucao) ? "block" : "none";      
+        normalizeText(extractContent(cssText)) == normalizeText(cssSolucao)
+          ? "block"
+          : "none";
+    }
+    if (state.color == "red") {
+      const quadrados = doc.querySelectorAll(".quadrado");
+      const objetivos = doc.querySelectorAll(".objetivo2");
+      const objetivosAlcancados = Array.from(quadrados).filter(
+        (quadrado, index) => isOverlapping(quadrado, objetivos[index])
+      ).length;
+
+      console.log(normalizeText(extractStyleContent(cssSolucao,2)));
+      document.getElementById("concluirDesafio").style.display =
+        normalizeText(extractStyleContent(cssText,1)) == normalizeText(extractStyleContent(cssSolucao,2)) &&
+        objetivosAlcancados === objetivos.length
+          ? "block"
+          : "none";
     }
   };
 
