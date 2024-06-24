@@ -34,31 +34,51 @@ const DesafioComponent = ({
     dificuldade == 2 ? initialCss : dificuldade == 1 ? initialCss2 : initialCss3
   );
 
-  //Mudar para regex que coloca as divs quadrado dentro do html que vem do back (gameHtml)
-  const generateQuadrados = (num) => {
-    let quadrados = "";
-    for (let i = 0; i < num; i++) {
-      if (dificuldade == 3) {
-        quadrados += `<div class="quadrado" id="EstiloQuadrado"></div>`;
-      } else {
-        quadrados += `<div class="quadrado"></div>`;
+  // Função para atualizar o HTML com o número de quadrados
+  const updateHtmlWithQuadrados = (num) => {
+    setGameHtml((prevHtml) => {
+      const quadradoRegex = /<div class="quadrado"[^>]*><\/div>/g;
+      let quadrados = "";
+      for (let i = 0; i < num; i++) {
+        if (dificuldade == 3) {
+          quadrados += `<div class="quadrado" id="EstiloQuadrado"></div>`;
+        } else {
+          quadrados += `<div class="quadrado"></div>`;
+        }
       }
-    }
-    return quadrados;
+      return prevHtml.replace(quadradoRegex, "")
+                     .replace("</div>", quadrados + "</div>"); 
+    });
   };
+  
 
-  //Mudar para regex que coloca as divs objetivo dentro do html que vem do back (gameHtml)
-  const generateObjetivos = (num) => {
-    let objetivos = "";
-    for (let i = 0; i < num; i++) {
-      if (dificuldade == 2) {
-        objetivos += `<div class="objetivo2"></div>`;
-      } else {
-        objetivos += `<div class="objetivo2" id="AlvoDoDesafioS"></div>`;
+  // Função para atualizar o HTML com o número de objetivos
+  const updateHtmlWithObjetivos = (num) => {
+    setGameHtml((prevHtml) => {
+      const objetivoRegex = /<div class="objetivo2"><\/div>/g;
+
+      if(dificuldade == 3){
+        objetivoRegex = /<div class="objetivo2" id="EstiloQuadrado"><\/div>/g;
       }
-    }
-    return objetivos;
+
+      let objetivos = "";
+      for (let i = 0; i < num; i++) {
+        if (dificuldade == 2) {
+          objetivos += `<div class="objetivo2"></div>`;
+        } else {
+          objetivos += `<div class="objetivo2" id="AlvoDoDesafioS"></div>`;
+        }
+      }
+      const newGameHtml = prevHtml.replace(objetivoRegex, "").replace('<div class="areafantasma" id=AlvoDoDesafio>', `<div class="areafantasma" id=AlvoDoDesafio>${objetivos}`);
+      return newGameHtml;
+    });
   };
+  
+
+  useEffect(() => {
+    updateHtmlWithQuadrados(numeroDeCaixas)
+    updateHtmlWithObjetivos(numeroDeCaixas)
+  },[gameCss])
 
   //Work in progress
   useEffect(() => {
@@ -70,8 +90,8 @@ const DesafioComponent = ({
       const chInfo = getChallengeInfo(token, chId);
       chInfo
         .then((res) => {
-          setGameCss(res.data.cssBase)
           setGameHtml(res.data.html)
+          setGameCss(res.data.cssBase)
           if(dificuldade == 3){
             setCssText(res.data.cssFinal.replace(/#AlvoDoDesafioS/g, '#STYLE').replace(/#AlvoDoDesafio/g, '#POSITION').replace(/}/g, '\n}').replace(/{/g, '{\n'))
           }else if(dificuldade == 2) {
@@ -90,8 +110,9 @@ const DesafioComponent = ({
   useEffect(() => {
     if (iframeRef.current && iframeRef.current.contentDocument) {
       applyStyles();
+      console.log(gameHtml)
     }
-  }, [cssText, gameCss]);
+  }, [cssText, gameCss, gameHtml]);
 
   //OK tudo certo
   const extractContent = (cssText) => {

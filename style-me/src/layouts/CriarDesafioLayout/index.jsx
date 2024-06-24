@@ -27,7 +27,6 @@ const CriarDesafio = () => {
   const [cssBase, setCssBase] = useState("");
   const [htmlBase, setGameHtmlBase] = useState("");
   const { state } = useLocation();
-
   const [profile, setProfile] = useState(null);
   const [isAdmin, setIsAdmin] = useState();
 
@@ -198,7 +197,7 @@ const CriarDesafio = () => {
                 Difícil
               </option>
             </select>
-            {(dificuldade === "2" || dificuldade === "3") && (
+            {(state.color == "yellow" || state.color == "red") && (
               <>
                 <span className="InputLabel">Numero De Caixas</span>
                 <select
