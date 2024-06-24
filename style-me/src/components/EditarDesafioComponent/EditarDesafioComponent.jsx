@@ -16,13 +16,12 @@ const DesafioComponent = ({
   setCssSolucao,
   setCssBase,
   setGameHtmlBase,
-  handleConcluir,
+  handleEditar,
   isCreateCh,
   dificuldade,
   isEditar,
   chId,
-}) =>{
-
+}) => {
   const [gameHtml, setGameHtml] = useState("");
   const [cssText, setCssText] = useState(
     dificuldade == 2 ? initialCss : dificuldade == 1 ? initialCss2 : initialCss3
@@ -37,7 +36,10 @@ const DesafioComponent = ({
   // Função para atualizar o HTML com o número de quadrados
   const updateHtmlWithQuadrados = (num) => {
     setGameHtml((prevHtml) => {
-      const quadradoRegex = /<div class="quadrado"[^>]*><\/div>/g;
+      let quadradoRegex = /<div class="quadrado"[^>]*><\/div>/g;
+      if (dificuldade == 3) {
+        quadradoRegex = /<div class="quadrado" id="EstiloQuadrado"><\/div>/g;
+      }
       let quadrados = "";
       for (let i = 0; i < num; i++) {
         if (dificuldade == 3) {
@@ -46,19 +48,21 @@ const DesafioComponent = ({
           quadrados += `<div class="quadrado"></div>`;
         }
       }
-      return prevHtml.replace(quadradoRegex, "")
-                     .replace("</div>", quadrados + "</div>"); 
+      const newGameHtml = prevHtml
+        .replace(quadradoRegex, "")
+        .replace('<div id="ondeOCSSVaiSerAplicado">', `<div id="ondeOCSSVaiSerAplicado">${quadrados}`);
+
+      return newGameHtml
     });
   };
-  
 
   // Função para atualizar o HTML com o número de objetivos
   const updateHtmlWithObjetivos = (num) => {
     setGameHtml((prevHtml) => {
-      const objetivoRegex = /<div class="objetivo2"><\/div>/g;
+      let objetivoRegex = /<div class="objetivo2"><\/div>/g;
 
-      if(dificuldade == 3){
-        objetivoRegex = /<div class="objetivo2" id="EstiloQuadrado"><\/div>/g;
+      if (dificuldade == 3) {
+        objetivoRegex = /<div class="objetivo2" id="AlvoDoDesafioS"><\/div>/g;
       }
 
       let objetivos = "";
@@ -69,18 +73,26 @@ const DesafioComponent = ({
           objetivos += `<div class="objetivo2" id="AlvoDoDesafioS"></div>`;
         }
       }
-      const newGameHtml = prevHtml.replace(objetivoRegex, "").replace('<div class="areafantasma" id=AlvoDoDesafio>', `<div class="areafantasma" id=AlvoDoDesafio>${objetivos}`);
+      const newGameHtml = prevHtml
+        .replace(objetivoRegex, "")
+        .replace(
+          '<div class="areafantasma" id=AlvoDoDesafio>',
+          `<div class="areafantasma" id=AlvoDoDesafio>${objetivos}`
+        );
       return newGameHtml;
     });
   };
-  
+
+  useEffect(() =>{
+    setGameHtmlBase(gameHtml)
+  },[gameHtml])
 
   useEffect(() => {
-    updateHtmlWithQuadrados(numeroDeCaixas)
-    updateHtmlWithObjetivos(numeroDeCaixas)
-  },[gameCss])
+    updateHtmlWithQuadrados(numeroDeCaixas);
+    updateHtmlWithObjetivos(numeroDeCaixas);
+  }, [gameCss,gameHtml]);
 
-  //Work in progress
+
   useEffect(() => {
     const res = localStorage.getItem("auth");
     const parsed = JSON.parse(res);
@@ -90,16 +102,23 @@ const DesafioComponent = ({
       const chInfo = getChallengeInfo(token, chId);
       chInfo
         .then((res) => {
-          setGameHtml(res.data.html)
-          setGameCss(res.data.cssBase)
-          if(dificuldade == 3){
-            setCssText(res.data.cssFinal.replace(/#AlvoDoDesafioS/g, '#STYLE').replace(/#AlvoDoDesafio/g, '#POSITION').replace(/}/g, '\n}').replace(/{/g, '{\n'))
-          }else if(dificuldade == 2) {
-            setCssText("#POSITION {\n" + res.data.cssFinal + "\n}")
-          }else if(dificuldade == 1) {
-            setCssText("#STYLE {\n" + res.data.cssFinal + "\n}")
+          setGameHtml(res.data.html);
+          setGameCss(res.data.cssBase);
+          if (dificuldade == 3) {
+            console.log(res.data.cssFinal)
+            setCssText(
+              res.data.cssFinal
+                .replace(/#AlvoDoDesafioS/g, "#STYLE")
+                .replace(/#AlvoDoDesafio/g, "#POSITION")
+                .replace(/}/g, "\n}")
+                .replace(/{/g, "{\n")
+            );
+          } else if (dificuldade == 2) {
+            setCssText("#POSITION {\n" + res.data.cssFinal + "\n}");
+          } else if (dificuldade == 1) {
+            setCssText("#STYLE {\n" + res.data.cssFinal + "\n}");
           }
-          })
+        })
         .catch((e) => {
           console.log(e);
         });
@@ -110,16 +129,14 @@ const DesafioComponent = ({
   useEffect(() => {
     if (iframeRef.current && iframeRef.current.contentDocument) {
       applyStyles();
-      console.log(gameHtml)
     }
   }, [cssText, gameCss, gameHtml]);
 
   //OK tudo certo
-  const extractContent = (cssText) => {
+  const extractContent = (cssText,variant) => {
     if (dificuldade == 2 || dificuldade == 1) {
       const startIndex = cssText.indexOf("{") + 1;
       const endIndex = cssText.lastIndexOf("}");
-      console.log(cssText.substring(startIndex, endIndex).trim());
       return cssText.substring(startIndex, endIndex).trim();
     }
 
@@ -132,6 +149,10 @@ const DesafioComponent = ({
 
       const positionContent = positionMatch ? positionMatch[1].trim() : "";
       const styleContent = styleMatch ? styleMatch[1].trim() : "";
+
+      if(variant){
+        return `#AlvoDoDesafio { ${positionContent} }\n#AlvoDoDesafioS { ${styleContent} }`;
+      }
       return `${positionContent}\n#AlvoDoDesafioS { ${styleContent} }`;
     }
     return "";
@@ -153,7 +174,9 @@ const DesafioComponent = ({
     }
 
     styleElement.textContent =
-      gameCss + `\n#${gameArea.id} { ${extractContent(cssText)} }`;
+      gameCss + `\n#${gameArea.id} { ${extractContent(cssText, false)} }`;
+
+    setCssBase(styleElement.textContent);
   };
 
   const handleEditorDidMount = (editor, monaco) => {
@@ -264,8 +287,8 @@ const DesafioComponent = ({
     }
   };
 
-  const handleConcluirClick = () => {
-    handleConcluir();
+  const handleEditarClick = () => {
+    handleEditar();
   };
 
   return (
@@ -289,7 +312,7 @@ const DesafioComponent = ({
               value={cssText}
               theme="vs-dark"
               className="editorContainer"
-              onChange={setCssSolucao(extractContent(cssText))}
+              onChange={setCssSolucao(extractContent(cssText,true))}
               options={{
                 readOnly: false,
                 fontFamily: "Roboto",
@@ -306,15 +329,9 @@ const DesafioComponent = ({
               onMount={handleEditorDidMount}
             />
           </div>
-          {isCreateCh ? (
-            <button id="concluirDesafioC" onClick={handleConcluirClick}>
-              {isEditar === "OK" ? "Editar desafio" : "Criar desafio"}
-            </button>
-          ) : (
-            <button id="concluirDesafioC" onClick={handleConcluirClick}>
-              Concluir desafio
-            </button>
-          )}
+          <button id="concluirDesafioC" onClick={handleEditarClick}>
+            Editar desafio
+          </button>
           <button className="BotaoFormatar" onClick={handleFormat}>
             Formatar
           </button>

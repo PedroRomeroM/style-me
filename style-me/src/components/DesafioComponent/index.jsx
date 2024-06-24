@@ -295,7 +295,6 @@ const DesafioComponent = ({
     if (dificuldade == 2 || dificuldade == 1) {
       const startIndex = cssText.indexOf("{") + 1;
       const endIndex = cssText.lastIndexOf("}");
-      console.log(cssText.substring(startIndex, endIndex).trim());
       return cssText.substring(startIndex, endIndex).trim();
     }
 

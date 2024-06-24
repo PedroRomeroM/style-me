@@ -270,24 +270,16 @@ app.get(`/api/email/exists`, async (req, res) => {
   res.send(response.data);
 });
 
-app.put('/api/ch/up', verifyJWT, async (req, res) => {
-  let chId = req.headers['ch-id'];
-  let chTitle = req.headers['ch-title'];
-  let chLevel = req.headers['ch-level'];
-  let chDescription = req.headers['ch-description'];
-  let chHtml = req.headers['ch-html'];
-  let chCssBase = req.headers['ch-cssBase'];
-  let chCssFinal = req.headers['ch-cssFinal'];
-
+app.put('/api/ch/up', async (req, res) => {
 
   let payload = {
-    id: chId,
-    title: chTitle,
-    level: chLevel,
-    description: chDescription,
-    html: chHtml,
-    cssBase: chCssBase,
-    cssFinal: chCssFinal,
+    id: req.body.objSend.id,
+    title: req.body.objSend.title,
+    level: req.body.objSend.level,
+    description: req.body.objSend.description,
+    html: req.body.objSend.html,
+    cssBase: req.body.objSend.cssBase,
+    cssFinal: req.body.objSend.cssFinal,
   };
 
   try {
@@ -302,7 +294,6 @@ app.put('/api/ch/up', verifyJWT, async (req, res) => {
     res.status(500).json({ message: 'Erro ao atualizar o desafio' });
   }
 });
-
 
 // Configuração da aplicação
 app.use(logger('dev'));

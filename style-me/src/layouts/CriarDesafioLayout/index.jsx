@@ -3,7 +3,7 @@ import "./CriarDesafio.scss";
 import Header from "../../components/Header/Header";
 import DesafioComponent from "../../components/DesafioComponent";
 import Message from "../../components/UsuarioCriado";
-import EditarDesafioComponent from '../../components/EditarDesafioComponent/EditarDesafioComponent';
+import EditarDesafioComponent from "../../components/EditarDesafioComponent/EditarDesafioComponent";
 import {
   getUserInfo,
   getTypeUser,
@@ -60,6 +60,29 @@ const CriarDesafio = () => {
     getTipoUser(token);
     setCreateCh(true);
   }, [profile]);
+
+  const countQuadrados = (html) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    const quadrados = div.getElementsByClassName("quadrado");
+    return quadrados.length;
+  };
+
+  useEffect(() => {
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token;
+
+    const chInfo = getChallengeInfo(token, state.id);
+
+    chInfo
+      .then((res) => {
+        setNumeroDeCaixas(countQuadrados(res.data.html));
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   function getUsersInfo(token) {
     const profile = getUserInfo(token);
@@ -121,7 +144,6 @@ const CriarDesafio = () => {
   };
 
   const handleConcluir = () => {
-    console.log(cssBase);
     const res = localStorage.getItem("auth");
     const parsed = JSON.parse(res);
     const token = parsed.token;
@@ -146,6 +168,36 @@ const CriarDesafio = () => {
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  const handleEditar = () => {
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token;
+
+    const response = updateChallenge(
+      token,
+      state.id,
+      title,
+      dificuldade,
+      descricao,
+      htmlBase,
+      cssBase,
+      cssSolucao
+    );
+
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          setIsCreated("true");
+        } else {
+          setIsCreated("false");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
   };
 
   function checkIsCreated() {
@@ -197,7 +249,7 @@ const CriarDesafio = () => {
                 Difícil
               </option>
             </select>
-            {(state.color == "yellow" || state.color == "red") && (
+            {(state.color == "yellow" || state.color == "red" || dificuldade == 2 || dificuldade == 3) && (
               <>
                 <span className="InputLabel">Numero De Caixas</span>
                 <select
@@ -239,7 +291,7 @@ const CriarDesafio = () => {
           </div>
         </div>
       ) : state.isEditar === "OK" ? (
-        <EditarDesafioComponent 
+        <EditarDesafioComponent
           goBack={handleTela}
           descricao={descricao}
           dificuldade={dificuldade}
@@ -247,7 +299,7 @@ const CriarDesafio = () => {
           setCssSolucao={setCssSolucao}
           setCssBase={setCssBase}
           setGameHtmlBase={setGameHtmlBase}
-          handleConcluir={handleConcluir}
+          handleEditar={handleEditar}
           isCreateCh={isCreateCh}
           isEditar={state.isEditar}
           chId={state.id}

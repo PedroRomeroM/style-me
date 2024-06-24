@@ -269,16 +269,19 @@ return response;
 
 export async function updateChallenge(tk, id,title,level,description,html,cssBase,cssFinal) {
   try {
-    const response = await axios.put(`${BASE_URL}/api/ch/up`, {}, {
+
+    let objSend = {
+      id: id,
+      title: title,
+      level: level,
+      description: description,
+      html: html,
+      cssBase: cssBase,
+      cssFinal: cssFinal
+    };    
+
+    const response = await axios.put(`${BASE_URL}/api/ch/up`, {objSend}, {
       headers: {
-        'x-access-token': tk,
-        'ch-id': id,
-        'ch-title': title,
-        'ch-level': level,
-        'ch-description': description,
-        'ch-html': html,
-        'ch-cssBase': cssBase,
-        'ch-cssFinal': cssFinal,
         'Content-Type': 'application/json'
       },
     });
