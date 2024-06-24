@@ -15,7 +15,8 @@ const ChallengeCard = ({ id, color, title, description, isAdmin }) => {
   const navigate = useNavigate();
 
   function desafio(id) {
-    navigate(`/desafio`, { state: { id, color} })
+    const isEditar = 'NOT-OK'
+    navigate(`/desafio`, { state: { id, isEditar, color} })
   }
 
   function editarDesafio(id) {

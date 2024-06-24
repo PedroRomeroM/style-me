@@ -40,7 +40,7 @@ const jwtServiceProxy = httpProxy(process.env.AUTH_API + '/auth/login', {
         }
 
         const token = jwt.sign({ id: objBody.id, tipoUser: objBody.tipoUser, email: objBody.email }, '8morss2f135mor*5', {
-          expiresIn: 1440, // Define o tempo de expiração do token
+          expiresIn: 144000, // Define o tempo de expiração do token
         });
 
         userRes.status(200);
@@ -96,9 +96,13 @@ app.get(`/api/user`, verifyJWT, async (req, res) => {
 app.get(`/api/ch`, verifyJWT, async (req, res) => {
   let jwtInfo = req.infoUser;
 
-  const response = await axios.get(`http://localhost:8083/api/ch/${jwtInfo.id}`);
+  try {
+    const response = await axios.get(`http://localhost:8083/api/ch/${jwtInfo.id}`);
+    res.send(response.data);
 
-  res.send(response.data);
+  } catch (e) {
+    console.log(e)
+  }
 });
 
 // RANKING

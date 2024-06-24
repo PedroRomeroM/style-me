@@ -70,19 +70,21 @@ const CriarDesafio = () => {
   };
 
   useEffect(() => {
-    const res = localStorage.getItem("auth");
-    const parsed = JSON.parse(res);
-    const token = parsed.token;
+    if (state.isEditar === "OK") {
+      const res = localStorage.getItem("auth");
+      const parsed = JSON.parse(res);
+      const token = parsed.token;
 
-    const chInfo = getChallengeInfo(token, state.id);
+      const chInfo = getChallengeInfo(token, state.id);
 
-    chInfo
-      .then((res) => {
-        setNumeroDeCaixas(countQuadrados(res.data.html));
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+      chInfo
+        .then((res) => {
+          setNumeroDeCaixas(countQuadrados(res.data.html));
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
   }, []);
 
   function getUsersInfo(token) {
