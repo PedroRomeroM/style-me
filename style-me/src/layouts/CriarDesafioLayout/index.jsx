@@ -3,8 +3,15 @@ import "./CriarDesafio.scss";
 import Header from "../../components/Header/Header";
 import DesafioComponent from "../../components/DesafioComponent";
 import Message from "../../components/UsuarioCriado";
-import { getUserInfo, getTypeUser, createChallenge, getChallengeInfo, updateChallenge } from "../../services/ApiServices";
-import { useLocation } from 'react-router-dom';
+import EditarDesafioComponent from '../../components/EditarDesafioComponent/EditarDesafioComponent';
+import {
+  getUserInfo,
+  getTypeUser,
+  createChallenge,
+  getChallengeInfo,
+  updateChallenge,
+} from "../../services/ApiServices";
+import { useLocation } from "react-router-dom";
 
 const CriarDesafio = () => {
   const [img, setImg] = useState();
@@ -17,7 +24,7 @@ const CriarDesafio = () => {
   const [numeroDeCaixas, setNumeroDeCaixas] = useState(0);
   const [title, setTitle] = useState("");
   const [cssSolucao, setCssSolucao] = useState("");
-  const [cssBase, setCssBase ] = useState("");
+  const [cssBase, setCssBase] = useState("");
   const [htmlBase, setGameHtmlBase] = useState("");
   const { state } = useLocation();
 
@@ -26,8 +33,7 @@ const CriarDesafio = () => {
 
   const [isCreateCh, setCreateCh] = useState();
 
-  const [isCreated, setIsCreated] = useState('');
-  
+  const [isCreated, setIsCreated] = useState("");
 
   const goBack = () => {
     window.history.back();
@@ -36,56 +42,59 @@ const CriarDesafio = () => {
   useEffect(() => {
     const res = localStorage.getItem("auth");
     const parsed = JSON.parse(res);
-    const token = parsed.token
-    
-    if (state.isEditar === 'OK') {
-      const chInfo = getChallengeInfo(token, state.id)
-      chInfo.then(res => {
-        setTitle(res.data.title)
-        setDescricao(res.data.description)
-        setDificuldade(res.data.level)
-      }).catch(e => {
-        console.log(e)
-      })
+    const token = parsed.token;
+
+    if (state.isEditar === "OK") {
+      const chInfo = getChallengeInfo(token, state.id);
+      chInfo
+        .then((res) => {
+          setTitle(res.data.title);
+          setDescricao(res.data.description);
+          setDificuldade(res.data.level);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
 
-    getUsersInfo(token)
-    getTipoUser(token)
-    setCreateCh(true)
+    getUsersInfo(token);
+    getTipoUser(token);
+    setCreateCh(true);
+  }, [profile]);
 
-}, [profile]);
+  function getUsersInfo(token) {
+    const profile = getUserInfo(token);
+    profile
+      .then((res) => {
+        setUsername(res.data.username);
+        setImgType(res.data.imgType);
+        setImg(res.data.img);
 
-function getUsersInfo(token) {
-  const profile = getUserInfo(token);
-  profile.then(res => {
-
-      setUsername(res.data.username)
-      setImgType(res.data.imgType)
-      setImg(res.data.img)
-
-      if (res.data.totalScore === null) {
+        if (res.data.totalScore === null) {
           setTotalScore(0);
-      } else {
-          setTotalScore(res.data.totalScore)
-      }
+        } else {
+          setTotalScore(res.data.totalScore);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
 
-    }).catch(e => {
-      console.log(e)
-  });
-};
-
-function getTipoUser (token) {
-  const response = getTypeUser(token);
-  response.then(res => {
-      if (res.data != 'ADM') {
-          setIsAdmin('false')
-      } else {
-          setIsAdmin('true')
-      }
-  }).catch (e => {
-      console.log(e)
-  })
-}
+  function getTipoUser(token) {
+    const response = getTypeUser(token);
+    response
+      .then((res) => {
+        if (res.data != "ADM") {
+          setIsAdmin("false");
+        } else {
+          setIsAdmin("true");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
 
   const handleDificuldadeChange = (event) => {
     setDificuldade(event.target.value);
@@ -113,33 +122,38 @@ function getTipoUser (token) {
   };
 
   const handleConcluir = () => {
-    console.log(cssBase)
+    console.log(cssBase);
     const res = localStorage.getItem("auth");
     const parsed = JSON.parse(res);
-    const token = parsed.token
+    const token = parsed.token;
 
-    const response = createChallenge(token,title, dificuldade, descricao, htmlBase, cssBase, cssSolucao)
-    response.then(res => {
-      if (res.status === 200) {
-        setIsCreated('true')
-      } else {
-        setIsCreated('false')
-      }
-    }).catch(e => {
-      console.log(e)
-    })
-  }
+    const response = createChallenge(
+      token,
+      title,
+      dificuldade,
+      descricao,
+      htmlBase,
+      cssBase,
+      cssSolucao
+    );
+    response
+      .then((res) => {
+        if (res.status === 200) {
+          setIsCreated("true");
+        } else {
+          setIsCreated("false");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
-
-  function checkIsCreated () {
-    if (isCreated === 'true') {
-      return (
-        <Message text={'Desafio criado com sucesso!'} isError={false}/>
-      )
-    } else if (isCreated === 'false') {
-      return (
-        <Message text={'Erro ao criar o desafio!'} isError={true}/>
-      )
+  function checkIsCreated() {
+    if (isCreated === "true") {
+      return <Message text={"Desafio criado com sucesso!"} isError={false} />;
+    } else if (isCreated === "false") {
+      return <Message text={"Erro ao criar o desafio!"} isError={true} />;
     }
   }
 
@@ -152,9 +166,7 @@ function getTipoUser (token) {
         totalScore={totalScore}
         isAdmin={isAdmin}
       />
-      {
-        checkIsCreated()
-      }
+      {checkIsCreated()}
       {telaAtual == 1 ? (
         <div className="DesafioBody">
           <div className="divEnviar">
@@ -174,8 +186,8 @@ function getTipoUser (token) {
               onChange={handleDificuldadeChange}
             >
               <option value="0" className="values">
-                    Selecione a dificuldade
-                  </option>
+                Selecione a dificuldade
+              </option>
               <option value="1" className="values">
                 Fácil
               </option>
@@ -227,8 +239,8 @@ function getTipoUser (token) {
             </button>
           </div>
         </div>
-      ) : (
-        <DesafioComponent
+      ) : state.isEditar === "OK" ? (
+        <EditarDesafioComponent 
           goBack={handleTela}
           descricao={descricao}
           dificuldade={dificuldade}
@@ -240,6 +252,18 @@ function getTipoUser (token) {
           isCreateCh={isCreateCh}
           isEditar={state.isEditar}
           chId={state.id}
+        />
+      ) : (
+        <DesafioComponent
+          goBack={handleTela}
+          descricao={descricao}
+          dificuldade={dificuldade}
+          numeroDeCaixas={numeroDeCaixas}
+          setCssSolucao={setCssSolucao}
+          setCssBase={setCssBase}
+          setGameHtmlBase={setGameHtmlBase}
+          handleConcluir={handleConcluir}
+          isCreateCh={isCreateCh}
         />
       )}
     </div>

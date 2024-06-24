@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
-import "./Desafio.scss";
-import { ChDone } from "../../services/ApiServices";
+import "./EditarDesafioComponent.scss";
+import { ChDone, getChallengeInfo } from "../../services/ApiServices";
 import { useLocation } from "react-router-dom";
 
 const initialCss = `#POSITION {\n\n}`;
@@ -19,7 +19,10 @@ const DesafioComponent = ({
   handleConcluir,
   isCreateCh,
   dificuldade,
-}) => {
+  isEditar,
+  chId,
+}) =>{
+
   const [gameHtml, setGameHtml] = useState("");
   const [cssText, setCssText] = useState(
     dificuldade == 2 ? initialCss : dificuldade == 1 ? initialCss2 : initialCss3
@@ -31,6 +34,7 @@ const DesafioComponent = ({
     dificuldade == 2 ? initialCss : dificuldade == 1 ? initialCss2 : initialCss3
   );
 
+  //Mudar para regex que coloca as divs quadrado dentro do html que vem do back (gameHtml)
   const generateQuadrados = (num) => {
     let quadrados = "";
     for (let i = 0; i < num; i++) {
@@ -43,10 +47,7 @@ const DesafioComponent = ({
     return quadrados;
   };
 
-  const generateCSSSolucao = () => {
-    return extractContent(cssText);
-  };
-
+  //Mudar para regex que coloca as divs objetivo dentro do html que vem do back (gameHtml)
   const generateObjetivos = (num) => {
     let objetivos = "";
     for (let i = 0; i < num; i++) {
@@ -59,238 +60,40 @@ const DesafioComponent = ({
     return objetivos;
   };
 
+  //Work in progress
   useEffect(() => {
-    setCssBase(gameCss);
-    setGameHtmlBase(gameHtml);
-  }, [gameCss, gameHtml]);
+    const res = localStorage.getItem("auth");
+    const parsed = JSON.parse(res);
+    const token = parsed.token;
 
-  useEffect(() => {
-    if (dificuldade == 2) {
-      setGameHtml(`<!DOCTYPE html>
-                  <html lang="pt">
-                    <body>
-                      <div class="areadesafio">
-                        <div id="ondeOCSSVaiSerAplicado">
-                          ${generateQuadrados(numeroDeCaixas)}
-                        </div>
-                        <div class="areafantasma" id=AlvoDoDesafio>
-                          ${generateObjetivos(numeroDeCaixas)}
-                        </div>
-                      </div>
-                    </body>
-                  </html>`);
-
-      setGameCss(`.objetivo2:hover {
-                  transition: transform 0.5s;
-                  transform: scale(1.05);
-                }
-                .quadrado:hover {
-                  transform: scale(1.05);
-                }
-                .areadesafio {
-                  position: relative;
-                  width: calc(100% - 2rem);
-                  height: calc((100vh - 3.3rem));
-                  background-color: #747185;
-                  background-image: url("images/textura.png");
-                  background-size: cover;
-                  background-repeat: no-repeat;
-                  background-position: center;
-                  border-radius: 13px;
-                  padding: 1rem;
-                }
-
-                #ondeOCSSVaiSerAplicado {
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  height: 100%;
-                  width: 100%;
-                }
-
-                .quadrado {
-                  width: 8rem;
-                  height: 8rem;
-                  margin: 10px;
-                  z-index: 2;
-                  background-image: url("images/caixa.jpg");
-                  background-size: cover;
-                  background-repeat: no-repeat;
-                  background-position: center;
-                  transition: all 0.5s ease;
-                }
-
-                .areafantasma .objetivo2 {
-                  width: 8rem;
-                  height: 8rem;
-                  margin: 10px;
-                  background-color: rgba(255, 0, 0, 0.295);
-                }
-
-                .areafantasma {
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  right: 0;
-                  bottom: 0;
-                  display: flex;
-                  padding: 1rem;
-
-                  ${generateCSSSolucao()}
-                }`);
+    if (isEditar === "OK") {
+      const chInfo = getChallengeInfo(token, chId);
+      chInfo
+        .then((res) => {
+          setGameCss(res.data.cssBase)
+          setGameHtml(res.data.html)
+          if(dificuldade == 3){
+            setCssText(res.data.cssFinal.replace(/#AlvoDoDesafioS/g, '#STYLE').replace(/#AlvoDoDesafio/g, '#POSITION').replace(/}/g, '\n}').replace(/{/g, '{\n'))
+          }else if(dificuldade == 2) {
+            setCssText("#POSITION {\n" + res.data.cssFinal + "\n}")
+          }else if(dificuldade == 1) {
+            setCssText("#STYLE {\n" + res.data.cssFinal + "\n}")
+          }
+          })
+        .catch((e) => {
+          console.log(e);
+        });
     }
-    if (dificuldade == 1) {
-      setGameHtml(`<!DOCTYPE html>
-          <body>
-            <div class="areadesafio">
-              <div class="areaDoUser">
-                <div class="quadrado" id="ondeOCSSVaiSerAplicado"></div>
-              </div>
-              <div class="areafantasma" >
-                <div class="objetivo2" id=AlvoDoDesafio></div>
-              </div>
-            </div>
-          </body>
-        </html>`);
+  }, []);
 
-      setGameCss(`
-      .objetivo2:hover {
-        transition: transform 0.5s;
-        transform: scale(1.05);
-      }
-      .quadrado:hover {
-        transform: scale(1.05);
-      }
-
-      .areaDoUser{
-        display: flex;
-        align-items: center;
-      }
-      .areadesafio {
-        width: calc(100% - 2rem);
-        height: calc((100vh - 3.3rem));
-        background-color: #747185;
-        background-image: url("images/textura.png");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        border-radius: 13px;
-        padding: 1rem;
-        display:flex;
-        justify-content:space-around;
-      }
-
-      .quadrado {
-        width: 18rem;
-        height: 18rem;
-        margin: 10px;
-        z-index: 2;
-        background-color: green;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        transition: all 0.5s ease;
-      }
-
-      .areafantasma .objetivo2 {
-        width: 18rem;
-        height: 18rem;
-        margin: 10px;
-        background-color: rgba(255, 0, 0, 0.295);
-        ${generateCSSSolucao()}
-      }
-
-      .areafantasma {
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        padding: 1rem;
-        align-items: center;
-        }`);
-    }
-
-    if (dificuldade == 3) {
-      setGameHtml(`<!DOCTYPE html>
-                    <html lang="pt">
-                      <body>
-                        <div class="areadesafio">
-                          <div id="ondeOCSSVaiSerAplicado">
-                            ${generateQuadrados(numeroDeCaixas)}
-                          </div>
-                          <div class="areafantasma" id=AlvoDoDesafio>
-                            ${generateObjetivos(numeroDeCaixas)}
-                          </div>
-                        </div>
-                      </body>
-                    </html>`);
-
-      setGameCss(`.objetivo2:hover {
-                    transition: transform 0.5s;
-                    transform: scale(1.05);
-                  }
-                  .quadrado:hover {
-                    transform: scale(1.05);
-                  }
-                  .areadesafio {
-                    position: relative;
-                    width: calc(100% - 2rem);
-                    height: calc((100vh - 3.3rem));
-                    background-color: #747185;
-                    background-size: cover;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    border-radius: 13px;
-                    padding: 1rem;
-                  }
-  
-                  #ondeOCSSVaiSerAplicado {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100%;
-                    width: 100%;
-                  }
-  
-                  .quadrado {
-                    width: 8rem;
-                    height: 8rem;
-                    margin: 10px;
-                    z-index: 2;
-                    background-size: cover;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    transition: all 0.5s ease;
-                    background-color: green;
-                  }
-  
-                  .areafantasma .objetivo2 {
-                    width: 8rem;
-                    height: 8rem;
-                    margin: 10px;
-                    background-color: rgba(255, 0, 0, 0.295);
-                  }
-  
-                  .areafantasma {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    display: flex;
-                    padding: 1rem;
-                  }
-                  ${generateCSSSolucao()}`);
-    }
-  }, [gameCss, gameHtml, cssText]);
-
+  //OK tudo certo
   useEffect(() => {
     if (iframeRef.current && iframeRef.current.contentDocument) {
       applyStyles();
     }
   }, [cssText, gameCss]);
 
+  //OK tudo certo
   const extractContent = (cssText) => {
     if (dificuldade == 2 || dificuldade == 1) {
       const startIndex = cssText.indexOf("{") + 1;
@@ -308,11 +111,12 @@ const DesafioComponent = ({
 
       const positionContent = positionMatch ? positionMatch[1].trim() : "";
       const styleContent = styleMatch ? styleMatch[1].trim() : "";
-      return `#AlvoDoDesafio { ${positionContent} }\n#AlvoDoDesafioS { ${styleContent} }`;
+      return `${positionContent}\n#AlvoDoDesafioS { ${styleContent} }`;
     }
     return "";
   };
 
+  //usar para aplicar css do back
   const applyStyles = () => {
     const iframeDocument = iframeRef.current.contentDocument;
     if (!iframeDocument) return;
@@ -483,7 +287,7 @@ const DesafioComponent = ({
           </div>
           {isCreateCh ? (
             <button id="concluirDesafioC" onClick={handleConcluirClick}>
-              Criar desafio
+              {isEditar === "OK" ? "Editar desafio" : "Criar desafio"}
             </button>
           ) : (
             <button id="concluirDesafioC" onClick={handleConcluirClick}>

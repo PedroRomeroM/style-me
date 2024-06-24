@@ -20,7 +20,7 @@ const ChallengeCard = ({ id, color, title, description, isAdmin }) => {
 
   function editarDesafio(id) {
     const isEditar = 'OK'
-    navigate(`/criar-desafio`, { state: { id, isEditar } })
+    navigate(`/editar-desafio`, { state: { id, isEditar } })
   }
 
 
