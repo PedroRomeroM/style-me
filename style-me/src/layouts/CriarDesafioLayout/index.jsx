@@ -33,6 +33,7 @@ const CriarDesafio = () => {
   const [isCreateCh, setCreateCh] = useState();
 
   const [isCreated, setIsCreated] = useState("");
+  const [isUpdated, setIsUpdated] = useState("");
 
   const goBack = () => {
     window.history.back();
@@ -189,9 +190,9 @@ const CriarDesafio = () => {
     response
       .then((res) => {
         if (res.status === 200) {
-          setIsCreated("true");
+          setIsUpdated("true");
         } else {
-          setIsCreated("false");
+          setIsUpdated("false");
         }
       })
       .catch((e) => {
@@ -208,6 +209,14 @@ const CriarDesafio = () => {
     }
   }
 
+  function checkIsUpdated() {
+    if (isUpdated === "true") {
+      return <Message text={"Desafio editado com sucesso!"} isError={false} />;
+    } else if (isCreated === "false") {
+      return <Message text={"Erro ao editar o desafio!"} isError={true} />;
+    }
+  }
+
   return (
     <div className="TelaDeDesafio">
       <Header
@@ -218,6 +227,7 @@ const CriarDesafio = () => {
         isAdmin={isAdmin}
       />
       {checkIsCreated()}
+      {checkIsUpdated()}
       {telaAtual == 1 ? (
         <div className="DesafioBody">
           <div className="divEnviar">
