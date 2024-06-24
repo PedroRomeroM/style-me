@@ -34,12 +34,11 @@ const DesafioComponent = ({
   const generateQuadrados = (num) => {
     let quadrados = "";
     for (let i = 0; i < num; i++) {
-      if(dificuldade == 3){
+      if (dificuldade == 3) {
         quadrados += `<div class="quadrado" id="EstiloQuadrado"></div>`;
-      }else {
+      } else {
         quadrados += `<div class="quadrado"></div>`;
       }
-
     }
     return quadrados;
   };
@@ -296,7 +295,6 @@ const DesafioComponent = ({
     if (dificuldade == 2 || dificuldade == 1) {
       const startIndex = cssText.indexOf("{") + 1;
       const endIndex = cssText.lastIndexOf("}");
-      console.log(cssText.substring(startIndex, endIndex).trim());
       return cssText.substring(startIndex, endIndex).trim();
     }
 

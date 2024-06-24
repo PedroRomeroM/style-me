@@ -266,3 +266,29 @@ export async function checkUsernameExists(username) {
   });
 return response;
 }
+
+export async function updateChallenge(tk, id,title,level,description,html,cssBase,cssFinal) {
+  try {
+
+    let objSend = {
+      id: id,
+      title: title,
+      level: level,
+      description: description,
+      html: html,
+      cssBase: cssBase,
+      cssFinal: cssFinal
+    };    
+
+    const response = await axios.put(`${BASE_URL}/api/ch/up`, {objSend}, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Erro ao atualizar o desafio:', error);
+    return '';
+  }
+}

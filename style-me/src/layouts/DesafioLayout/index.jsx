@@ -109,7 +109,6 @@ const GameComponent = () => {
     if (state.color == "yellow" || state.color == "green") {
       const startIndex = cssText.indexOf("{") + 1;
       const endIndex = cssText.lastIndexOf("}");
-      console.log(cssText.substring(startIndex, endIndex).trim());
       return cssText.substring(startIndex, endIndex).trim();
     }
 
@@ -197,7 +196,6 @@ const GameComponent = () => {
         (quadrado, index) => isOverlapping(quadrado, objetivos[index])
       ).length;
 
-      console.log(normalizeText(extractStyleContent(cssSolucao,2)));
       document.getElementById("concluirDesafio").style.display =
         normalizeText(extractStyleContent(cssText,1)) == normalizeText(extractStyleContent(cssSolucao,2)) &&
         objetivosAlcancados === objetivos.length

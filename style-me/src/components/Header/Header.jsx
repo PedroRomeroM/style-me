@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Header.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faTrophy, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Header = ({ username, img, imgType, totalScore, isAdmin }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const navigate = useNavigate();
   const handleMouseEnter = () => {
     setDropdownVisible(true);
   };
@@ -15,8 +16,13 @@ const Header = ({ username, img, imgType, totalScore, isAdmin }) => {
   };
 
   useEffect(() => {
-    console.log(isAdmin)
+    
   }, []);
+
+  function criarDesafio() {
+   const isEditar = 'NOT-OK'
+    navigate(`/criar-desafio`, { state: { isEditar } })
+  }
 
   function logOut() {
     localStorage.removeItem("auth");
@@ -32,9 +38,7 @@ const Header = ({ username, img, imgType, totalScore, isAdmin }) => {
         <div className="groupRight">
           <div className="userDetails">
             {isAdmin === 'true' ? (
-              <Link to="/criar-desafio" className="adminButton">
-                <button className="addButton">Criar desafio</button>
-              </Link>
+                <button className="addButton" onClick={() => {criarDesafio()}}>Criar desafio</button>
             ) : (
               <div className="userDetailsContainer">
                 <Link to="/profile" className="username">

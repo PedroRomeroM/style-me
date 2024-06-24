@@ -32,6 +32,7 @@ const AppRouter = () => {
                 <Route element={<PrivateRoutesAdmin/>}>
                     <Route path="/challenges" element={<ChallengesLayout />}/>
                     <Route path="/criar-desafio" element={<CriarDesafioLayout />}/> 
+                    <Route path="/editar-desafio" element={<CriarDesafioLayout />}/> 
                 </Route>            
             </Routes>
         </Router>

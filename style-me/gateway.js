@@ -270,6 +270,30 @@ app.get(`/api/email/exists`, async (req, res) => {
   res.send(response.data);
 });
 
+app.put('/api/ch/up', async (req, res) => {
+
+  let payload = {
+    id: req.body.objSend.id,
+    title: req.body.objSend.title,
+    level: req.body.objSend.level,
+    description: req.body.objSend.description,
+    html: req.body.objSend.html,
+    cssBase: req.body.objSend.cssBase,
+    cssFinal: req.body.objSend.cssFinal,
+  };
+
+  try {
+    const response = await axios.put('http://localhost:8083/api/ch', payload, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+    res.send(response.data);
+  } catch (error) {
+    console.error('Erro ao atualizar o desafio:', error);
+    res.status(500).json({ message: 'Erro ao atualizar o desafio' });
+  }
+});
 
 // Configuração da aplicação
 app.use(logger('dev'));

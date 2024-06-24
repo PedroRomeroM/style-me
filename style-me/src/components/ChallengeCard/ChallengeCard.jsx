@@ -18,9 +18,13 @@ const ChallengeCard = ({ id, color, title, description, isAdmin }) => {
     navigate(`/desafio`, { state: { id, color} })
   }
 
-  useEffect(() => {
+  function editarDesafio(id) {
+    const isEditar = 'OK'
+    navigate(`/editar-desafio`, { state: { id, isEditar, color } })
+  }
 
-    console.log(isAdmin)
+
+  useEffect(() => {
     const spanElement = spanRef.current;
 
     function checkScroll() {
@@ -96,7 +100,13 @@ const ChallengeCard = ({ id, color, title, description, isAdmin }) => {
             <div className='CardTitle'>
               <h2> {title} </h2>
               <span ref={spanRef} className="CardDescription"> {description} </span>
-              <button className={`ChallengeButton ${color}`} onClick={() => {desafio(id)}}>VISUALIZAR</button>
+              {
+                isAdmin === 'true' ? (
+                  <button className={`ChallengeButton ${color}`} onClick={() => {editarDesafio(id)}}>EDITAR</button>
+                ) : (
+                  <button className={`ChallengeButton ${color}`} onClick={() => {desafio(id)}}>VISUALIZAR</button>
+                )
+              }
             </div>
             {isAdmin === 'true' ? (
               <div className="deleteDiv">
