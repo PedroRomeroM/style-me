@@ -30,6 +30,10 @@ const CriarDesafio = () => {
   const [profile, setProfile] = useState(null);
   const [isAdmin, setIsAdmin] = useState();
 
+  const [isSelectedGreen, setIsSelectedGreen] = useState();
+  const [isSelectedYellow, setIsSelectedYellow] = useState();
+  const [isSelectedRed, setIsSelectedRed] = useState();
+
   const [isCreateCh, setCreateCh] = useState();
 
   const [isCreated, setIsCreated] = useState("");
@@ -219,6 +223,84 @@ const CriarDesafio = () => {
     }
   }
 
+  function checkLevel() {
+    const level = state.color;
+
+    if (level === 'green') {
+      return (
+        <select
+          type="text"
+          className="Input admin select"
+          id="Dificuldade"
+          value={dificuldade}
+          onChange={handleDificuldadeChange}
+        >
+          <option disabled value="0" className="values">
+            Selecione a dificuldade
+          </option>
+          <option selected value="1" className="values">
+            Fácil
+          </option>
+          <option disabled value="2" className="values">
+            Médio
+          </option>
+          <option disabled value="3" className="values">
+            Difícil
+          </option>
+        </select>
+      )
+    }
+    if (level === 'yellow') {
+      return (
+        <select
+          type="text"
+          className="Input admin select"
+          id="Dificuldade"
+          value={dificuldade}
+          onChange={handleDificuldadeChange}
+        >
+          <option disabled value="0" className="values">
+            Selecione a dificuldade
+          </option>
+          <option disabled value="1" className="values">
+            Fácil
+          </option>
+          <option selected value="2" className="values">
+            Médio
+          </option>
+          <option disabled value="3" className="values">
+            Difícil
+          </option>
+        </select>
+      )
+    }
+    if (level === 'red') {
+      return (
+        <select
+          type="text"
+          className="Input admin select"
+          id="Dificuldade"
+          value={dificuldade}
+          onChange={handleDificuldadeChange}
+        >
+          <option disabled value="0" className="values">
+            Selecione a dificuldade
+          </option>
+          <option disabled value="1" className="values">
+            Fácil
+          </option>
+          <option disabled value="2" className="values">
+            Médio
+          </option>
+          <option selected value="3" className="values">
+            Difícil
+          </option>
+        </select>
+      )
+    }
+
+  }
+
   return (
     <div className="TelaDeDesafio">
       <Header
@@ -241,26 +323,9 @@ const CriarDesafio = () => {
               value={title}
             />
             <span className="InputLabel">Dificuldade</span>
-            <select
-              type="text"
-              className="Input admin select"
-              id="Dificuldade"
-              value={dificuldade}
-              onChange={handleDificuldadeChange}
-            >
-              <option value="0" className="values">
-                Selecione a dificuldade
-              </option>
-              <option value="1" className="values">
-                Fácil
-              </option>
-              <option value="2" className="values">
-                Médio
-              </option>
-              <option value="3" className="values">
-                Difícil
-              </option>
-            </select>
+            {
+              checkLevel()
+            }
             {(state.color == "yellow" || state.color == "red" || dificuldade == 2 || dificuldade == 3) && (
               <>
                 <span className="InputLabel">Numero De Caixas</span>
